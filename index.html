@@ -1,0 +1,259 @@
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+
+    <!-- Bootstrap -->
+    <link href="src/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="src/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">-->
+
+    <!-- Custom -->
+    <link href="src/css/custom.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>-->
+
+    <title>Whiteboard</title>
+  </head>
+  <body>
+
+    <!-- login modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <input id="input-username" type="username" class="form-control" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <input id="input-password" type="password" class="form-control" placeholder="password">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-login-user" type="button" class="btn btn-primary">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- new/edit workout modal -->
+    <div class="modal fade" id="workoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Workout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <input id="add-workout-name" class="form-control" type="text" placeholder="Workout name">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="add-workout-description" class="form-control" rows="5" placeholder="Workout description"></textarea>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-save-workout" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- new/edit workout score modal -->
+    <div class="modal fade" id="workoutScoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Workout score</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <input id="add-score-value" class="form-control" type="text" placeholder="Score">
+                        </div>
+                        <div class="form-group">
+                            <input id="add-score-datetime" class="form-control" type="text" placeholder="Datetime">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="add-score-note" class="form-control" rows="3" placeholder="Note"></textarea>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-save-workout-score" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="container-fluid">
+
+        <!-- beginn nav -->
+        <nav class="navbar navbar-expand-md navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Whiteboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li id="nav-dashboard-view" class="nav-item">
+                        <a class="nav-link active" href="#">Dashboard</a>
+                    </li>
+                    <li id="nav-workout-view" class="nav-item">
+                        <a class="nav-link" href="#">Workouts</a>
+                    </li>
+                    <li id="nav-movement-view" class="nav-item">
+                        <a class="nav-link" href="#">Movements</a>
+                    </li>
+                    <li id="nav-equipment-view" class="nav-item">
+                        <a class="nav-link" href="#">Equipment</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <div id="btn-group-new-workout" class="btn-group">
+                        <button id="btn-new-workout" type="button" class="btn btn-primary btn-sm">New</button>
+                    </div>
+                </form>
+            </div>
+        </nav>
+        <!-- end of nav -->
+
+        <!-- alert area -->
+
+        <!-- beginn dashboard-view -->
+        <div id="dashboard-view">
+
+            <ul class="list-group">
+
+                <li class="list-group-item rounded-0 bg-white dashboard-template">
+                    <div class="card-clickable">
+                        <h5 class="card-title margin-0 dashboard-name">...</h5>
+                    </div>
+                    <div class="card rounded-0">
+                        <div class="card-clickable card-header rounded-0 bg-light">
+                            <h5 class="card-title margin-0 dashboard-name">...</h5>
+                        </div>
+                        <div class="card-body rounded-0">
+                            <p class="card-text dashboard-details">...</p>
+                        </div>
+                        <!--<div class="card-footer rounded-0 bg-transparent"></div>-->
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        <!-- end dashboard-view -->
+
+        <!-- beginn workout-view -->
+        <div id="workout-view">
+
+            <ul class="list-group">
+
+                <li class="list-group-item rounded-0 bg-white workout-template">
+                    <div class="card-clickable">
+                        <h5 class="card-title margin-0 view-workout-name">...</h5>
+                    </div>
+                    <div class="card rounded-0">
+                        <div class="card-clickable card-header rounded-0 bg-light">
+                            <h5 class="card-title margin-0 view-workout-name">...</h5>
+                        </div>
+                        <div class="card-body rounded-0">
+                            <p class="card-text view-workout-description">...</p>
+                            <p class="card-text"><small class="text-muted view-workout-datetime">...</small></p>
+                        </div>
+                        <div class="card-footer rounded-0 bg-transparent clearfix">
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-primary btn-sm btn-add-workout-score">Add</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-edit-workout">Edit</button>
+                            </div>
+                        </div>
+                        <div class="border-top bg-light">
+                            <!-- <canvas class="chart"></canvas>-->
+                            <table class="table table-borderless scores">
+                               <tr class="score-template">
+                                    <td class="view-score-value align-middle">score</td>
+                                    <td class="view-score-datetime align-middle">date</td>
+                                    <td class="view-score-note align-middle">note</td>
+                                    <td class="text-right align-middle"><button type="button" class="btn btn-primary btn-sm btn-edit-workout-score">Edit</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        <!-- end workout-view -->
+
+        <!-- beginn movements-view -->
+        <div id="movement-view">
+
+            <ul class="list-group">
+
+                <li class="list-group-item rounded-0 bg-white movement-template">
+                    <div>
+                        <h5 class="card-title margin-0 movement-name">...</h5>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        <!-- end movements-view -->
+
+        <!-- beginn equipment-view -->
+        <div id="equipment-view">
+
+            <ul class="list-group">
+
+                <li class="list-group-item rounded-0 bg-white equipment-template">
+                    <div>
+                        <h5 class="card-title margin-0 equipment-name">...</h5>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        <!-- end movements-view -->
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="src/js/jquery/jquery-3.3.1.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="src/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- OBJECTS -->
+    <script src="src/js/objects/User.js"></script>
+    <script src="src/js/objects/Workout.js"></script>
+    <script src="src/js/objects/Score.js"></script>
+
+    <!-- UTILS -->
+    <script src="src/js/utils.js"></script>
+
+    <!-- REST -->
+    <script src="src/js/rest.js"></script>
+
+    <!-- alert -->
+    <script src="src/js/alert.js"></script>
+
+    <!-- WHITEBOARD -->
+    <script src="src/js/whiteboard.js"></script>
+
+    <!-- MAIN -->
+    <script src="src/js/main.js"></script>
+
+    <!-- VIEW -->
+    <script src="src/js/view.js"></script>
+    <script src="src/js/view_workout.js"></script>
+
+    <script></script>
+  </body>
+</html>

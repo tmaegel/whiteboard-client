@@ -113,6 +113,15 @@ function getShortFormatTimestamp(timestamp) {
  */
 
 /**
+ * Checks if value empty or contains spaces only
+ */
+function empty(value) {
+    let regExp = /^ *$/g
+
+    return regExp.test(value)
+}
+
+/**
  * Simple regex check
  * [a-zA-Z_0-9 .,:-()/]
  */
@@ -124,10 +133,10 @@ function simpleRegex(value) {
 
 /**
  * Extended regex check
- * [a-zA-Z_0-9 .,:@-()'"%/]
+ * [a-zA-Z_0-9 .,:;!?"'&@_-()'"%/]
  */
 function extendedRegex(value) {
-    let regExp = /^[\w\s.,:@\-\(\)'"%\/]*$/gm;
+    let regExp = /^[\w\s.,:;"'!?&@\_\-\(\)\%\/]*$/g;
 
     return regExp.test(value);
 }

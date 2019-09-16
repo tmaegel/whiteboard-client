@@ -134,8 +134,8 @@ $("#btn-save-workout").click(function() {
     let workoutName = $("#add-workout-name").val();
     let workoutDescription = $("#add-workout-description").val();
 
-    /*if(workoutName != undefined && workoutDescription != undefined) {
-        if(simpleRegex(workoutName)) {
+    if(workoutName != undefined && workoutDescription != undefined) {
+        if(simpleRegex(workoutName) && !empty(workoutName)) {
             console.log("click() :: #btn-save-workout :: DEBUG: simpleRegex() success");
             workoutName = stripString(workoutName);
         } else {
@@ -143,7 +143,7 @@ $("#btn-save-workout").click(function() {
             return;
         }
 
-        if(extendedRegex(workoutDescription)) {
+        if(extendedRegex(workoutDescription) && !empty(workoutDescription)) {
             console.log("click() :: #btn-save-workout :: DEBUG: extendedRegex() success");
             workoutDescription = stripString(workoutDescription);
         } else {
@@ -152,7 +152,7 @@ $("#btn-save-workout").click(function() {
         }
     } else {
         console.log("click() :: #btn-save-workout :: ERROR: workoutName or workoutDescription aren't defined");
-    }*/
+    }
 
     console.log("click() :: #btn-save-workout :: DEBUG: selectedWorkoutId is " + selectedWorkoutId);
 
@@ -183,7 +183,7 @@ $("#btn-save-workout-score").click(function() {
     let score;
     let scoreValue = stripString($("#add-score-value").val());
     console.log("click() :: #btn-save-workout-score :: DEBUG: scoreValue is " + scoreValue);
-    if(numRegex(scoreValue)) {
+    if(numRegex(scoreValue) || timestampRegex(scoreValue)) {
         console.log("click() :: #btn-save-workout-score :: DEBUG: numRegex() success");
     } else {
         addAlert("error", "numRegex() :: ERROR: Found invalid characters.", true);

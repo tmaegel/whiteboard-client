@@ -15,7 +15,7 @@
   <body>
 
     <!-- login modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="loginModal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -37,7 +37,7 @@
     </div>
 
     <!-- new/edit workout modal -->
-    <div class="modal fade" id="workoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="workoutModal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -62,7 +62,7 @@
     </div>
 
     <!-- new/edit workout score modal -->
-    <div class="modal fade" id="workoutScoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="workoutScoreModal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -155,15 +155,15 @@
 
                 <li class="list-group-item rounded-0 bg-white workout-template">
                     <div class="card-clickable">
-                        <h5 class="card-title margin-0 view-workout-name">...</h5>
+                        <h5 class="card-title margin-0 workout-name">...</h5>
                     </div>
                     <div class="card rounded-0">
                         <div class="card-clickable card-header rounded-0 bg-light">
-                            <h5 class="card-title margin-0 view-workout-name">...</h5>
+                            <h5 class="card-title margin-0 workout-name">...</h5>
                         </div>
                         <div class="card-body rounded-0">
-                            <p class="card-text view-workout-description">...</p>
-                            <p class="card-text"><small class="text-muted view-workout-datetime">...</small></p>
+                            <p class="card-text workout-description">...</p>
+                            <p class="card-text"><small class="text-muted workout-datetime">...</small></p>
                         </div>
                         <div class="card-footer rounded-0 bg-transparent clearfix">
                             <div class="btn-group float-right">
@@ -175,9 +175,9 @@
                             <!-- <canvas class="chart"></canvas>-->
                             <table class="table table-borderless scores">
                                <tr class="score-template">
-                                    <td class="view-score-value align-middle">score</td>
-                                    <td class="view-score-datetime align-middle">date</td>
-                                    <td class="view-score-note align-middle">note</td>
+                                    <td class="score-value align-middle">score</td>
+                                    <td class="score-datetime align-middle">date</td>
+                                    <td class="score-note align-middle">note</td>
                                     <td class="text-right align-middle"><button type="button" class="btn btn-primary btn-sm btn-edit-workout-score">Edit</button></td>
                                 </tr>
                             </table>
@@ -252,7 +252,6 @@
 
     <!-- VIEW -->
     <script src="src/js/view.js"></script>
-    <script src="src/js/view_workout.js"></script>
 
     <script></script>
   </body>

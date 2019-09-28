@@ -245,6 +245,7 @@ function restGetWorkoutById(id, type) {
  * Add new workout
  */
 function restAddWorkout(workout) {
+    console.log(JSON.stringify(workout));
     $.ajax({
         type: "POST",
         url: "http://localhost:3000/workout",
@@ -262,8 +263,6 @@ function restAddWorkout(workout) {
             restGetWorkoutById(workout.id, "add");
 
             addAlert("success", "Success: Workout was created.", true);
-            // Reset selectedWorkoutId after procceed workout
-            selectedWorkoutId = 0;
         },
         error: function(data) {
             if(debug) {
@@ -272,7 +271,6 @@ function restAddWorkout(workout) {
             }
 
             addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
-            selectedWorkoutId = 0;
         }
     });
 }
@@ -300,8 +298,6 @@ function restUpdateWorkout(workout) {
             restGetWorkoutById(workout.id, "update");
 
             addAlert("success", "Success: Workout was updated.", true);
-            // Reset selectedWorkoutId after procceed workout
-            selectedWorkoutId = 0;
         },
         error: function(data) {
             if(debug) {
@@ -310,7 +306,6 @@ function restUpdateWorkout(workout) {
             }
 
             addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
-            selectedWorkoutId = 0;
         }
     });
 }
@@ -434,9 +429,6 @@ function restUpdateWorkoutScore(score) {
             restGetWorkoutScores(score.workoutId);
 
             addAlert("success", "Success: Workout score was updated.", true);
-            // Reset selectedWorkoutId after procceed workout
-            selectedWorkoutId = 0;
-            selectedScoreId = 0;
         },
         error: function(data) {
             if(debug) {
@@ -445,8 +437,6 @@ function restUpdateWorkoutScore(score) {
             }
 
             addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
-            selectedWorkoutId = 0;
-            selectedScoreId = 0;
         }
     });
 }

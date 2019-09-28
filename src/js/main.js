@@ -27,10 +27,5 @@ let movements = [];
 // create an array workouts
 let workouts = [];
 
-// Id of selected workout, otherwise it is 0
-let selectedWorkoutId = 0;
-// Id of selected workout score (edit mode), otherwise it is 0
-let selectedScoreId = 0;
-
 // Initialize view
 fullResetView();

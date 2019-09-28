@@ -4,19 +4,19 @@
  * Modals
  */
 
-$('#loginModal').modal({
+$('.loginModal').modal({
     backdrop: "static",
     keyboard: false,
     show: true,
     focus: true
 })
 
-$('#workoutModal').modal({
+$('.workoutModal').modal({
     show: false,
     focus: true
 })
 
-$('#workoutScoreModal').modal({
+$('.workoutScoreModal').modal({
     show: false,
     focus: true
 })
@@ -44,7 +44,6 @@ $("#btn-login-user" ).click(function() {
 
 $("#nav-dashboard-view" ).click(function() {
     console.log("click() :: #nav-dashboard-view :: INFO: Switch to dashboard view");
-    selectedWorkoutId = 0;
 
     fullResetView();
     $("#nav-workout-view").children().removeClass("active");
@@ -60,7 +59,6 @@ $("#nav-dashboard-view" ).click(function() {
 
 $("#nav-workout-view" ).click(function() {
     console.log("click() :: #nav-workout-view :: INFO: Switch to workout view");
-    selectedWorkoutId = 0;
 
     fullResetView();
     $("#nav-dashboard-view").children().removeClass("active");
@@ -78,7 +76,6 @@ $("#nav-workout-view" ).click(function() {
 
 $("#nav-movement-view" ).click(function() {
     console.log("click() :: #nav-movement-view :: INFO: Switch to movement view");
-    selectedWorkoutId = 0;
 
     fullResetView();
     $("#nav-dashboard-view").children().removeClass("active");
@@ -96,7 +93,6 @@ $("#nav-movement-view" ).click(function() {
 
 $("#nav-equipment-view" ).click(function() {
     console.log("click() :: #nav-equipment-view :: INFO: Switch to equipment view");
-    selectedWorkoutId = 0;
 
     fullResetView();
     $("#nav-dashboard-view").children().removeClass("active");
@@ -119,18 +115,18 @@ $("#nav-equipment-view" ).click(function() {
 $("#btn-new-workout").click(function() {
     console.log("click() :: #btn-new-workout :: INFO: Activate card 'new workout'");
 
-    selectedWorkoutId = 0;
-    resetView();
+    fullResetView();
     $("#add-workout-name").val("");
     $("#add-workout-description").val("");
-    $("#workoutModal").find(".modal-title").text("New workout");
-    $("#workoutModal").modal('show');
+    $(".workoutModal").find(".modal-title").text("New workout");
+    $(".workoutModal").modal('show');
 });
 
 $("#btn-save-workout").click(function() {
     console.log("click() :: #btn-save-workout :: INFO: Saving workout...");
 
     let workout;
+    let workoutId = getWorkoutIdFromDOM();
     let workoutName = $("#add-workout-name").val();
     let workoutDescription = $("#add-workout-description").val();
 
@@ -154,14 +150,12 @@ $("#btn-save-workout").click(function() {
         console.log("click() :: #btn-save-workout :: ERROR: workoutName or workoutDescription aren't defined");
     }
 
-    console.log("click() :: #btn-save-workout :: DEBUG: selectedWorkoutId is " + selectedWorkoutId);
-
     /**
      * UPDATE
      */
-    if(selectedWorkoutId > 0) {
+    if(workoutId > 0) {
         console.log("click() :: #btn-save-workout :: INFO: Updating workout");
-        workout = new Workout(selectedWorkoutId, getTimestamp(), workoutName, workoutDescription);
+        workout = new Workout(workoutId, getTimestamp(), workoutName, workoutDescription);
         restUpdateWorkout(workout);
     /**
      * NEW
@@ -180,7 +174,9 @@ $("#btn-save-workout").click(function() {
 $("#btn-save-workout-score").click(function() {
     console.log("click() :: .btn-save-workout-score :: INFO: Saving workout score");
 
+    let workoutId = getWorkoutIdFromDOM();
     let score;
+    let scoreId = getWorkoutScoreIdFromDOM(this);
     let scoreValue = stripString($("#add-score-value").val());
     console.log("click() :: #btn-save-workout-score :: DEBUG: scoreValue is " + scoreValue);
     if(numRegex(scoreValue) || timestampRegex(scoreValue)) {
@@ -212,16 +208,16 @@ $("#btn-save-workout-score").click(function() {
     /**
      * UPDATE
      */
-    if(selectedScoreId > 0) {
+    if(scoreId > 0) {
         console.log("click() :: #btn-save-workout-score :: DEBUG: Updating workout score");
-        score = new Score(selectedScoreId, selectedWorkoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id != -1 (update score)
+        score = new Score(scoreId, workoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id != -1 (update score)
         restUpdateWorkoutScore(score);
     /**
      * NEW
      */
     } else {
         console.log("click() :: #btn-save-workout-score :: DEBUG: Creating workout score");
-        score = new Score(-1, selectedWorkoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id = -1 (new score)
+        score = new Score(-1, workoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id = -1 (new score)
         restAddWorkoutScore(score);
     }
 

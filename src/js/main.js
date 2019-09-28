@@ -1,7 +1,7 @@
 'use strict';
 
 // CONSTANTS
-const REST_SERVER = "http://localhost"
+const REST_SERVER = "https://localhost"
 const REST_PORT = "3000"
 
 // other stuff

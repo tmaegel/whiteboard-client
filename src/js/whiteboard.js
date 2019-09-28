@@ -163,7 +163,7 @@ function addWorkoutToView(workout) {
 
         if (workoutId > 0) {
             $("#add-score-value").val("");
-            $("#add-score-datetime").val(getIETFTimestamp());
+            $("#add-score-datetime").val(getShortFormatTimestamp());
             $("#add-score-note").val("");
             $(".workoutScoreModal").find(".modal-title").text("Add workout score");
             $(".workoutScoreModal").modal('show');
@@ -227,7 +227,7 @@ function addWorkoutScoresToView(workoutId) {
             $(showScoreTemplateTmp).addClass("score");
             $(showScoreTemplateTmp).attr("id", "score-id-" + scoreId);
             $(showScoreTemplateTmp).find(".score-value").text(scoreValue);
-            $(showScoreTemplateTmp).find(".score-datetime").text(getIETFTimestamp(scoreTimestamp));
+            $(showScoreTemplateTmp).find(".score-datetime").text(getShortFormatTimestamp(scoreTimestamp));
             $(showScoreTemplateTmp).find(".score-note").text(scoreNote);
 
             /**
@@ -238,7 +238,7 @@ function addWorkoutScoresToView(workoutId) {
                 let scoreId = getWorkoutScoreIdFromDOM(this);
 
                 $("#add-score-value").val(scoreValue);
-                $("#add-score-datetime").val(getIETFTimestamp(scoreTimestamp));
+                $("#add-score-datetime").val(getShortFormatTimestamp(scoreTimestamp));
                 $("#add-score-note").val(scoreNote);
                 $(".workoutScoreModal").find(".modal-title").text("Add workout score");
                 $(".workoutScoreModal").modal('show');

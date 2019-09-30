@@ -123,20 +123,20 @@ function empty(value) {
 
 /**
  * Simple regex check
- * [a-zA-Z_0-9 .,:-()/]
+ * [a-zA-Z_0-9 .,:&'-()/]
  */
 function simpleRegex(value) {
-    let regExp = /^[\w .,:\-\(\)\/]*$/gm;
+    let regExp = /^[\w .,:&'\-\(\)\/]*$/gm;
 
     return regExp.test(value)
 }
 
 /**
  * Extended regex check
- * [a-zA-Z_0-9 .,:;!?"'&@_-()'"%/]
+ * [a-zA-Z_0-9 .,:;"#!?&@_-()%/*+]
  */
 function extendedRegex(value) {
-    let regExp = /^[\w\s.,:;"'!?&@\_\-\(\)\%\/]*$/g;
+    let regExp = /^[\w\s.,:;"'!?&@\_\-\(\)\%\/\*+]*$/g;
 
     return regExp.test(value);
 }

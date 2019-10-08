@@ -16,6 +16,17 @@ function getTimestamp(timestamp) {
         now = new Date();
     } else {
         now = new Date(Date.parse(timestamp));
+        if(isNaN(now)) {
+            console.log("getTimestamp() :: WARN: Couldn't parse timestamp to UNIX timestamp. Try it in a different way.");
+            var tmp = timestamp.split(" ");
+            var date = tmp[0].split(".");
+            var time = tmp[1].split(":");
+            now = new Date(date[2], date[1]-1, date[0], time[0], time[1], 0); // year, month, day, hours, minutes, seconds
+        }
+    }
+
+    if(isNaN(now)) {
+        console.log("getTimestamp()() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
     }
 
     var datetime = Math.round(now.getTime()/1000);

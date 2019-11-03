@@ -34,6 +34,8 @@ function resetView() {
  */
 function fullResetView() {
     resetView();
+    // Remove chart element
+    $('#chart').removeAttr("id");
     // reset cards
     hideSelectedCards();
 }
@@ -117,6 +119,7 @@ function addWorkoutToView(workout) {
 
             $(this).parents(".list-group-item").addClass("padding-0");
             $(this).parents(".list-group-item").addClass("card-active");
+            $(this).parents(".list-group-item").find("canvas").attr("id", "chart"); // add chart id to identify the element
 
             $(".card").hide();
             $(".card-title").show();
@@ -253,6 +256,13 @@ function addWorkoutScoresToView(workoutId) {
         console.log("addWorkoutScoresToView() :: INFO: There are no scores available to display");
     }
 
+    // Drawing workout scores
+    // add canvas to display the chart
+    if(workouts[workoutId - 1].score.length > 0) {
+        workoutChart = new Chart(workouts[workoutId - 1].score);
+        workoutChart.init();
+        workoutChart.draw();
+    }
     $("#workout-id-"+workoutId).find(".score-template").hide();
 }
 
@@ -320,99 +330,4 @@ function addEquipmentToView(equipment) {
 
     $(templateTmp).show();
     $(templateTmp).appendTo("#equipment-view .list-group");
-}
-
-/**
- * OTHER
- */
-
-function chart() {
-    var x  = [];
-    for (var i in workouts[1].scores) {
-        x.push(parseInt(workouts[1].scores[i].score));
-    }
-    console.log(JSON.stringify(x));
-
-    var ctx = $("#2").find(".chart")[0].getContext('2d');
-    var chart = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'line',
-        // The data for our dataset
-        data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [{
-                // label: "label",
-                fill: false, // how to fill the area under the line
-                borderColor: 'rgb(255, 99, 132)',
-                borderWidth: 3, // the width of the line in pixels
-                data: x,
-            }]
-        },
-        // Configuration options go here
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 8,
-            title: { // title namespace
-                display: false, // is the title shown
-            },
-            legend: { // legend namespace
-                display: false, // is the title shown
-            },
-            layout: { // layout namespace
-                padding: {
-                    left: 5,
-                    right: 25,
-                    top: 25,
-                    bottom: 15
-                }
-            },
-            tooltips: { // tooltips namespace
-                enabled: true,
-                displayColors: false,
-                mode: 'point',
-                cornerRadius: 0,
-                xPadding: 10,
-                yPadding: 10
-            },
-            scales: {
-                xAxes: [{
-                    display: true, // if true, show tick marks
-                    scaleLabel: {
-                        display: false,
-                        labelString: 'Month'
-                    },
-                    gridLines: {
-                        display: false,
-                        drawBorder: true,
-                        drawTicks: true,
-                        tickMarkLength: 10
-                    },
-                    ticks: {
-                        display: true
-                    }
-                }],
-                yAxes: [{
-                    display: true, // if true, show tick marks
-                    scaleLabel: {
-                        display: false,
-                        labelString: 'Value'
-                    },
-                    gridLines: {
-                        display: false,
-                        drawBorder: true
-                    },
-                    ticks: {
-                        display: true,
-                        tickMarkLength: 1,
-                        //beginAtZero:true,
-                        //stepSize: 100,
-                        //min: 0,
-                        //max: 100,
-                        maxTicksLimit: 5
-                    }
-                }]
-            }
-        }
-    });
 }

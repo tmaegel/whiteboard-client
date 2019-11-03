@@ -3,6 +3,7 @@
 // CONSTANTS
 const REST_SERVER = "https://localhost"
 const REST_PORT = "3000"
+const CHART_ID = "chart"
 
 // other stuff
 console.clear();
@@ -26,6 +27,8 @@ let equipment = [];
 let movements = [];
 // create an array workouts
 let workouts = [];
+// workout chart object
+let workoutChart;
 
 // Initialize view
 fullResetView();

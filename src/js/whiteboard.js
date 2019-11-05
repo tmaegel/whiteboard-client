@@ -4,7 +4,8 @@
  * Handle login mechanism
  */
 function handleLogin() {
-    user = new User($("#input-username").val(), $("#input-password").val());
+    var hashedPassword = CryptoJS.SHA256($("#input-password").val()).toString();
+    user = new User($("#input-username").val(), hashedPassword);
     restUserLogin();    // login user
     restUserValidate(); // validate user
    

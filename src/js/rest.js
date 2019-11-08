@@ -30,7 +30,11 @@ function restUserLogin() {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -56,7 +60,11 @@ function restUserValidate() {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -93,7 +101,11 @@ function restGetEquipment() {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restGetEquipment() :: GET /equipment :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -129,7 +141,11 @@ function restGetMovements() {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restGetMovements() :: GET /movement :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -166,7 +182,11 @@ function restGetWorkouts() {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restGetWorkouts() :: GET /workout :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -197,7 +217,11 @@ function restGetWorkoutScores(id) {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -231,11 +255,15 @@ function restGetWorkoutById(id, type) {
         },
         error: function(data) {
             if(debug) {
-                console.log("restGetWorkoutById() :: GET /workout :: ERROR: Something went wrong.");
+                console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -270,7 +298,11 @@ function restAddWorkout(workout) {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restAddWorkout() :: POST /workout :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -289,7 +321,7 @@ function restUpdateWorkout(workout) {
         },
         success: function(data) {
             if(debug) {
-                console.log("restUpdateWorkout() :: POST /workout/id :: SUCCESS: Workout was updated.");
+                console.log("restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
                 console.log(JSON.stringify(data));
             }
             console.log("Success");
@@ -301,11 +333,15 @@ function restUpdateWorkout(workout) {
         },
         error: function(data) {
             if(debug) {
-                console.log("restUpdateWorkout() :: POST /workout/id :: ERROR: Something went wrong.");
+                console.log("restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -339,7 +375,11 @@ function restGetScores() {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restGetScores() :: GET /score :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -367,7 +407,11 @@ function restGetScoreById(id) {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restGetScoreById() :: GET /score/:scoreId :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -401,7 +445,11 @@ function restAddWorkoutScore(score) {
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restAddWorkoutScore() :: POST /score :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }
@@ -420,7 +468,7 @@ function restUpdateWorkoutScore(score) {
         },
         success: function(data) {
             if(debug) {
-                console.log("restUpdateWorkoutScore() :: POST /score/id :: SUCCESS: Workout score was updated.");
+                console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: SUCCESS: Workout score was updated.");
                 console.log(JSON.stringify(data));
             }
             console.log("Success");
@@ -432,11 +480,15 @@ function restUpdateWorkoutScore(score) {
         },
         error: function(data) {
             if(debug) {
-                console.log("restUpdateWorkoutScore() :: POST /score/id :: ERROR: Something went wrong.");
+                console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
 
-            addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Unknown error occurred.");
+            } else {
+                addAlert("error", data.responseJSON.type + ": " + data.responseJSON.message, true);
+            }
         }
     });
 }

@@ -1,49 +1,47 @@
 'use strict';
 
 /**
- * Modals
+ * Event functions
  */
-
-$('.loginModal').modal({
-    backdrop: "static",
-    keyboard: false,
-    show: true,
-    focus: true
-})
-
-$('.workoutModal').modal({
-    show: false,
-    focus: true
-})
-
-$('.workoutScoreModal').modal({
-    show: false,
-    focus: true
-})
 
 /**
  * Login
  */
 
-$(document).keypress(function(e) {
+// event function to handle the login mechanism
+function handleLogin() {
+    var hashedPassword = CryptoJS.SHA256($("#input-password").val()).toString();
+    user = new User($("#input-username").val(), hashedPassword);
+    restUserLogin();    // login user
+    restUserValidate(); // validate user
+   
+    if (user.token != undefined || user.token != null) {
+        console.log("handleLogin() :: INFO :: Login successful.");
+        console.log(user.token);
+        $('.loginModal').modal("hide");
+        $("#content").show();
+        $("#dashboard-view").show();
+        window.removeEventListener("keypress", handleLoginByKey); // Removing if successfully logged in
+    } else {
+        console.log("handleLogin() :: ERROR :: Login failed.");
+    }
+}
+
+// event function to handle the login mechanism by pressing the enter key
+function handleLoginByKey(e) {
     var keycode = (e.keyCode ? e.keyCode : e.which);
     if (keycode == '13') {
-        console.log("keypress() :: #btn-login-user :: INFO: Login user");
         handleLogin();
     }
-});
-
-$("#btn-login-user" ).click(function() {
-    console.log("click() :: #btn-login-user :: INFO: Login user");
-    handleLogin();
-});
+}
 
 /**
  * Nav
  */
 
-$("#nav-dashboard-view" ).click(function() {
-    console.log("click() :: #nav-dashboard-view :: INFO: Switch to dashboard view");
+// event function to switch to the dashboard view
+function switchToDashboardView() {
+    console.log("switchToDashboardView() :: INFO: Switching to dashboard view");
 
     fullResetView();
     $("#nav-workout-view").children().removeClass("active");
@@ -55,10 +53,11 @@ $("#nav-dashboard-view" ).click(function() {
     $('#movement-view').hide();
     $('#equipment-view').hide();
     $('#dashboard-view').show();
-});
+}
 
-$("#nav-workout-view" ).click(function() {
-    console.log("click() :: #nav-workout-view :: INFO: Switch to workout view");
+// event function to switch to the workout view
+function switchToWorkoutView() {
+    console.log("switchToWorkoutView() :: INFO: Switching to workout view");
 
     fullResetView();
     $("#nav-dashboard-view").children().removeClass("active");
@@ -72,10 +71,11 @@ $("#nav-workout-view" ).click(function() {
     $('#workout-view').show();
     
     restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
-});
+}
 
-$("#nav-movement-view" ).click(function() {
-    console.log("click() :: #nav-movement-view :: INFO: Switch to movement view");
+// event function to switch to the movement view
+function switchToMovementView() {
+    console.log("switchToMovementView() :: INFO: Switching to movement view");
 
     fullResetView();
     $("#nav-dashboard-view").children().removeClass("active");
@@ -89,10 +89,11 @@ $("#nav-movement-view" ).click(function() {
     $('#movement-view').show();
 
     restGetMovements(); // get all movements objects
-});
+}
 
-$("#nav-equipment-view" ).click(function() {
-    console.log("click() :: #nav-equipment-view :: INFO: Switch to equipment view");
+// event function to switch to the equipment view
+function switchToEquipmentView() {
+    console.log("switchToEquipmentView() :: INFO: Switching to equipment view");
 
     fullResetView();
     $("#nav-dashboard-view").children().removeClass("active");
@@ -106,24 +107,24 @@ $("#nav-equipment-view" ).click(function() {
     $('#equipment-view').show();
     
     restGetEquipment(); // get all equipment objects
-});
+}
 
 /**
- * Workout
+ * Workouts
  */
 
-$("#btn-new-workout").click(function() {
-    console.log("click() :: #btn-new-workout :: INFO: Activate card 'new workout'");
+function newWorkout() {
+    console.log("newWorkout() :: INFO: Activate card 'new workout'");
 
     fullResetView();
     $("#add-workout-name").val("");
     $("#add-workout-description").val("");
     $(".workoutModal").find(".modal-title").text("New workout");
     $(".workoutModal").modal('show');
-});
+}
 
-$("#btn-save-workout").click(function() {
-    console.log("click() :: #btn-save-workout :: INFO: Saving workout...");
+function saveWorkout() {
+    console.log("saveWorkout() :: INFO: Saving workout...");
 
     let workout;
     let workoutId = getWorkoutIdFromDOM();
@@ -132,7 +133,7 @@ $("#btn-save-workout").click(function() {
 
     if(workoutName != undefined && workoutDescription != undefined) {
         if(simpleRegex(workoutName) && !empty(workoutName)) {
-            console.log("click() :: #btn-save-workout :: DEBUG: simpleRegex() success");
+            console.log("saveWorkout() :: DEBUG: simpleRegex() success");
             workoutName = stripString(workoutName);
         } else {
             addAlert("error", "simpleRegex() :: ERROR: Found invalid characters.", true);
@@ -140,47 +141,47 @@ $("#btn-save-workout").click(function() {
         }
 
         if(extendedRegex(workoutDescription) && !empty(workoutDescription)) {
-            console.log("click() :: #btn-save-workout :: DEBUG: extendedRegex() success");
+            console.log("saveWorkout() :: DEBUG: extendedRegex() success");
             workoutDescription = stripString(workoutDescription);
         } else {
             addAlert("error", "extendedRegex() :: ERROR: Found invalid characters.", true);
             return;
         }
     } else {
-        console.log("click() :: #btn-save-workout :: ERROR: workoutName or workoutDescription aren't defined");
+        console.log("saveWorkout() :: ERROR: workoutName or workoutDescription aren't defined");
     }
 
     /**
      * UPDATE
      */
     if(workoutId > 0) {
-        console.log("click() :: #btn-save-workout :: INFO: Updating workout");
+        console.log("saveWorkout() :: INFO: Updating workout");
         workout = new Workout(workoutId, getTimestamp(), workoutName, workoutDescription);
         restUpdateWorkout(workout);
     /**
      * NEW
      */
     } else {
-        console.log("click() :: #btn-save-workout :: INFO: Creating new workout");
+        console.log("saveWorkout() :: INFO: Creating new workout");
         workouts.sort(compareById);
         workout = new Workout(workouts[workouts.length - 1].id + 1, getTimestamp(), workoutName, workoutDescription); // id = max workout id + 1
         restAddWorkout(workout);
     }
 
-    console.log("click() :: #btn-save-workout :: DEBUG: workout objext is " + JSON.stringify(workout));
+    console.log("saveWorkout() :: DEBUG: workout objext is " + JSON.stringify(workout));
     resetView();
-});
+}
 
-$("#btn-save-workout-score").click(function() {
-    console.log("click() :: .btn-save-workout-score :: INFO: Saving workout score");
+function saveWorkoutScore() {
+    console.log("saveWorkoutScore() :: INFO: Saving workout score");
 
     let workoutId = getWorkoutIdFromDOM();
     let score;
     let scoreId = getWorkoutScoreIdFromDOM(this);
     let scoreValue = stripString($("#add-score-value").val());
-    console.log("click() :: #btn-save-workout-score :: DEBUG: scoreValue is " + scoreValue);
+    console.log("saveWorkoutScore() ::  DEBUG: scoreValue is " + scoreValue);
     if(numRegex(scoreValue) || timestampRegex(scoreValue)) {
-        console.log("click() :: #btn-save-workout-score :: DEBUG: numRegex() success");
+        console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         addAlert("error", "numRegex() :: ERROR: Found invalid characters.", true);
         return;
@@ -188,18 +189,18 @@ $("#btn-save-workout-score").click(function() {
 
     let scoreDatetime = stripString($("#add-score-datetime").val());
     let scoreDateTimeUnix = getTimestamp(scoreDatetime);
-    console.log("click() :: #btn-save-workout-score :: DEBUG: scoreDatetime is " + scoreDatetime);
+    console.log("saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime);
     if(numRegex(scoreDateTimeUnix)) {
-        console.log("click() :: #btn-save-workout-score :: DEBUG: numRegex() success");
+        console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         addAlert("error", "datetimeRegex() :: ERROR: Found invalid characters.", true);
         return;
     }
 
     let scoreNote = stripString($("#add-score-note").val());
-    console.log("click() :: #btn-save-workout-score :: DEBUG: scoreNote is " + scoreNote);
+    console.log("saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
     if(simpleRegex(scoreDatetime)) {
-        console.log("click() :: #btn-save-workout-score :: DEBUG: simpleRegex() success");
+        console.log("saveWorkoutScore() :: DEBUG: simpleRegex() success");
     } else {
         addAlert("error", "simpleRegex() :: ERROR: Found invalid characters.", true);
         return;
@@ -209,18 +210,18 @@ $("#btn-save-workout-score").click(function() {
      * UPDATE
      */
     if(scoreId > 0) {
-        console.log("click() :: #btn-save-workout-score :: DEBUG: Updating workout score");
+        console.log("saveWorkoutScore() :: DEBUG: Updating workout score");
         score = new Score(scoreId, workoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id != -1 (update score)
         restUpdateWorkoutScore(score);
     /**
      * NEW
      */
     } else {
-        console.log("click() :: #btn-save-workout-score :: DEBUG: Creating workout score");
+        console.log("saveWorkoutScore() :: DEBUG: Creating workout score");
         score = new Score(-1, workoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id = -1 (new score)
         restAddWorkoutScore(score);
     }
 
-    console.log("click() :: #btn-save-workout-score :: DEBUG: score objext is " + JSON.stringify(score));
+    console.log("saveWorkoutScore() :: DEBUG: score objext is " + JSON.stringify(score));
     resetView();
-});
+}

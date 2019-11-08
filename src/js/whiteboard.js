@@ -1,26 +1,6 @@
 'use strict';
 
 /**
- * Handle login mechanism
- */
-function handleLogin() {
-    var hashedPassword = CryptoJS.SHA256($("#input-password").val()).toString();
-    user = new User($("#input-username").val(), hashedPassword);
-    restUserLogin();    // login user
-    restUserValidate(); // validate user
-   
-    if (user.token != undefined || user.token != null) {
-        console.log("handleLogin() :: INFO :: Login successful.");
-        console.log(user.token);
-        $('.loginModal').modal("hide");
-        $("#content").show();
-        $("#dashboard-view").show();
-    } else {
-        console.log("handleLogin() :: ERROR :: Login failed.");
-    }
-}
-
-/**
  * Reset the view
  */
 function resetView() {

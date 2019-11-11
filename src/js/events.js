@@ -48,7 +48,7 @@ function switchToDashboardView() {
     $("#nav-movement-view").children().removeClass("active");
     $("#nav-equipment-view").children().removeClass("active");
     $(this).children().addClass("active");
-    $('#btn-group-new-workout').hide();
+    $('#btn-group-ctl-workout').hide();
     $('#workout-view').hide();
     $('#movement-view').hide();
     $('#equipment-view').hide();
@@ -64,7 +64,7 @@ function switchToWorkoutView() {
     $("#nav-movement-view").children().removeClass("active");
     $("#nav-equipment-view").children().removeClass("active");
     $(this).children().addClass("active");
-    $('#btn-group-new-workout').show();
+    $('#btn-group-ctl-workout').show();
     $('#dashboard-view').hide();
     $('#movement-view').hide();
     $('#equipment-view').hide();
@@ -82,7 +82,7 @@ function switchToMovementView() {
     $("#nav-workout-view").children().removeClass("active");
     $("#nav-equipment-view").children().removeClass("active");
     $(this).children().addClass("active");
-    $('#btn-group-new-workout').hide();
+    $('#btn-group-ctl-workout').hide();
     $('#dashboard-view').hide();
     $('#workout-view').hide();
     $('#equipment-view').hide();
@@ -100,7 +100,7 @@ function switchToEquipmentView() {
     $("#nav-workout-view").children().removeClass("active");
     $("#nav-movement-view").children().removeClass("active");
     $(this).children().addClass("active");
-    $('#btn-group-new-workout').hide();
+    $('#btn-group-ctl-workout').hide();
     $('#dashboard-view').hide();
     $('#workout-view').hide();
     $('#movement-view').hide();
@@ -112,16 +112,6 @@ function switchToEquipmentView() {
 /**
  * Workouts
  */
-
-function newWorkout() {
-    console.log("newWorkout() :: INFO: Activate card 'new workout'");
-
-    fullResetView();
-    $("#add-workout-name").val("");
-    $("#add-workout-description").val("");
-    $(".workoutModal").find(".modal-title").text("New workout");
-    $(".workoutModal").modal('show');
-}
 
 function saveWorkout() {
     console.log("saveWorkout() :: INFO: Saving workout...");

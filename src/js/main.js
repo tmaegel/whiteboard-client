@@ -31,7 +31,7 @@ function init() {
     $("#workout-view").hide();
     $("#movement-view").hide();
     $("#equipment-view").hide();
-    $('#btn-group-new-workout').hide();
+    $('#btn-group-ctl-workout').hide();
     // Initialize view
     fullResetView();
 
@@ -43,17 +43,22 @@ function init() {
         keyboard: false,
         show: true,
         focus: true
-    })
+    });
+
+    $('.workoutFilterModal').modal({
+        show: false,
+        focus: true
+    });
 
     $('.workoutModal').modal({
         show: false,
         focus: true
-    })
+    });
 
     $('.workoutScoreModal').modal({
         show: false,
         focus: true
-    })
+    });
 
     /**
      * Login
@@ -78,11 +83,24 @@ function init() {
      * Workout
      */
     let btnNewWorkout = document.getElementById("btn-new-workout");
-    btnNewWorkout.addEventListener("click", newWorkout);
+    btnNewWorkout.addEventListener("click", function() {
+        console.log("click() :: #btn-new-workout :: INFO: Activate card 'new workout'");
+        fullResetView();
+        $("#add-workout-name").val("");
+        $("#add-workout-description").val("");
+        $(".workoutModal").find(".modal-title").text("New workout");
+        $(".workoutModal").modal('show');
+    });
     let btnSaveWorkout = document.getElementById("btn-save-workout");
     btnSaveWorkout.addEventListener("click", saveWorkout);
     let btnSaveWorkoutScore = document.getElementById("btn-save-workout-score");
     btnSaveWorkoutScore.addEventListener("click", saveWorkoutScore);
+    let btnFilterWorkout = document.getElementById("btn-filter-workout");
+    btnFilterWorkout.addEventListener("click", function() {
+        console.log("click() :: #btn-filter-workout :: INFO: Show filter workout modal");
+        fullResetView();
+        $(".workoutFilterModal").modal('show');
+    });
 
     // Listener to refresh the graph
 	window.addEventListener("resize", function() {

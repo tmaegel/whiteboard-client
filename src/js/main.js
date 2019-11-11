@@ -83,4 +83,12 @@ function init() {
     btnSaveWorkout.addEventListener("click", saveWorkout);
     let btnSaveWorkoutScore = document.getElementById("btn-save-workout-score");
     btnSaveWorkoutScore.addEventListener("click", saveWorkoutScore);
+
+    // Listener to refresh the graph
+	window.addEventListener("resize", function() {
+        if(workoutChart != null || workoutChart != undefined) {
+            workoutChart.update();
+            workoutChart.draw();
+        }
+	});
 }

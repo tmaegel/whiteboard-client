@@ -21,14 +21,8 @@ class Chart {
 
     init() {
         console.log("Chart.init() :: INFO :: Initializing...");
-        
-        // initialize canvas
-		this.c.clearRect(0, 0, $(this.canvas).attr("width"), $(this.canvas).attr("height"));
 
-		$(this.canvas).attr("width", $(this.canvas).parent().width());
-
-		this.width = this.canvas.width;
-		this.height = this.canvas.height;
+        this.update();
 
         if(this.data == null || this.data.length < 1) {
             console.log("Chart.init() :: WARN :: There are no datapoints available.");
@@ -52,6 +46,17 @@ class Chart {
             }
             this.yAxisLimit = this.yAxisLimit;
         }
+    }
+
+    update() {
+        console.log("Chart.update() :: INFO :: Updateing...");
+        // initialize canvas
+		this.c.clearRect(0, 0, $(this.canvas).attr("width"), $(this.canvas).attr("height"));
+
+		$(this.canvas).attr("width", $(this.canvas).parent().width());
+
+		this.width = this.canvas.width;
+		this.height = this.canvas.height;
     }
 
     draw() {

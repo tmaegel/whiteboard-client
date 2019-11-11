@@ -117,26 +117,32 @@ function addWorkoutToView(workout) {
 
     /**
      * Set 'edit workout' button
+     * Allow editing only if user_id> 1
      */
-    $(templateTmp).find(".btn-edit-workout").click(function() {
-        console.log("click() :: .btn-edit-workout :: INFO: Activate card 'edit workout'");
+    if(workout.user_id > 1) {
+        $(templateTmp).find(".btn-edit-workout").click(function() {
+            console.log("click() :: .btn-edit-workout :: INFO: Activate card 'edit workout'");
 
-        let workout;
-        let workoutId = getWorkoutIdFromDOM();
-        if (workoutId > 0) {
-            workout = getArrayObject("workout", workoutId);
-        }
+            let workout;
+            let workoutId = getWorkoutIdFromDOM();
+            if (workoutId > 0) {
+                workout = getArrayObject("workout", workoutId);
+            }
 
-        if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
-            console.log("click() :: .btn-edit-workout :: ERROR: No workout in array found");
-        } else {
-            $("#add-workout-name").val(workout.name);
-            $("#add-workout-description").val(workout.description);
-        }
+            if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
+                console.log("click() :: .btn-edit-workout :: ERROR: No workout in array found");
+            } else {
+                $("#add-workout-name").val(workout.name);
+                $("#add-workout-description").val(workout.description);
+            }
 
-        $(".workoutModal").find(".modal-title").text("Edit workout");
-        $(".workoutModal").modal('show');
-    });
+            $(".workoutModal").find(".modal-title").text("Edit workout");
+            $(".workoutModal").modal('show');
+        });
+    } else {
+        // @todo: If you are the admin, you can edit the data
+        $(templateTmp).find(".btn-edit-workout").remove();
+    }
 
     /**
      * Set 'add workout score' button

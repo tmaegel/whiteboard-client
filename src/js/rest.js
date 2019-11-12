@@ -169,11 +169,11 @@ function restGetWorkouts() {
             workouts = JSON.parse(data);
             workouts.sort(compareByString);
 
-            if(debug) {
+            /*if(debug) {
                 console.log(JSON.stringify(workouts));
-            }
+            }*/
 
-            initializeWorkouts();
+            updateWorkouts();
             resetAllAlerts();
         },
         error: function(data) {
@@ -229,7 +229,7 @@ function restGetWorkoutScores(id) {
 /**
  * Ajax GET request /workout/:workoutId
  */
-function restGetWorkoutById(id, type) {
+function restGetWorkoutById(id) {
     $.ajax({
         type: "GET",
         url: REST_SERVER + ":" + REST_PORT + "/workout/" + id,
@@ -244,14 +244,7 @@ function restGetWorkoutById(id, type) {
 
             refreshArrayObject("workout", workout);
             workouts.sort(compareByString);
-
-            if(type == "add") {
-                // Refreshing, Adding workout to View
-                initializeWorkouts();
-            } else if(type == "update") {
-                // Refreshing, Updating workout on view
-                initializeWorkouts();
-            }
+            updateWorkouts();
         },
         error: function(data) {
             if(debug) {
@@ -288,7 +281,7 @@ function restAddWorkout(workout) {
             }
 
             // Getting fresh state of workout and update the view
-            restGetWorkoutById(workout.id, "add");
+            restGetWorkoutById(workout.id);
 
             addAlert("success", "Success: Workout was created.", true);
         },
@@ -327,7 +320,7 @@ function restUpdateWorkout(workout) {
             console.log("Success");
 
             // Getting fresh state of workout and update the view
-            restGetWorkoutById(workout.id, "update");
+            restGetWorkoutById(workout.id);
 
             addAlert("success", "Success: Workout was updated.", true);
         },

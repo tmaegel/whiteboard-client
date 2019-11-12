@@ -154,7 +154,13 @@ function saveWorkout() {
     } else {
         console.log("saveWorkout() :: INFO: Creating new workout");
         workouts.sort(compareById);
-        workout = new Workout(workouts[workouts.length - 1].id + 1, getTimestamp(), workoutName, workoutDescription); // id = max workout id + 1
+        var id; // new workout id
+        if(workouts.length > 0) {
+            id = workouts[workouts.length - 1].id + 1;
+        } else {
+            id = 1;
+        }
+        workout = new Workout(id, getTimestamp(), workoutName, workoutDescription); // id = max workout id + 1
         restAddWorkout(workout);
     }
 

@@ -56,119 +56,122 @@ function getWorkoutIdFromDOM() {
 }
 
 /**
- * Initialize workouts (add all workouts to the view)
+ * Initialize and update workouts (add all workouts or single workouts to the view)
  */
-function initializeWorkouts() {
-    var workoutTemplate = $(".workout-template").clone();
+function updateWorkouts() {
     $(".workout-template").hide();
-
-    // Removing all workouts (refresh)
-    $('#workout-view').find("[id^=workout-id]").remove();
-    for (var i in workouts) {
-        addWorkoutToView(workouts[i]);
-    }
-}
-
-function addWorkoutToView(workout) {
     var workoutTemplate = $(".workout-template").clone();
+    $(workoutTemplate).removeClass("workout-template");
+    $(workoutTemplate).addClass("workout");
 
-    var templateTmp = $(workoutTemplate).clone().first();
-    $(templateTmp).removeClass("workout-template");
-    $(templateTmp).addClass("workout");
-    $(templateTmp).attr("id", "workout-id-"+workout.id);
-    $(templateTmp).find(".workout-name").text(workout.name);
-    $(templateTmp).find(".workout-description").html(workout.description.replace(new RegExp('\r?\n','g'), "<br />"));
-    $(templateTmp).find(".workout-datetime").text("Last updated at " + getFormatTimestamp(workout.datetime));
+    // Refresh workouts, add new workouts
+    for (var i in workouts) {
+        var workoutElement = document.getElementById("workout-id-" + workouts[i].id);
+        // If not exists then add it to the view (sorted alphabetically)
+        if(!workoutElement) {
+            var templateTmp = $(workoutTemplate).clone().first();
+            $(templateTmp).attr("id", "workout-id-"+workouts[i].id);
+            $(templateTmp).find(".workout-name").text(workouts[i].name);
+            $(templateTmp).find(".workout-description").html(workouts[i].description.replace(new RegExp('\r?\n','g'), "<br />"));
+            $(templateTmp).find(".workout-datetime").text("Last updated at " + getFormatTimestamp(workouts[i].datetime));
 
-    /**
-     * Setting up 'card hide and show mechanism'
-     */
-    $(templateTmp).find(".card-clickable").click(function() {
-        if($(this).parents(".list-group-item").hasClass("card-active") == true) {
-            console.log("click() :: .card-clickable :: INFO: Deactivate current card");
+            /**
+             * Setting up 'card hide and show mechanism'
+             */
+            $(templateTmp).find(".card-clickable").click(function() {
+                if($(this).parents(".list-group-item").hasClass("card-active") == true) {
+                    console.log("click() :: .card-clickable :: INFO: Deactivate current card");
 
-            // Reset
-            fullResetView();
+                    // Reset
+                    fullResetView();
+                } else {
+                    console.log("addWorkoutToView() :: INFO: Activate new card");
 
-            $(".card").hide();
-            $(".card-title").show();
-        } else {
-            console.log("addWorkoutToView() :: INFO: Activate new card");
+                    // Reset
+                    fullResetView();
 
-            // Reset
-            fullResetView();
+                    $(this).parents(".list-group-item").addClass("padding-0");
+                    $(this).parents(".list-group-item").addClass("card-active");
+                    $(this).parents(".list-group-item").find("canvas").attr("id", "chart"); // add chart id to identify the element
 
-            $(this).parents(".list-group-item").addClass("padding-0");
-            $(this).parents(".list-group-item").addClass("card-active");
-            $(this).parents(".list-group-item").find("canvas").attr("id", "chart"); // add chart id to identify the element
+                    $(".card").hide();
+                    $(".card-title").show();
 
-            $(".card").hide();
-            $(".card-title").show();
+                    $(this).next(".card").show();
+                    $(this).children(".card-title").hide();
 
-            $(this).next(".card").show();
-            $(this).children(".card-title").hide();
+                    let workoutId = getWorkoutIdFromDOM();
+                    if (workoutId > 0) {
+                        restGetWorkoutScores(workoutId);
+                    }
+                }
+            });
 
-            let workoutId = getWorkoutIdFromDOM();
-            if (workoutId > 0) {
-                restGetWorkoutScores(workoutId);
-            }
-        }
-    });
+            /**
+             * Set 'edit workout' button
+             * Allow editing only if user_id> 1
+             */
+            if(workouts[i].user_id > 1) {
+                $(templateTmp).find(".btn-edit-workout").click(function() {
+                    console.log("click() :: .btn-edit-workout :: INFO: Activate card 'edit workout'");
 
-    /**
-     * Set 'edit workout' button
-     * Allow editing only if user_id> 1
-     */
-    if(workout.user_id > 1) {
-        $(templateTmp).find(".btn-edit-workout").click(function() {
-            console.log("click() :: .btn-edit-workout :: INFO: Activate card 'edit workout'");
+                    let workout;
+                    let workoutId = getWorkoutIdFromDOM();
+                    if (workoutId > 0) {
+                        workout = getArrayObject("workout", workoutId);
+                    }
 
-            let workout;
-            let workoutId = getWorkoutIdFromDOM();
-            if (workoutId > 0) {
-                workout = getArrayObject("workout", workoutId);
-            }
+                    if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
+                        console.log("click() :: .btn-edit-workout :: ERROR: No workout in array found");
+                    } else {
+                        $("#add-workout-name").val(workout.name);
+                        $("#add-workout-description").val(workout.description);
+                    }
 
-            if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
-                console.log("click() :: .btn-edit-workout :: ERROR: No workout in array found");
+                    $(".workoutModal").find(".modal-title").text("Edit workout");
+                    $(".workoutModal").modal('show');
+                });
             } else {
-                $("#add-workout-name").val(workout.name);
-                $("#add-workout-description").val(workout.description);
+                // @todo: If you are the admin, you can edit the data
+                $(templateTmp).find(".btn-edit-workout").remove();
             }
 
-            $(".workoutModal").find(".modal-title").text("Edit workout");
-            $(".workoutModal").modal('show');
-        });
-    } else {
-        // @todo: If you are the admin, you can edit the data
-        $(templateTmp).find(".btn-edit-workout").remove();
-    }
+            /**
+             * Set 'add workout score' button
+             */
+            $(templateTmp).find(".btn-add-workout-score").click(function() {
+                console.log("click() :: .btn-add-workout-score :: INFO: Activate card 'add workout score'");
+                let workoutId = getWorkoutIdFromDOM();
 
-    /**
-     * Set 'add workout score' button
-     */
-    $(templateTmp).find(".btn-add-workout-score").click(function() {
-        console.log("click() :: .btn-add-workout-score :: INFO: Activate card 'add workout score'");
-        let workoutId = getWorkoutIdFromDOM();
+                if (workoutId > 0) {
+                    $("#add-score-value").val("");
+                    $("#add-score-datetime").val(getShortFormatTimestamp());
+                    $("#add-score-note").val("");
+                    $(".workoutScoreModal").find(".modal-title").text("Add workout score");
+                    $(".workoutScoreModal").modal('show');
+                    $(".workoutScoreModal").attr("id", "0"); // added id 0 to identify its a new score
+                }
+            });
 
-        if (workoutId > 0) {
-            $("#add-score-value").val("");
-            $("#add-score-datetime").val(getShortFormatTimestamp());
-            $("#add-score-note").val("");
-            $(".workoutScoreModal").find(".modal-title").text("Add workout score");
-            $(".workoutScoreModal").modal('show');
-            $(".workoutScoreModal").attr("id", "0"); // added id 0 to identify its a new score
+            // If there is a next element then add the current element before it
+            if(i < workouts.length - 1) {
+                var nextWorkoutElement = document.getElementById("workout-id-" + workouts[parseInt(i) + parseInt(1)].id);
+                if(!nextWorkoutElement) {
+                    $(".workout-template").before(templateTmp);
+                } else {
+                    $(nextWorkoutElement).before(templateTmp);
+                }
+            } else {
+                $(".workout-template").before(templateTmp);
+            }
+
+            $(templateTmp).show();
+        } else {
+            $(workoutElement).find(".workout-name").text(workouts[i].name);
+            $(workoutElement).find(".workout-description").html(workouts[i].description.replace(new RegExp('\r?\n','g'), "<br />"));
+            $(workoutElement).find(".workout-datetime").text("Last updated at " + getFormatTimestamp(workouts[i].datetime));
         }
-    });
-
-    $(templateTmp).appendTo("#workout-view .list-group");
-    $(templateTmp).show();
-}
-
-function updateWorkoutOnView(workout) {
-    $("#workout-id-"+workout.id).find(".workout-name").text(workout.name);
-    $("#workout-id-"+workout.id).find(".workout-description").html(workout.description.replace(new RegExp('\r?\n','g'), "<br />"));
-    $("#workout-id-"+workout.id).find(".workout-datetime").text("Last updated at " + getFormatTimestamp(workout.datetime));
+    }
 }
 
 /**

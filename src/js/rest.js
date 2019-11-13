@@ -93,7 +93,7 @@ function restGetEquipment() {
                 console.log(JSON.stringify(equipment));
             }
 
-            initializeEquipment();
+            initEquipmentOnView();
         },
         error: function(data) {
             if(debug) {
@@ -133,7 +133,7 @@ function restGetMovements() {
                 console.log(JSON.stringify(movements));
             }
 
-            initializeMovements();
+            initMovementsOnView();
         },
         error: function(data) {
             if(debug) {
@@ -169,11 +169,11 @@ function restGetWorkouts() {
             workouts = JSON.parse(data);
             workouts.sort(compareByString);
 
-            /*if(debug) {
+            if(debug) {
                 console.log(JSON.stringify(workouts));
-            }*/
+            }
 
-            updateWorkouts();
+            initWorkoutsOnView();
             resetAllAlerts();
         },
         error: function(data) {
@@ -242,9 +242,13 @@ function restGetWorkoutById(id) {
                 console.log(JSON.stringify(workout));
             }
 
-            refreshArrayObject("workout", workout);
+            var ret = refreshArrayObject("workout", workout);
             workouts.sort(compareByString);
-            updateWorkouts();
+            if(ret == 0) { // workout was added
+                initWorkoutsOnView();
+            } else  { // workout was updated
+                updateWorkoutsOnView();
+            }
         },
         error: function(data) {
             if(debug) {

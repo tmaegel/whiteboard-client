@@ -110,8 +110,76 @@ function switchToEquipmentView() {
 }
 
 /**
+ * General
+ */
+
+// Event function to toggle (show/hide) the cards
+function toggleCard(element) {
+    var parentFirst = $(element).parent(".list-group-item :first");
+    if($(parentFirst).hasClass("card-active") == true) {
+        console.log("click() :: .card-clickable :: INFO: Deactivate current card");
+        // Reset
+        fullResetView();
+    } else {
+        console.log("addWorkoutToView() :: INFO: Activate new card");
+
+        // Reset
+        fullResetView();
+
+        $(element).parent(".list-group-item").addClass("padding-0");
+        $(element).parent(".list-group-item").addClass("card-active");
+        $(element).parent(".list-group-item").find("canvas").attr("id", "chart"); // add chart id to identify the element
+
+        $(".card").hide();
+        $(".card-title").show();
+
+        $(element).next(".card").show();
+        $(element).children(".card-title").hide();
+
+        let workoutId = getWorkoutIdFromDOM();
+        if (workoutId > 0) {
+            restGetWorkoutScores(workoutId);
+        }
+    }
+}
+
+/**
  * Workouts
  */
+
+function editWorkoutDialog() {
+    console.log("editWorkoutDialog() :: INFO: Activate card 'edit workout'");
+
+    let workout;
+    let workoutId = getWorkoutIdFromDOM();
+    if (workoutId > 0) {
+        workout = getArrayObject("workout", workoutId);
+    }
+
+    if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
+        console.log("editWorkoutDialog() :: ERROR: No workout in array found");
+    } else {
+        $("#add-workout-name").val(workout.name);
+        $("#add-workout-description").val(workout.description);
+    }
+
+    $(".workoutModal").find(".modal-title").text("Edit workout");
+    $(".workoutModal").modal('show');
+}
+
+function addWorkoutScoreDialog() {
+    console.log("addWorkoutScoreDialog() :: INFO: Activate card 'add workout score'");
+
+    let workoutId = getWorkoutIdFromDOM();
+    if (workoutId > 0) {
+        $("#add-score-value").val("");
+        $("#add-score-datetime").val(getShortFormatTimestamp());
+        $("#add-score-note").val("");
+        $(".workoutScoreModal").find(".modal-title").text("Add workout score");
+        $(".workoutScoreModal").modal('show');
+        $(".workoutScoreModal").attr("id", "0"); // added id 0 to identify its a new score
+    }
+}
 
 function saveWorkout() {
     console.log("saveWorkout() :: INFO: Saving workout...");

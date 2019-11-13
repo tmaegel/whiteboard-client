@@ -101,14 +101,18 @@ function initWorkoutsOnView() {
     /**
      * Setting up card hide and show mechanism
      */
-    let crdWorkoutElements = document.querySelectorAll(".card-clickable");
+    // let crdWorkoutElements = document.querySelectorAll(".card-clickable");
     // It’s important to note that document.querySelectorAll() does not return an array, but a NodeList object.
     // You can iterate it with forEach or for..of, or you can transform it to an array with Array.from() if you want.
-    for (var element of crdWorkoutElements) {
-        var handler = toggleCard.bind(null, element);
-        element.removeEventListener("click", handler); // Remove the old one
-        element.addEventListener("click", handler);
-    }
+    // for (var element of crdWorkoutElements) {
+        // let handler = toggleCard.bind(null, element);
+        // element.removeEventListener("click", handler); // Remove the old one
+        // element.addEventListener("click", handler);
+    //}
+    $(".card-clickable").off("click");
+    $(".card-clickable").on("click", function() {
+        toggleCard(this);
+    });
 
     /**
      * Set 'edit workout' button

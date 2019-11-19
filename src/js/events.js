@@ -48,6 +48,9 @@ function switchToDashboardView() {
     $("#nav-movement-view").children().removeClass("active");
     $("#nav-equipment-view").children().removeClass("active");
     $(this).children().addClass("active");
+    $('#inp-search-workout').val("");
+    $('#inp-search-workout').hide();
+    $('#btn-group-filter-workout').hide();
     $('#btn-group-ctl-workout').hide();
     $('#workout-view').hide();
     $('#movement-view').hide();
@@ -64,6 +67,9 @@ function switchToWorkoutView() {
     $("#nav-movement-view").children().removeClass("active");
     $("#nav-equipment-view").children().removeClass("active");
     $(this).children().addClass("active");
+    $('#inp-search-workout').val("");
+    $('#inp-search-workout').show();
+    $('#btn-group-filter-workout').show();
     $('#btn-group-ctl-workout').show();
     $('#dashboard-view').hide();
     $('#movement-view').hide();
@@ -71,6 +77,12 @@ function switchToWorkoutView() {
     $('#workout-view').show();
     
     restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
+
+    // Show all workouts
+    let workoutElements = document.querySelectorAll(".workout");
+    workoutElements.forEach((element, index, workoutElements) => {
+        element.style.display = "";
+    });
 }
 
 // event function to switch to the movement view
@@ -82,6 +94,9 @@ function switchToMovementView() {
     $("#nav-workout-view").children().removeClass("active");
     $("#nav-equipment-view").children().removeClass("active");
     $(this).children().addClass("active");
+    $('#inp-search-workout').val("");
+    $('#inp-search-workout').hide();
+    $('#btn-group-filter-workout').hide();
     $('#btn-group-ctl-workout').hide();
     $('#dashboard-view').hide();
     $('#workout-view').hide();
@@ -100,6 +115,9 @@ function switchToEquipmentView() {
     $("#nav-workout-view").children().removeClass("active");
     $("#nav-movement-view").children().removeClass("active");
     $(this).children().addClass("active");
+    $('#inp-search-workout').val("");
+    $('#inp-search-workout').hide();
+    $('#btn-group-filter-workout').hide();
     $('#btn-group-ctl-workout').hide();
     $('#dashboard-view').hide();
     $('#workout-view').hide();
@@ -179,6 +197,23 @@ function addWorkoutScoreDialog() {
         $(".workoutScoreModal").modal('show');
         $(".workoutScoreModal").attr("id", "0"); // added id 0 to identify its a new score
     }
+}
+
+function searchWorkout() {
+    console.log("searchWorkout() :: INFO: Searching workout");
+
+    let search = document.getElementById("inp-search-workout").value;
+
+    let workoutElements = document.querySelectorAll(".workout");
+    workoutElements.forEach((element, index, workoutElements) => {
+        element.style.display = "none";
+    });
+
+    let elements = getArrayObjectsByName(workouts, search);
+    elements.forEach((element, index, elements) => {
+        let workoutElement = document.getElementById("workout-id-" + element.id);
+        workoutElement.style.display = "";
+    });
 }
 
 function saveWorkout() {

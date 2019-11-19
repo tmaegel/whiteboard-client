@@ -22,10 +22,6 @@
     border-top: 1px solid gray;
 }*/
 
-.form-group {
-    margin:-0;
-}
-
 /**
  * Table
  */
@@ -88,6 +84,7 @@
  */
 
 .form-group {
+    width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
 }

@@ -36,31 +36,6 @@
         </div>
     </div>
 
-    <!-- filter workout modal -->
-    <div class="workoutFilterModal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Filter</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group form-check">
-                        <input id="chbx-custom-workouts" type="checkbox" class="form-check-input">
-                        <label class="form-check-label" for="chbx-custom-workouts">Show custom workouts only</label>
-                    <div class="form-group form-check">
-                    </div>
-                        <input id="chbx-compled-workouts" type="checkbox" class="form-check-input">
-                        <label class="form-check-label" for="chbx-compled-workouts">Show completed workouts only</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="btn-apply-filter-workout" type="button" class="btn btn-primary">Apply</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <!-- new/edit workout modal -->
     <div class="workoutModal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -137,15 +112,28 @@
                         <a class="nav-link" href="#">Equipment</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
+                <form class="form-inline">
                     <div id="btn-group-ctl-workout" class="btn-group">
-                        <button id="btn-filter-workout" type="button" class="btn btn-primary btn-sm">Filter</button>
                         <button id="btn-new-workout" type="button" class="btn btn-primary btn-sm">New</button>
                     </div>
                 </form>
             </div>
         </nav>
         <!-- end of nav -->
+
+        <nav class="navbar navbar-expand-md navbar-expand-lg navbar-light bg-light">
+            <form class="form-group">
+                <input id="inp-search-workout" class="form-control" type="search" placeholder="Search" aria-label="Search">
+                <!--<div id="btn-group-filter-workout" class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                        <input id="chbx-custom-workouts" type="checkbox" name="options" autocomplete="off" checked> Custom
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input id="chbx-completed-workouts" type="checkbox" name="options" autocomplete="off" checked> Completed
+                    </label>
+                </div>-->
+            </form>
+        </nav>
 
         <!-- alert area -->
 

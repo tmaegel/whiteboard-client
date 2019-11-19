@@ -51,11 +51,13 @@ function init() {
         show: false,
         focus: true
     });
+    $(".workoutModal").hide();
 
     $('.workoutScoreModal').modal({
         show: false,
         focus: true
     });
+    $(".workoutScoreModal").hide();
 
     /**
      * Login

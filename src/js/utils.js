@@ -18,6 +18,7 @@ function getTimestamp(timestamp) {
         now = new Date(Date.parse(timestamp));
         if(isNaN(now)) {
             console.log("getTimestamp() :: WARN: Couldn't parse timestamp to UNIX timestamp. Try it in a different way.");
+            // @todo regex check before do this stuff
             var tmp = timestamp.split(" ");
             var date = tmp[0].split(".");
             var time = tmp[1].split(":");
@@ -314,4 +315,18 @@ function getArrayObject(type, id) {
     } else {
         return -1;
     }
+}
+
+/**
+ * Returns all objects that do contain the string
+ */
+function getArrayObjectsByName(array, search) {
+    let arr = [];
+    array.forEach((element, index, array) => {
+        if (element.name.toLowerCase().includes(search.toLowerCase())) { // case insensitive
+            arr.push(element);
+        }
+    });
+
+    return arr;
 }

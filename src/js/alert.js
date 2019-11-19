@@ -19,13 +19,13 @@ function addAlert(type, message, hideable) {
     }
 
     if(type == "success") {
-        $(".navbar").after('<div class="alert alert-success rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
+        $("#navbar-primary").after('<div class="alert alert-success rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
     } else if(type == "info") {
-        $(".navbar").after('<div class="alert alert-info rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
+        $("#navbar-primary").after('<div class="alert alert-info rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
     } else if (type == "warning") {
-        $(".navbar").after('<div class="alert alert-warning rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
+        $("#navbar-primary").after('<div class="alert alert-warning rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
     } else if (type == "error") {
-        $(".navbar").after('<div class="alert alert-danger rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
+        $("#navbar-primary").after('<div class="alert alert-danger rounded-0 border-0 margin-0" role="alert">' + message + '' + button + '</div>');
     } else {
         return 1;
     }

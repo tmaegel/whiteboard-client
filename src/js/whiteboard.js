@@ -187,6 +187,7 @@ function addWorkoutScoresToView(workoutId) {
 
             let scoreId = workouts[workoutId - 1].score[i].id;
             let scoreValue = workouts[workoutId - 1].score[i].score;
+            let scoreRx = workouts[workoutId - 1].score[i].rx;
             let scoreTimestamp = workouts[workoutId - 1].score[i].datetime;
             let scoreNote = workouts[workoutId - 1].score[i].note;
 
@@ -196,6 +197,11 @@ function addWorkoutScoresToView(workoutId) {
             $(showScoreTemplateTmp).addClass("score");
             $(showScoreTemplateTmp).attr("id", "score-id-" + scoreId);
             $(showScoreTemplateTmp).find(".score-value").text(scoreValue);
+            if(scoreRx == "true") {
+                $(showScoreTemplateTmp).find(".score-rx").text("Rx");
+            } else {
+                $(showScoreTemplateTmp).find(".score-rx").text("");
+            }
             $(showScoreTemplateTmp).find(".score-datetime").text(getShortFormatTimestamp(scoreTimestamp));
             $(showScoreTemplateTmp).find(".score-note").text(scoreNote);
 
@@ -207,6 +213,11 @@ function addWorkoutScoresToView(workoutId) {
                 let scoreId = getWorkoutScoreIdFromDOM(this);
 
                 $("#add-score-value").val(scoreValue);
+                if(scoreRx == "true") {
+                    $("#add-score-rx").prop("checked", true);
+                } else {
+                    $("#add-score-rx").prop("checked", false);
+                }
                 $("#add-score-datetime").val(getShortFormatTimestamp(scoreTimestamp));
                 $("#add-score-note").val(scoreNote);
                 $(".workoutScoreModal").find(".modal-title").text("Add workout score");

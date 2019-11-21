@@ -22,12 +22,12 @@
                     <h5 class="modal-title">Login</h5>
                 </div>
                 <div class="modal-body">
-                        <div class="form-group">
-                            <input id="input-username" type="username" class="form-control" placeholder="username">
-                        </div>
-                        <div class="form-group">
-                            <input id="input-password" type="password" class="form-control" placeholder="password">
-                        </div>
+                    <div class="form-group">
+                        <input id="input-username" type="username" class="form-control" placeholder="username">
+                    </div>
+                    <div class="form-group">
+                        <input id="input-password" type="password" class="form-control" placeholder="password">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="btn-login-user" type="button" class="btn btn-primary">Login</button>
@@ -47,12 +47,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                        <div class="form-group">
-                            <input id="add-workout-name" class="form-control" type="text" placeholder="Workout name">
-                        </div>
-                        <div class="form-group">
-                            <textarea id="add-workout-description" class="form-control" rows="5" placeholder="Workout description"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <input id="add-workout-name" class="form-control" type="text" placeholder="Workout name">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="add-workout-description" class="form-control" rows="5" placeholder="Workout description"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="btn-save-workout" type="button" class="btn btn-primary">Save</button>
@@ -72,15 +72,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                        <div class="form-group">
-                            <input id="add-score-value" class="form-control" type="text" placeholder="Score">
-                        </div>
-                        <div class="form-group">
-                            <input id="add-score-datetime" class="form-control" type="text" placeholder="dd.mm.YYYY HH:MM">
-                        </div>
-                        <div class="form-group">
-                            <textarea id="add-score-note" class="form-control" rows="3" placeholder="Note"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <input id="add-score-value" class="form-control" type="text" placeholder="Score">
+                    </div>
+                    <div class="form-group">
+                        <input id="add-score-datetime" class="form-control" type="text" placeholder="dd.mm.YYYY HH:MM">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="add-score-note" class="form-control" rows="3" placeholder="Note"></textarea>
+                    </div>
+                    <div class="form-check">
+                        <input id="add-score-rx" type="checkbox" class="form-check-input" checked="false">
+                        <label class="form-check-label" for="add-score-rx">Rx</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="btn-save-workout-score" type="button" class="btn btn-primary">Save</button>
@@ -189,6 +193,7 @@
                             <canvas width="600" height="200"></canvas>
                             <table class="table table-borderless scores">
                                <tr class="score-template">
+                                    <td class="score-rx align-middle">rx</td>
                                     <td class="score-value align-middle">score</td>
                                     <td class="score-datetime align-middle">date</td>
                                     <td class="score-note align-middle">note</td>

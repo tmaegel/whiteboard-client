@@ -187,6 +187,7 @@ function addWorkoutScoreDialog() {
         $("#add-score-value").val("");
         $("#add-score-datetime").val(getShortFormatTimestamp());
         $("#add-score-note").val("");
+        $("#add-score-rx").prop("checked", false);
         $(".workoutScoreModal").find(".modal-title").text("Add workout score");
         $(".workoutScoreModal").modal('show');
         $(".workoutScoreModal").attr("id", "0"); // added id 0 to identify its a new score
@@ -299,19 +300,28 @@ function saveWorkoutScore() {
         return;
     }
 
+    let scoreRx;
+    if($('#add-score-rx').is(":checked")) {
+        console.log("saveWorkoutScore() :: DEBUG: scoreRx is true");
+        scoreRx = true;
+    } else {
+        console.log("saveWorkoutScore() :: DEBUG: scoreRx is false");
+        scoreRx = false;
+    }
+
     /**
      * UPDATE
      */
     if(scoreId > 0) {
         console.log("saveWorkoutScore() :: DEBUG: Updating workout score");
-        score = new Score(scoreId, workoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id != -1 (update score)
+        score = new Score(scoreId, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id != -1 (update score)
         restUpdateWorkoutScore(score);
     /**
      * NEW
      */
     } else {
         console.log("saveWorkoutScore() :: DEBUG: Creating workout score");
-        score = new Score(-1, workoutId, scoreValue, scoreDateTimeUnix, scoreNote); // id = -1 (new score)
+        score = new Score(-1, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id = -1 (new score)
         restAddWorkoutScore(score);
     }
 

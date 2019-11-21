@@ -42,7 +42,8 @@ class Chart {
             // calculate the bandwidth on the y axis (scores)
             // @todo: solve this better
             for (var i = 0; i < this.data.length; i++) {
-                var score = parseInt(this.data[i].score); 
+                this.data[i].score = timestampToSeconds(this.data[i].score); // parse to seconds
+                var score = parseInt(this.data[i].score);
                 if (score > this.yAxisLimit) {
                     this.yAxisLimit = score;
                 }
@@ -119,7 +120,6 @@ class Chart {
             for(var index = 0; index < this.data.length; index++) {
                 var x = this.getXCoordinate(index);
                 var y = this.getYCoordinate(index);
-
                 // draw line
                 this.c.lineTo(x, y);
             }

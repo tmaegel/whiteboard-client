@@ -18,16 +18,22 @@ function getTimestamp(timestamp) {
         now = new Date(Date.parse(timestamp));
         if(isNaN(now)) {
             console.log("getTimestamp() :: WARN: Couldn't parse timestamp to UNIX timestamp. Try it in a different way.");
-            // @todo regex check before do this stuff
-            var tmp = timestamp.split(" ");
-            var date = tmp[0].split(".");
-            var time = tmp[1].split(":");
-            now = new Date(date[2], date[1]-1, date[0], time[0], time[1], 0); // year, month, day, hours, minutes, seconds
+            if(datetimeRegex(timestamp)) {
+                console.log("getTimestamp() :: INFO: Detect timestamp (YY.mm.dd HH:MM:SS)");
+                var tmp = timestamp.split(" ");
+                var date = tmp[0].split(".");
+                var time = tmp[1].split(":");
+                now = new Date(date[2], date[1]-1, date[0], time[0], time[1], 0); // year, month, day, hours, minutes, seconds
+            } else {
+                console.log("getTimestamp() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
+                return false;
+            }
         }
     }
 
     if(isNaN(now)) {
-        console.log("getTimestamp()() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
+        console.log("getTimestamp() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
+        return false;
     }
 
     var datetime = Math.round(now.getTime()/1000);
@@ -46,7 +52,12 @@ function getIETFTimestamp(timestamp) {
     if(timestamp == 0) {
         now = new Date();
     } else {
-        now = new Date(timestamp*1000);
+        if(numRegex(timestamp)) {
+            now = new Date(timestamp*1000);
+        } else {
+            console.log("getIETFTimestamp() :: ERROR: Couldn't parse timestamp to IETF timestamp.");
+            return false;
+        }
     }
 
     let day = now.getDate();
@@ -75,7 +86,12 @@ function getFormatTimestamp(timestamp) {
     if(timestamp == 0) {
         now = new Date();
     } else {
-        now = new Date(timestamp*1000);
+        if(numRegex(timestamp)) {
+            now = new Date(timestamp*1000);
+        } else {
+            console.log("getFormatTimestamp() :: ERROR: Couldn't format timestamp.");
+            return false;
+        }
     }
 
     let day = now.getDate();
@@ -103,7 +119,12 @@ function getShortFormatTimestamp(timestamp) {
     if(timestamp == 0) {
         now = new Date();
     } else {
-        now = new Date(timestamp*1000);
+        if(numRegex(timestamp)) {
+            now = new Date(timestamp*1000);
+        } else {
+            console.log("getShortFormatTimestamp() :: ERROR: Couldn't format timestamp.");
+            return false;
+        }
     }
 
     let day = now.getDate();
@@ -116,6 +137,26 @@ function getShortFormatTimestamp(timestamp) {
     minutes = minutes > 9 ? minutes : '0' + minutes;
 
     var datetime = day + "." + month + "." + now.getFullYear() + " " + hours + ":" + minutes;
+
+    return datetime;
+}
+
+/**
+ * Convert timestamp to seconds
+ * Valid timestamp format is "HH:MM:SS"
+ */
+function timestampToSeconds(timestamp) {
+    if(numRegex(timestamp)) {
+        console.log("timestampToSeconds() :: INFO: Value is already a number. There is nothing to do.");
+        return timestamp;
+    } else if(timestampRegex(timestamp)) {
+        console.log("timestampToSeconds() :: INFO: Detect timestamp (HH:MM:SS)");
+        var time = timestamp.split(":");
+        return (parseInt(time[0]*3600) + parseInt(time[1]*60) + parseInt(time[2]));
+    } else {
+        console.log("timestampToSeconds() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
+        return false;
+    }
 
     return datetime;
 }
@@ -203,8 +244,6 @@ function stripString(value) {
     // Replace all tabs
     let regExpTabluar = /[\x0B\f\t]*/g;
     string = string.replace(regExpTabluar, "");
-
-    console.log("/"+string+"/");
 
     return string;
 }

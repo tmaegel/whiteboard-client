@@ -9,7 +9,6 @@ function resetLastAlerts() {
 }
 
 function addAlert(type, message, hideable) {
-    console.log("sad");
     hideable = hideable || false; // Optional parameter
     let notificationInModal = false;
     let notification;
@@ -24,7 +23,6 @@ function addAlert(type, message, hideable) {
 
     let modals = document.querySelectorAll(".modal");
     modals.forEach((element, index, modals) => {
-        console.log(element.style.display);
         if(element.style.display != "none") {
             notificationInModal = true;
             modal = element;

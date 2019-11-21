@@ -272,8 +272,8 @@ function saveWorkoutScore() {
     let score;
     let scoreId = getWorkoutScoreIdFromDOM(this);
     let scoreValue = stripString($("#add-score-value").val());
-    console.log("saveWorkoutScore() ::  DEBUG: scoreValue is " + scoreValue);
     if(numRegex(scoreValue) || timestampRegex(scoreValue)) {
+        console.log("saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);
         console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         addAlert("error", "numRegex() :: ERROR: Found invalid characters.", true);
@@ -282,8 +282,8 @@ function saveWorkoutScore() {
 
     let scoreDatetime = stripString($("#add-score-datetime").val());
     let scoreDateTimeUnix = getTimestamp(scoreDatetime);
-    console.log("saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime);
-    if(numRegex(scoreDateTimeUnix)) {
+    if(scoreDateTimeUnix) {
+        console.log("saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime + " (UTS:"+ scoreDateTimeUnix +")");
         console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         addAlert("error", "datetimeRegex() :: ERROR: Found invalid characters.", true);
@@ -291,8 +291,8 @@ function saveWorkoutScore() {
     }
 
     let scoreNote = stripString($("#add-score-note").val());
-    console.log("saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
     if(simpleRegex(scoreDatetime)) {
+        console.log("saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
         console.log("saveWorkoutScore() :: DEBUG: simpleRegex() success");
     } else {
         addAlert("error", "simpleRegex() :: ERROR: Found invalid characters.", true);

@@ -75,9 +75,9 @@ function initWorkoutsOnView() {
             $(template).find(".workout-description").html(workouts[i].description.replace(new RegExp('\r?\n','g'), "<br />"));
             $(template).find(".workout-datetime").text("Last updated at " + getFormatTimestamp(workouts[i].datetime));
 
-            // Allow editing only if user_id > 1
+            // Allow editing only if userId > 1
             // Remove the edit button
-            if(workouts[i].user_id == 1) {
+            if(workouts[i].userId == 1) {
                 // @todo: If you are the admin, you can edit the data
                 $(template).find(".btn-edit-workout").remove();
             }

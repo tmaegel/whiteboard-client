@@ -16,7 +16,7 @@ function resetView() {
 function fullResetView() {
     resetView();
     // Remove chart element
-    $('#chart').removeAttr("id");
+    $("#" + Config.CHART_ID).removeAttr("id");
     // reset cards
     hideSelectedCards();
 }

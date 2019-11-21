@@ -6,7 +6,7 @@ class Chart {
 
     constructor(data) {
         this.data = data.reverse(); // data is already sorted
-        this.canvas = document.getElementById(CHART_ID);
+        this.canvas = document.getElementById(Config.CHART_ID);
         if(!this.canvas.getContext) {
             console.log("Chart.init() :: WARN :: No Canvas API is supported.");
         }

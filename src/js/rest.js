@@ -12,14 +12,20 @@
 function restUserLogin() {
      $.ajax({
         type: "POST",
-        url: REST_SERVER + ":" + REST_PORT + "/authentication/login",
-        data: user,
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/authentication/login",
+        data: {
+            name: $("#input-username").val(),
+            password: CryptoJS.SHA256($("#input-password").val()).toString()
+        },
         async: false,
         success: function(data) {
             // store the token
             // @todo when expired the token?
             user.token = data.token;
-             
+            user.loggedIn = true;
+            createCookie("token", user.token, 7);
+            handleLogin();
+
             if(debug) {
                 console.log(JSON.stringify(data));
             }
@@ -45,11 +51,14 @@ function restUserLogin() {
 function restUserValidate() {
      $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/authentication/validate",
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/authentication/validate",
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
         success: function(data) {
+            user.loggedIn = true;
+            handleLogin();
+
             if(debug) {
                 console.log(JSON.stringify(data));
             }
@@ -81,7 +90,7 @@ function restUserValidate() {
 function restGetEquipment() {
     $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/equipment",
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/equipment",
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
@@ -121,7 +130,7 @@ function restGetEquipment() {
 function restGetMovements() {
     $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/movement",
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/movement",
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
@@ -161,7 +170,7 @@ function restGetMovements() {
 function restGetWorkouts() {
     $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/workout",
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout",
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
@@ -197,7 +206,7 @@ function restGetWorkouts() {
 function restGetWorkoutScores(id) {
     $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/workout/score/" + id,
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout/score/" + id,
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
@@ -232,7 +241,7 @@ function restGetWorkoutScores(id) {
 function restGetWorkoutById(id) {
     $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/workout/" + id,
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout/" + id,
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
@@ -273,7 +282,7 @@ function restAddWorkout(workout) {
     console.log(JSON.stringify(workout));
     $.ajax({
         type: "POST",
-        url: REST_SERVER + ":" + REST_PORT + "/workout",
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout",
         data: workout,
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
@@ -311,7 +320,7 @@ function restAddWorkout(workout) {
 function restUpdateWorkout(workout) {
     $.ajax({
         type: "POST",
-        url: REST_SERVER + ":" + REST_PORT + "/workout/" + workout.id,
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout/" + workout.id,
         data: workout,
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
@@ -354,7 +363,7 @@ function restUpdateWorkout(workout) {
 function restGetScores() {
     $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/score",
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score",
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
@@ -387,7 +396,7 @@ function restGetScores() {
 function restGetScoreById(id) {
     $.ajax({
         type: "GET",
-        url: REST_SERVER + ":" + REST_PORT + "/score/" + id,
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score/" + id,
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
         },
@@ -420,7 +429,7 @@ function restGetScoreById(id) {
 function restAddWorkoutScore(score) {
     $.ajax({
         type: "POST",
-        url: REST_SERVER + ":" + REST_PORT + "/score",
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score",
         data: score,
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);
@@ -458,7 +467,7 @@ function restAddWorkoutScore(score) {
 function restUpdateWorkoutScore(score) {
      $.ajax({
         type: "POST",
-        url: REST_SERVER + ":" + REST_PORT + "/score/" + score.id,
+        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score/" + score.id,
         data: score,
         beforeSend : function(xhr) {
             xhr.setRequestHeader("Authorization", user.token);

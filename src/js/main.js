@@ -1,14 +1,17 @@
 'use strict';
 
-// CONSTANTS
-const REST_SERVER = "https://localhost"
-const REST_PORT = "3000"
-const CHART_ID = "chart"
+// Config
+var Config = Config || {
+    REST_SERVER: "https://localhost",
+    REST_PORT: "3000",
+    DOMAIN: "localhost",
+    CHART_ID: "chart"
+};
 
 let debug = true;
 
 // create static user
-let user = null;
+let user = new User();
 
 // create an array equipment
 let equipment = [];
@@ -43,27 +46,39 @@ function init() {
     $('.loginModal').modal({
         backdrop: "static",
         keyboard: false,
-        show: true,
+        show: false,
         focus: true
     });
+    $(".loginModal").modal("hide");
 
     $('.workoutModal').modal({
         show: false,
         focus: true
     });
-    $(".workoutModal").hide();
+    $(".workoutModal").modal("hide");
 
     $('.workoutScoreModal').modal({
         show: false,
         focus: true
     });
-    $(".workoutScoreModal").hide();
+    $(".workoutScoreModal").modal("hide");
+
+    /**
+     * Cookie
+     */
+    let cookie = readCookie("token");
+    if(cookie != null) {
+        user.token = cookie;
+        restUserValidate();
+    } else {
+        $(".loginModal").modal("show");
+    }
 
     /**
      * Login
      */
     let btnLogin = document.getElementById("btn-login-user");
-    btnLogin.addEventListener("click", handleLogin);
+    btnLogin.addEventListener("click", restUserLogin);
     window.addEventListener("keypress", handleLoginByKey);
 
     /**

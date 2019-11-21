@@ -10,15 +10,9 @@
 
 // event function to handle the login mechanism
 function handleLogin() {
-    var hashedPassword = CryptoJS.SHA256($("#input-password").val()).toString();
-    user = new User($("#input-username").val(), hashedPassword);
-    restUserLogin();    // login user
-    restUserValidate(); // validate user
-   
-    if (user.token != undefined || user.token != null) {
+    if (user.loggedIn == true && user.token != undefined && user.token != null) {
         console.log("handleLogin() :: INFO :: Login successful.");
-        console.log(user.token);
-        $('.loginModal').modal("hide");
+        $(".loginModal").modal("hide");
         $("#content").show();
         $("#dashboard-view").show();
         window.removeEventListener("keypress", handleLoginByKey); // Removing if successfully logged in
@@ -31,7 +25,7 @@ function handleLogin() {
 function handleLoginByKey(e) {
     var keycode = (e.keyCode ? e.keyCode : e.which);
     if (keycode == '13') {
-        handleLogin();
+        restUserLogin();
     }
 }
 
@@ -146,7 +140,7 @@ function toggleCard(element) {
 
         $(element).parent(".list-group-item").addClass("padding-0");
         $(element).parent(".list-group-item").addClass("card-active");
-        $(element).parent(".list-group-item").find("canvas").attr("id", "chart"); // add chart id to identify the element
+        $(element).parent(".list-group-item").find("canvas").attr("id", Config.CHART_ID); // add chart id to identify the element
 
         $(".card").hide();
         $(".card-title").show();

@@ -12,7 +12,7 @@
 function handleLogin() {
     if (user.loggedIn == true && user.token != undefined && user.token != null) {
         console.log("handleLogin() :: INFO :: Login successful.");
-        $(".loginModal").modal("hide");
+        hideLoginModal();
         $("#content").show();
         $("#dashboard-view").show();
         window.removeEventListener("keypress", handleLoginByKey); // Removing if successfully logged in
@@ -26,132 +26,6 @@ function handleLoginByKey(e) {
     var keycode = (e.keyCode ? e.keyCode : e.which);
     if (keycode == '13') {
         restUserLogin();
-    }
-}
-
-/**
- * Nav
- */
-
-// event function to switch to the dashboard view
-function switchToDashboardView() {
-    console.log("switchToDashboardView() :: INFO: Switching to dashboard view");
-
-    fullResetView();
-    $("#nav-workout-view").children().removeClass("active");
-    $("#nav-movement-view").children().removeClass("active");
-    $("#nav-equipment-view").children().removeClass("active");
-    $(this).children().addClass("active");
-    $('#inp-search-workout').val("");
-    $('#inp-search-workout').hide();
-    $('#btn-group-filter-workout').hide();
-    $('#btn-group-ctl-workout').hide();
-    $('#workout-view').hide();
-    $('#movement-view').hide();
-    $('#equipment-view').hide();
-    $('#dashboard-view').show();
-}
-
-// event function to switch to the workout view
-function switchToWorkoutView() {
-    console.log("switchToWorkoutView() :: INFO: Switching to workout view");
-
-    fullResetView();
-    $("#nav-dashboard-view").children().removeClass("active");
-    $("#nav-movement-view").children().removeClass("active");
-    $("#nav-equipment-view").children().removeClass("active");
-    $(this).children().addClass("active");
-    $('#inp-search-workout').val("");
-    $('#inp-search-workout').show();
-    $('#btn-group-filter-workout').show();
-    $('#btn-group-ctl-workout').show();
-    $('#dashboard-view').hide();
-    $('#movement-view').hide();
-    $('#equipment-view').hide();
-    $('#workout-view').show();
-    
-    restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
-
-    // Show all workouts
-    let workoutElements = document.querySelectorAll(".workout");
-    workoutElements.forEach((element, index, workoutElements) => {
-        element.style.display = "";
-    });
-}
-
-// event function to switch to the movement view
-function switchToMovementView() {
-    console.log("switchToMovementView() :: INFO: Switching to movement view");
-
-    fullResetView();
-    $("#nav-dashboard-view").children().removeClass("active");
-    $("#nav-workout-view").children().removeClass("active");
-    $("#nav-equipment-view").children().removeClass("active");
-    $(this).children().addClass("active");
-    $('#inp-search-workout').val("");
-    $('#inp-search-workout').hide();
-    $('#btn-group-filter-workout').hide();
-    $('#btn-group-ctl-workout').hide();
-    $('#dashboard-view').hide();
-    $('#workout-view').hide();
-    $('#equipment-view').hide();
-    $('#movement-view').show();
-
-    restGetMovements(); // get all movements objects
-}
-
-// event function to switch to the equipment view
-function switchToEquipmentView() {
-    console.log("switchToEquipmentView() :: INFO: Switching to equipment view");
-
-    fullResetView();
-    $("#nav-dashboard-view").children().removeClass("active");
-    $("#nav-workout-view").children().removeClass("active");
-    $("#nav-movement-view").children().removeClass("active");
-    $(this).children().addClass("active");
-    $('#inp-search-workout').val("");
-    $('#inp-search-workout').hide();
-    $('#btn-group-filter-workout').hide();
-    $('#btn-group-ctl-workout').hide();
-    $('#dashboard-view').hide();
-    $('#workout-view').hide();
-    $('#movement-view').hide();
-    $('#equipment-view').show();
-    
-    restGetEquipment(); // get all equipment objects
-}
-
-/**
- * General
- */
-
-// Event function to toggle (show/hide) the cards
-function toggleCard(element) {
-    var parentFirst = $(element).parent(".list-group-item :first");
-    if($(parentFirst).hasClass("card-active") == true) {
-        console.log("click() :: .card-clickable :: INFO: Deactivate current card");
-        // Reset
-        fullResetView();
-    } else {
-        console.log("addWorkoutToView() :: INFO: Activate new card");
-
-        // Reset
-        fullResetView();
-
-        $(element).parent(".list-group-item").addClass("padding-0");
-        $(element).parent(".list-group-item").addClass("card-active");
-        $(element).parent(".list-group-item").find("canvas").attr("id", Config.CHART_ID); // add chart id to identify the element
-
-        $(".card").hide();
-        $(".card-title").show();
-
-        $(element).next(".card").show();
-        $(element).children(".card-title").hide();
-
-        let workoutId = getWorkoutIdFromDOM();
-        if (workoutId > 0) {
-            restGetWorkoutScores(workoutId);
-        }
     }
 }
 
@@ -175,8 +49,8 @@ function editWorkoutDialog() {
         $("#add-workout-description").val(workout.description);
     }
 
-    $(".workoutModal").find(".modal-title").text("Edit workout");
-    $(".workoutModal").modal('show');
+    $("#workout-modal").find(".modal-title").text("Edit workout");
+    showWorkoutModal();
 }
 
 function addWorkoutScoreDialog() {
@@ -188,9 +62,10 @@ function addWorkoutScoreDialog() {
         $("#add-score-datetime").val(getShortFormatTimestamp());
         $("#add-score-note").val("");
         $("#add-score-rx").prop("checked", false);
-        $(".workoutScoreModal").find(".modal-title").text("Add workout score");
-        $(".workoutScoreModal").modal('show');
-        $(".workoutScoreModal").attr("id", "0"); // added id 0 to identify its a new score
+
+        $("#workout-score-modal").find(".modal-title").text("Add workout score");
+        showWorkoutScoreModal();
+        selScoreId = 0; // // set to 0 to identify its not a new score
     }
 }
 
@@ -251,14 +126,15 @@ function saveWorkout() {
      */
     } else {
         console.log("saveWorkout() :: INFO: Creating new workout");
-        workouts.sort(compareById);
+        /*workouts.sort(compareById);
         var id; // new workout id
         if(workouts.length > 0) {
             id = workouts[workouts.length - 1].id + 1;
+            console.log(id);
         } else {
             id = 1;
-        }
-        workout = new Workout(id, getTimestamp(), workoutName, workoutDescription); // id = max workout id + 1
+        }*/
+        workout = new Workout(0, getTimestamp(), workoutName, workoutDescription); // id = 0
         restAddWorkout(workout);
     }
 
@@ -271,7 +147,7 @@ function saveWorkoutScore() {
 
     let workoutId = getWorkoutIdFromDOM();
     let score;
-    let scoreId = getWorkoutScoreIdFromDOM(this);
+    let scoreId = selScoreId;
     let scoreValue = stripString($("#add-score-value").val());
     if(numRegex(scoreValue) || timestampRegex(scoreValue)) {
         console.log("saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);

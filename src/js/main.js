@@ -22,6 +22,9 @@ let workouts = [];
 // workout chart object
 let workoutChart;
 
+// @todo
+let selScoreId = 0;
+
 window.addEventListener("load", init);
 
 function init() {
@@ -34,34 +37,8 @@ function init() {
     $("#workout-view").hide();
     $("#movement-view").hide();
     $("#equipment-view").hide();
-    $('#inp-search-workout').hide();
-    $('#btn-group-filter-workout').hide();
-    $('#btn-group-ctl-workout').hide();
     // Initialize view
     fullResetView();
-
-    /**
-     * Modals
-     */
-    $('.loginModal').modal({
-        backdrop: "static",
-        keyboard: false,
-        show: false,
-        focus: true
-    });
-    $(".loginModal").modal("hide");
-
-    $('.workoutModal').modal({
-        show: false,
-        focus: true
-    });
-    $(".workoutModal").modal("hide");
-
-    $('.workoutScoreModal').modal({
-        show: false,
-        focus: true
-    });
-    $(".workoutScoreModal").modal("hide");
 
     /**
      * Cookie
@@ -71,7 +48,7 @@ function init() {
         user.token = cookie;
         restUserValidate();
     } else {
-        $(".loginModal").modal("show");
+        document.getElementById('login-modal').style.display='block';
     }
 
     /**
@@ -84,14 +61,40 @@ function init() {
     /**
      * Nav
      */
-    let tabDashboardView = document.getElementById("nav-dashboard-view");
-    tabDashboardView.addEventListener("click", switchToDashboardView);
-    let tabWorkoutView = document.getElementById("nav-workout-view");
-    tabWorkoutView.addEventListener("click", switchToWorkoutView);
-    let tabMovementView = document.getElementById("nav-movement-view");
-    tabMovementView.addEventListener("click", switchToMovementView);
-    let tabEquipmentView = document.getElementById("nav-equipment-view");
-    tabEquipmentView.addEventListener("click", switchToEquipmentView);
+    let tabDashboardView = document.getElementById("nav-dashboard");
+    tabDashboardView.addEventListener("click", function() {
+        fullResetView();
+        activateTab("dashboard");
+    });
+    let tabWorkoutView = document.getElementById("nav-workout");
+    tabWorkoutView.addEventListener("click", function() {
+        fullResetView();
+        activateTab("workout");
+
+        restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
+
+        // Show all workouts
+        let workoutElements = document.querySelectorAll(".workout");
+        workoutElements.forEach((element, index, workoutElements) => {
+            element.style.display = "block";
+        });
+    });
+    let tabMovementView = document.getElementById("nav-movement");
+    tabMovementView.addEventListener("click", function() {
+        fullResetView();
+        activateTab("movement");
+
+        restGetMovements(); // get all movements objects
+    });
+    let tabEquipmentView = document.getElementById("nav-equipment");
+    tabEquipmentView.addEventListener("click", function() {
+        fullResetView();
+        activateTab("equipment");
+
+        restGetEquipment(); // get all equipment objects
+    });
+    let tabSearchBar = document.getElementById("nav-searchbar");
+    tabSearchBar.addEventListener("click", toggleSearchBar);
 
     /**
      * Workout
@@ -104,8 +107,8 @@ function init() {
         fullResetView();
         $("#add-workout-name").val("");
         $("#add-workout-description").val("");
-        $(".workoutModal").find(".modal-title").text("New workout");
-        $(".workoutModal").modal('show');
+        $("#workout-modal").find(".modal-title").text("New workout");
+        showWorkoutModal();
     });
     let btnSaveWorkout = document.getElementById("btn-save-workout");
     btnSaveWorkout.addEventListener("click", saveWorkout);

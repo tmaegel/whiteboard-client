@@ -4,9 +4,10 @@
  * Reset the view
  */
 function resetView() {
-    $(".loginModal").modal('hide');
-    $(".workoutModal").modal('hide');
-    $(".workoutScoreModal").modal('hide');
+    hideLoginModal();
+    hideWorkoutModal();
+    hideWorkoutScoreModal();
+    hideSearchBar();
 }
 
 /**
@@ -18,17 +19,21 @@ function fullResetView() {
     // Remove chart element
     $("#" + Config.CHART_ID).removeAttr("id");
     // reset cards
-    hideSelectedCards();
+    resetCards();
 }
 
 /**
  * Hide and reset selected cards
  */
-function hideSelectedCards() {
-    $(".list-group-item").removeClass("padding-0");
-    $(".list-group-item").removeClass("card-active");
-    $(".card").hide();
-    $(".card-title").show();
+function resetCards() {
+    let cardElements = document.querySelectorAll(".card");
+    cardElements.forEach((card, index, cardElements) => {
+        card.classList.remove("active");
+    });
+    let contentElements = document.querySelectorAll(".card-content");
+    contentElements.forEach((content, index, contentElements) => {
+        content.style.display = "none";
+    });
 }
 
 /**
@@ -39,7 +44,7 @@ function hideSelectedCards() {
  * Get the workout id from DOM
  */
 function getWorkoutIdFromDOM() {
-    let elem = $(".workout.card-active");
+    let elem = $(".workout.active");
     if(elem[0]) {
         let id = $(elem).attr('id').replace("workout-id-", "");
         if (id > 0) {
@@ -101,7 +106,7 @@ function initWorkoutsOnView() {
     /**
      * Setting up card hide and show mechanism
      */
-    // let crdWorkoutElements = document.querySelectorAll(".card-clickable");
+    // let crdWorkoutElements = document.querySelectorAll(".collapsiblee");
     // It’s important to note that document.querySelectorAll() does not return an array, but a NodeList object.
     // You can iterate it with forEach or for..of, or you can transform it to an array with Array.from() if you want.
     // for (var element of crdWorkoutElements) {
@@ -109,8 +114,8 @@ function initWorkoutsOnView() {
         // element.removeEventListener("click", handler); // Remove the old one
         // element.addEventListener("click", handler);
     //}
-    $(".card-clickable").off("click");
-    $(".card-clickable").on("click", function() {
+    $(".collapsible").off("click");
+    $(".collapsible").on("click", function() {
         toggleCard(this);
     });
 
@@ -165,82 +170,87 @@ function getWorkoutScoreIdFromDOM(elem) {
     } else {
         // here gets the id via workoutScoreModal
         console.log("getWorkoutScoreIdFromDOM() :: WARN: Couldn't find any closest object");
-        id = $(".workoutScoreModal").attr("id");
+        id = 0;
     }
 
     if (id > 0) {
         console.log("getWorkoutScoreIdFromDOM() :: INFO: Get score id " + id);
-        return id;
     } else {
-        console.log("getWorkoutScoreIdFromDOM() :: ERROR: Couldn't get score id");
-        return -1;
+        console.log("getWorkoutScoreIdFromDOM() :: WARN: Couldn't get score id. Its a new score.");
     }
+
+    return id;
 }
 
 function addWorkoutScoresToView(workoutId) {
+    $(".score-template").hide();
     let parentElement = $("#workout-id-"+workoutId);
     $(parentElement).find("[id^=score-id]").remove();
     let showScoreTemplate = $("#workout-id-"+workoutId).find(".score-template").clone();
-    if(workouts[workoutId - 1].score.length > 0) {
-        console.log("addWorkoutScoresToView() :: INFO: There are " + workouts[workoutId - 1].score.length + " scores available to display");
-        for (var i in workouts[workoutId - 1].score) {
+    let index = getArrayIndexById(workouts, workoutId);
 
-            let scoreId = workouts[workoutId - 1].score[i].id;
-            let scoreValue = workouts[workoutId - 1].score[i].score;
-            let scoreRx = workouts[workoutId - 1].score[i].rx;
-            let scoreTimestamp = workouts[workoutId - 1].score[i].datetime;
-            let scoreNote = workouts[workoutId - 1].score[i].note;
+    if(index != null) {
+        if(workouts[index].score.length > 0) {
+            console.log("addWorkoutScoresToView() :: INFO: There are " + workouts[index].score.length + " scores available to display");
+            for (var i in workouts[index].score) {
 
-            // score mask to showing scores
-            let showScoreTemplateTmp = $(showScoreTemplate).clone().first();
-            $(showScoreTemplateTmp).removeClass("score-template");
-            $(showScoreTemplateTmp).addClass("score");
-            $(showScoreTemplateTmp).attr("id", "score-id-" + scoreId);
-            $(showScoreTemplateTmp).find(".score-value").text(scoreValue);
-            if(scoreRx == "true") {
-                $(showScoreTemplateTmp).find(".score-rx").text("Rx");
-            } else {
-                $(showScoreTemplateTmp).find(".score-rx").text("");
-            }
-            $(showScoreTemplateTmp).find(".score-datetime").text(getShortFormatTimestamp(scoreTimestamp));
-            $(showScoreTemplateTmp).find(".score-note").text(scoreNote);
+                let scoreId = workouts[index].score[i].id;
+                let scoreValue = workouts[index].score[i].score;
+                let scoreRx = workouts[index].score[i].rx;
+                let scoreTimestamp = workouts[index].score[i].datetime;
+                let scoreNote = workouts[index].score[i].note;
 
-            /**
-             * Set 'edit workout score' button
-             */
-            $(showScoreTemplateTmp).find(".btn-edit-workout-score").click(function() {
-                console.log("click() :: btn-edit-workout-score :: INFO: Editing workout score");
-                let scoreId = getWorkoutScoreIdFromDOM(this);
-
-                $("#add-score-value").val(scoreValue);
+                // score mask to showing scores
+                let showScoreTemplateTmp = $(showScoreTemplate).clone().first();
+                $(showScoreTemplateTmp).removeClass("score-template");
+                $(showScoreTemplateTmp).addClass("score");
+                $(showScoreTemplateTmp).attr("id", "score-id-" + scoreId);
+                $(showScoreTemplateTmp).find(".score-value").text(scoreValue);
                 if(scoreRx == "true") {
-                    $("#add-score-rx").prop("checked", true);
+                    $(showScoreTemplateTmp).find(".score-rx").text("Rx");
                 } else {
-                    $("#add-score-rx").prop("checked", false);
+                    $(showScoreTemplateTmp).find(".score-rx").text("");
                 }
-                $("#add-score-datetime").val(getShortFormatTimestamp(scoreTimestamp));
-                $("#add-score-note").val(scoreNote);
-                $(".workoutScoreModal").find(".modal-title").text("Add workout score");
-                $(".workoutScoreModal").modal('show');
-                $(".workoutScoreModal").attr("id", scoreId); // added id to identify its not a new score
-            });
+                $(showScoreTemplateTmp).find(".score-datetime").text(getShortFormatTimestamp(scoreTimestamp));
+                $(showScoreTemplateTmp).find(".score-note").text(scoreNote);
 
-            // Finally showing the score-mask
-            $(showScoreTemplateTmp).appendTo("#workout-id-" + workoutId + " .scores");
-            $(showScoreTemplateTmp).show();
+                /**
+                 * Set 'edit workout score' button
+                 */
+                $(showScoreTemplateTmp).find(".btn-edit-workout-score").click(function() {
+                    console.log("click() :: btn-edit-workout-score :: INFO: Editing workout score");
+                    let scoreId = getWorkoutScoreIdFromDOM(this);
+
+                    $("#add-score-value").val(scoreValue);
+                    if(scoreRx == "true") {
+                        $("#add-score-rx").prop("checked", true);
+                    } else {
+                        $("#add-score-rx").prop("checked", false);
+                    }
+                    $("#add-score-datetime").val(getShortFormatTimestamp(scoreTimestamp));
+                    $("#add-score-note").val(scoreNote);
+                    $("#workout-score-modal").find(".modal-title").text("Edit workout score");
+                    showWorkoutScoreModal();
+                    selScoreId = scoreId; // set to scoreId to identify its not a new score
+                });
+
+                // Finally showing the score-mask
+                $(showScoreTemplateTmp).appendTo("#workout-id-" + workoutId + " .scores");
+                $(showScoreTemplateTmp).show();
+            }
+        } else {
+            console.log("addWorkoutScoresToView() :: INFO: There are no scores available to display");
+        }
+        // Drawing workout scores
+        // add canvas to display the chart
+        if(workouts[index].score.length > 0) {
+            workoutChart = new Chart(workouts[index].score);
+            workoutChart.init();
+            workoutChart.draw();
         }
     } else {
-        console.log("addWorkoutScoresToView() :: INFO: There are no scores available to display");
+        console.log("addWorkoutScoresToView() :: ERR: No index found");
     }
-
-    // Drawing workout scores
-    // add canvas to display the chart
-    if(workouts[workoutId - 1].score.length > 0) {
-        workoutChart = new Chart(workouts[workoutId - 1].score);
-        workoutChart.init();
-        workoutChart.draw();
-    }
-    $("#workout-id-"+workoutId).find(".score-template").hide();
 }
 
 /**
@@ -263,7 +273,7 @@ function initMovementsOnView() {
         $(template).find(".movement-name").text(movements[i].movement);
 
         $(template).show();
-        $(template).appendTo("#movement-view .list-group");
+        $(template).appendTo("#movement-view ul");
     }
 }
 
@@ -287,6 +297,6 @@ function initEquipmentOnView() {
         $(template).find(".equipment-name").text(equipment[i].equipment);
 
         $(template).show();
-        $(template).appendTo("#equipment-view .list-group");
+        $(template).appendTo("#equipment-view ul");
     }
 }

@@ -211,11 +211,14 @@ function restGetWorkoutScores(id) {
             xhr.setRequestHeader("Authorization", user.token);
         },
         success: function(data) {
-            workouts[id - 1].score = JSON.parse(data);
-            workouts[id - 1].score.sort(compareByTimestamp).reverse();
+            let index = getArrayIndexById(workouts, id);
+            if(index != null) {
+                workouts[index].score = JSON.parse(data);
+                workouts[index].score.sort(compareByTimestamp).reverse();
 
-            if(debug) {
-                console.log(JSON.stringify(workouts[id - 1].score));
+                if(debug) {
+                    console.log(JSON.stringify(workouts[index].score));
+                }
             }
 
             addWorkoutScoresToView(id);
@@ -246,12 +249,12 @@ function restGetWorkoutById(id) {
             xhr.setRequestHeader("Authorization", user.token);
         },
         success: function(data) {
-            let workout = JSON.parse(data);
+            let retWorkout = JSON.parse(data);
             if(debug) {
-                console.log(JSON.stringify(workout));
+                console.log(JSON.stringify(retWorkout));
             }
 
-            var ret = refreshArrayObject("workout", workout);
+            var ret = refreshArrayObject("workout", retWorkout);
             workouts.sort(compareByString);
             if(ret == 0) { // workout was added
                 initWorkoutsOnView();
@@ -279,7 +282,6 @@ function restGetWorkoutById(id) {
  * Add new workout
  */
 function restAddWorkout(workout) {
-    console.log(JSON.stringify(workout));
     $.ajax({
         type: "POST",
         url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout",
@@ -288,13 +290,15 @@ function restAddWorkout(workout) {
             xhr.setRequestHeader("Authorization", user.token);
         },
         success: function(data) {
+            console.log(JSON.stringify(data));
+            let retWorkout = JSON.parse(data);
             if(debug) {
                 console.log("restAddWorkout() :: POST /workout :: SUCCESS: Workout was created.");
-                console.log(JSON.stringify(data));
+                console.log(JSON.stringify(retWorkout));
             }
 
             // Getting fresh state of workout and update the view
-            restGetWorkoutById(workout.id);
+            restGetWorkoutById(retWorkout.id);
 
             addAlert("success", "Success: Workout was created.", true);
         },
@@ -330,7 +334,6 @@ function restUpdateWorkout(workout) {
                 console.log("restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
                 console.log(JSON.stringify(data));
             }
-            console.log("Success");
 
             // Getting fresh state of workout and update the view
             restGetWorkoutById(workout.id);
@@ -401,10 +404,11 @@ function restGetScoreById(id) {
             xhr.setRequestHeader("Authorization", user.token);
         },
         success: function(data) {
+            let retScore = JSON.parse(data);
             // workouts[id].score = JSON.parse(data);
 
             if(debug) {
-                console.log(JSON.stringify(data));
+                console.log(JSON.stringify(retScore));
             }
         },
         error: function(data) {
@@ -435,13 +439,14 @@ function restAddWorkoutScore(score) {
             xhr.setRequestHeader("Authorization", user.token);
         },
         success: function(data) {
+            let retScore = JSON.parse(data);
             if(debug) {
                 console.log("restAddWorkoutScore() :: POST /score :: SUCCESS: Workout score was created.");
-                console.log(JSON.stringify(data));
+                console.log(JSON.stringify(retScore));
             }
 
             // Getting fresh state of workout scores and update tehe view
-            restGetWorkoutScores(score.workoutId);
+            restGetWorkoutScores(retScore.workoutId);
 
             addAlert("success", "Success: Workout score was created.", true);
         },

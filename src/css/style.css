@@ -1,0 +1,297 @@
+/**
+ * headings
+ */
+h1 { font-size: 130%; }
+h2 { font-size: 125%; }
+h3 { font-size: 120%; }
+h4 { font-size: 115%; }
+h5 { font-size: 110%; }
+h6 { font-size: 105%; }
+
+/**
+ * navbar
+ */
+.navbar {
+    width: 100%; /* Full-width */
+    background-color: #555; /* Dark-grey background */
+    overflow: auto; /* Overflow due to float */
+}
+.navbar ul {
+    background-color: #555;
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+.navbar li {
+    float: left; /* Float links side by side */
+    text-align: center; /* Center-align text */
+    width: 20%; /* Equal width (5 icons with 20% width each = 100%) */
+    padding: 10px 0; /* Some top and bottom padding */
+    /*transition: all 0.3s ease; /* Add transition for hover effects */
+    color: white; /* White text color */
+    font-size: 20px; /* Increased font size */
+    cursor: pointer;
+}
+.navbar .active {
+    background-color: #4CAF50; /* Add an active/current color */
+}
+.navbar li:hover {
+    background-color: #000; /* Add a hover color */
+}
+
+/**
+ * search bar
+ */
+#searchbar {
+    width: 100%; /* Full-width */
+    background-color: #4CAF50; /* Dark-grey background */
+    display: none;
+}
+#inp-search-workout {
+    width: 100%; /* Full-width */
+    border: 0 !important;
+    background-color: #4CAF50; /* Dark-grey background */
+    color: white !important;
+    margin: 5px;
+}
+
+/**
+ * modal
+ */
+ .modal {
+     display: none; /* Hidden by default */
+     position: fixed; /* Stay in place */
+     z-index: 1; /* Sit on top */
+     left: 0;
+     top: 0;
+     width: 100%; /* Full width */
+     height: 100%; /* Full height */
+     overflow: auto; /* Enable scroll if needed */
+     background-color: rgb(0,0,0); /* Fallback color */
+     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ }
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+.modal-header {
+    padding: 12px 24px !important;
+    border-bottom: 1px solid #ddd;
+}
+.modal-body {
+    padding: 24px !important;
+}
+.modal-footer {
+    border-top: 1px solid #ddd;
+    padding: 24px 24px !important;
+}
+
+/**
+ * card
+ */
+.card {
+    border: 1px solid #ddd; /* Add a thin border to each list item */
+    border-bottom: 1px solid #ddd; /* Add a thin border to each list item */
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6; /* Add a grey background color */
+}
+.card-header {
+    color: #444;
+    text-align: left;
+    font-size: 15px;
+    padding: 0 12px 0 12px;
+    border: none;
+}
+/* Style the collapsible content. Note: hidden by default */
+.card-content {
+    display: none;
+    overflow: hidden;
+    border-top: 1px solid #ddd; /* top border if collapse */
+    background-color: white;
+}
+.collapsible {
+    cursor: pointer;
+    width: 100%;
+    outline: none;
+}
+ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+}
+
+
+
+/**
+ * padding
+ */
+.padding-sm { padding: 8px!important; }
+.padding-top-sm { padding-top: 8px!important; }
+.padding-bottom-sm { padding-bottom: 8px!important; }
+.padding-left-sm { padding-left: 8px!important; }
+.padding-right-sm { padding-right: 8px!important; }
+.padding-md { padding: 12px!important; }
+.padding-top-md { padding-top: 12px!important; }
+.padding-bottom-md { padding-bottom: 12px!important; }
+.padding-left-md { padding-left: 12px!important; }
+.padding-right-md { padding-right: 12px!important; }
+.padding-lg { padding: 16px!important; }
+.padding-top-lg { padding-top: 16px!important; }
+.padding-bottom-lg { padding-bottom: 16px!important; }
+.padding-left-lg { padding-left: 16px!important; }
+.padding-right-lg { padding-right: 16px!important; }
+
+/**
+ * margin
+ */
+.margin-sm { margin: 8px!important; }
+.margin-top-sm { margin-top: 8px!important; }
+.margin-bottom-sm { margin-bottom: 8px!important; }
+.margin-left-sm { margin-left: 8px!important; }
+.margin-right-sm { margin-right: 8px!important; }
+.margin-md { margin: 12px!important; }
+.margin-top-md { margin-top: 12px!important; }
+.margin-bottom-md { margin-bottom: 12px!important; }
+.margin-left-md { margin-left: 12px!important; }
+.margin-right-md { margin-right: 12px!important; }
+.margin-lg { margin: 16px!important; }
+.margin-top-lg { margin-top: 16px!important; }
+.margin-bottom-lg { margin-bottom: 16px!important; }
+.margin-left-lg { margin-left: 16px!important; }
+.margin-right-lg { margin-right: 16px!important; }
+
+/**
+ * Overlay button
+ */
+.btn-overlay {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #4CAF50;
+    color: white; /* White text color */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/**
+ * forms
+ */
+input {
+    padding: 12px !important;
+    border: 1px solid #ddd !important;
+    color: gray !important;
+}
+input:active, input:focus {
+    border: 1px solid gray !important;
+}
+textarea {
+    padding: 12px !important;
+    border: 1px solid #ddd !important;
+    color: gray !important;
+}
+textarea:active, textarea:focus {
+    border: 1px solid gray !important;
+}
+button {
+    background-color: #4CAF50 !important;
+    color: white !important; /* White text color */
+}
+
+/**
+ * Canvas
+ */
+canvas {
+    width: 100%;
+    height: 150px;
+    /*display: none;*/
+}
+
+/**
+ * Checkbox
+ */
+
+ /* Customize the label (the container) */
+.chbx-container {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/* Hide the browser's default checkbox */
+.chbx-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+}
+/* On mouse-over, add a grey background color */
+.chbx-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+/* When the checkbox is checked, add a blue background */
+.chbx-container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+/* Show the checkmark when checked */
+.chbx-container input:checked ~ .checkmark:after {
+    display: block;
+}
+/* Style the checkmark/indicator */
+.chbx-container .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/**
+ * table
+ */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    display: table;
+}
+table td, table th {
+    padding: 8px 8px;
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+}
+table th:first-child, table td:first-child {
+    padding-left:16px;
+}
+/*table tr {
+    border-top: 1px solid #ddd
+}*/

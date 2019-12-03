@@ -357,6 +357,18 @@ function getArrayObject(type, id) {
 }
 
 /**
+ * Gets the index of object by the id
+ */
+function getArrayIndexById(array, id) {
+    for(var i = 0; i < array.length; i++) {
+        if (parseInt(array[i].id) == id) {
+            return i;
+        }
+    }
+    return null;
+}
+
+/**
  * Returns all objects that do contain the string
  */
 function getArrayObjectsByName(array, search) {

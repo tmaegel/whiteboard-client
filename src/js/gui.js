@@ -70,7 +70,7 @@ function activateTab(tab) {
             break;
         case "equipment":
             document.getElementById("equipment-view").style.display='block';
-            document.getElementById("nav-movement").classList.add("active");
+            document.getElementById("nav-equipment").classList.add("active");
             hideNewWorkoutBtn();
             break;
     }

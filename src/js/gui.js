@@ -46,7 +46,7 @@ function activateTab(tab) {
     document.getElementById("nav-dashboard").classList.remove("active");
     document.getElementById("nav-workout").classList.remove("active");
     document.getElementById("nav-movement").classList.remove("active");
-    document.getElementById("nav-movement").classList.remove("active");
+    document.getElementById("nav-equipment").classList.remove("active");
     document.getElementById('dashboard-view').style.display='none';
     document.getElementById('workout-view').style.display='none';
     document.getElementById('movement-view').style.display='none';

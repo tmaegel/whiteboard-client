@@ -11,12 +11,12 @@ class Chart {
             console.log("Chart.init() :: WARN :: No Canvas API is supported.");
         }
         this.c = this.canvas.getContext("2d");
-    
+
         this.border = true;         /**< draw border */
         this.grid = true;           /**< draw grid */
 
-        this.xOffset = 10;          /**< x offset of the graph (border) */
-        this.yOffset = 10;          /**< y offset of the graph (border) */
+        this.xOffset = 8;          /**< x offset of the graph (border) */
+        this.yOffset = 8;          /**< y offset of the graph (border) */
 
         this.numOfXGridSec = 10;    /**< num of grid sections (x) */
         this.numOfYGridSec = 5;     /**< num of grid sections (y) */
@@ -65,7 +65,7 @@ class Chart {
 
     draw() {
         console.log("Chart.draw() :: INFO :: Drawing...");
-         
+
         if(this.data == null || this.data.length < 1) {
             console.log("Chart.draw() :: WARN :: There are no datapoints available.");
             return;
@@ -76,8 +76,8 @@ class Chart {
          */
 
         if(this.border) {
-            this.c.strokeStyle = "#dee2e6";
-            this.c.lineWidth = 1;
+            this.c.strokeStyle = "#eee";
+            this.c.lineWidth = 2;
             this.c.strokeRect(this.xOffset, this.yOffset, this.getGraphWidth(), this.getGraphHeight());
         }
 
@@ -86,8 +86,8 @@ class Chart {
          */
         if(this.grid) {
             this.c.lineWidth = 1;
-            this.c.strokeStyle = "#dee2e6";
-            
+            this.c.strokeStyle = "#eee";
+
             // x grid
             this.c.beginPath();
             var gridGap = this.getGraphWidth() / this.numOfXGridSec;
@@ -113,8 +113,8 @@ class Chart {
 
 		// draw lines
         this.c.lineWidth = 2;
-        this.c.fillStyle = "red";
-        this.c.strokeStyle = "red";
+        this.c.fillStyle = "#2196F3";
+        this.c.strokeStyle = "#2196F3";
         if(this.data.length > 1) {
             this.c.beginPath();
             for(var index = 0; index < this.data.length; index++) {
@@ -132,7 +132,7 @@ class Chart {
     	for(var index = 0; index < this.data.length; index++) {
             var x = this.getXCoordinate(index);
             var y = this.getYCoordinate(index);
-                    
+
             // draw points
             this.c.moveTo(x, y);
             this.c.arc(x, y, 4, 0, Math.PI * 2, true);

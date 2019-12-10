@@ -186,6 +186,7 @@ ul {
  */
 .btn-overlay {
     position: fixed;
+    display: none; /* Hidden by default */
     z-index: 1; /* Sit on top */
     bottom: 30px;
     right: 30px;

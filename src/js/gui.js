@@ -33,6 +33,11 @@ function toggleSearchBar() {
     }
 }
 /**
+ * Show/Hide buttons
+ */
+function showNewWorkoutBtn() { document.getElementById("btn-new-workout").style.display = "block"; }
+function hideNewWorkoutBtn() { document.getElementById("btn-new-workout").style.display = "none"; }
+/**
  * Handle tabs
  */
 function activateTab(tab) {
@@ -50,18 +55,22 @@ function activateTab(tab) {
         case "dashboard":
             document.getElementById("dashboard-view").style.display='block';
             document.getElementById("nav-dashboard").classList.add("active");
+            hideNewWorkoutBtn();
             break;
         case "workout":
             document.getElementById("workout-view").style.display='block';
             document.getElementById("nav-workout").classList.add("active");
+            showNewWorkoutBtn();
             break;
         case "movement":
             document.getElementById("movement-view").style.display='block';
             document.getElementById("nav-movement").classList.add("active");
+            hideNewWorkoutBtn();
             break;
         case "equipment":
             document.getElementById("equipment-view").style.display='block';
             document.getElementById("nav-movement").classList.add("active");
+            hideNewWorkoutBtn();
             break;
     }
 }

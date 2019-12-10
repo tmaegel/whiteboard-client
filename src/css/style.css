@@ -13,11 +13,11 @@ h6 { font-size: 105%; }
  */
 .navbar {
     width: 100%; /* Full-width */
-    background-color: #555; /* Dark-grey background */
+    background-color: #eee; /* Dark-grey background */
     overflow: auto; /* Overflow due to float */
 }
 .navbar ul {
-    background-color: #555;
+    background-color: #eee;
     list-style: none;
     text-align: center;
     padding: 0;
@@ -29,15 +29,15 @@ h6 { font-size: 105%; }
     width: 20%; /* Equal width (5 icons with 20% width each = 100%) */
     padding: 10px 0; /* Some top and bottom padding */
     /*transition: all 0.3s ease; /* Add transition for hover effects */
-    color: white; /* White text color */
+    color: gray; /* White text color */
     font-size: 20px; /* Increased font size */
     cursor: pointer;
 }
 .navbar .active {
-    background-color: #4CAF50; /* Add an active/current color */
+    background-color: #ddd; /* Add an active/current color */
 }
 .navbar li:hover {
-    background-color: #000; /* Add a hover color */
+    background-color: #ddd; /* Add a hover color */
 }
 
 /**
@@ -45,14 +45,14 @@ h6 { font-size: 105%; }
  */
 #searchbar {
     width: 100%; /* Full-width */
-    background-color: #4CAF50; /* Dark-grey background */
+    background-color: #ddd; /* Dark-grey background */
     display: none;
 }
 #inp-search-workout {
     width: 100%; /* Full-width */
     border: 0 !important;
-    background-color: #4CAF50; /* Dark-grey background */
-    color: white !important;
+    background-color: #ddd; /* Dark-grey background */
+    color: gray !important;
     margin: 5px;
 }
 

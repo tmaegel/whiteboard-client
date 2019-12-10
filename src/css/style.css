@@ -69,13 +69,14 @@ h6 { font-size: 105%; }
      height: 100%; /* Full height */
      overflow: auto; /* Enable scroll if needed */
      background-color: rgb(0,0,0); /* Fallback color */
-     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+     background-color: rgba(255,255,255,0.25); /* Black w/ opacity */
  }
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    border: 1px solid #888;
+    border: 1px solid #ddd;
     width: 80%; /* Could be more or less, depending on screen size */
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.15), 0 0 20px 0 rgba(0, 0, 0, 0.15);
 }
 .modal-header {
     padding: 12px 24px !important;
@@ -89,6 +90,23 @@ h6 { font-size: 105%; }
     padding: 24px 24px !important;
 }
 
+/**
+ * notification
+ */
+.notification {
+    display: none; /* Hidden by default */
+    position: absolute;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%; /* Could be more or less, depending on screen size */
+    bottom: 0px;
+    color: white !important;
+    padding: 16px !important;
+}
+.notification-ok { background-color: #4CAF50; }
+.notification-info { background-color: #2196F3; }
+.notification-warn { background-color: #ffeb3b; }
+.notification-error { background-color: #f44336; }
 /**
  * card
  */
@@ -168,11 +186,12 @@ ul {
  */
 .btn-overlay {
     position: fixed;
+    z-index: 1; /* Sit on top */
     bottom: 30px;
     right: 30px;
     background-color: #4CAF50;
     color: white; /* White text color */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 /**

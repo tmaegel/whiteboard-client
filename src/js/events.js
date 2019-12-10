@@ -99,7 +99,7 @@ function saveWorkout() {
             console.log("saveWorkout() :: DEBUG: simpleRegex() success");
             workoutName = stripString(workoutName);
         } else {
-            addAlert("error", "simpleRegex() :: ERROR: Found invalid characters.", true);
+            addNotification("error", "simpleRegex() :: ERROR: Found invalid characters.");
             return;
         }
 
@@ -107,7 +107,7 @@ function saveWorkout() {
             console.log("saveWorkout() :: DEBUG: extendedRegex() success");
             workoutDescription = stripString(workoutDescription);
         } else {
-            addAlert("error", "extendedRegex() :: ERROR: Found invalid characters.", true);
+            addNotification("error", "extendedRegex() :: ERROR: Found invalid characters.");
             return;
         }
     } else {
@@ -153,7 +153,7 @@ function saveWorkoutScore() {
         console.log("saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);
         console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
-        addAlert("error", "numRegex() :: ERROR: Found invalid characters.", true);
+        addNotification("error", "numRegex() :: ERROR: Found invalid characters.");
         return;
     }
 
@@ -163,7 +163,7 @@ function saveWorkoutScore() {
         console.log("saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime + " (UTS:"+ scoreDateTimeUnix +")");
         console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
-        addAlert("error", "datetimeRegex() :: ERROR: Found invalid characters.", true);
+        addNotification("error", "datetimeRegex() :: ERROR: Found invalid characters.");
         return;
     }
 
@@ -172,7 +172,7 @@ function saveWorkoutScore() {
         console.log("saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
         console.log("saveWorkoutScore() :: DEBUG: simpleRegex() success");
     } else {
-        addAlert("error", "simpleRegex() :: ERROR: Found invalid characters.", true);
+        addNotification("error", "simpleRegex() :: ERROR: Found invalid characters.");
         return;
     }
 

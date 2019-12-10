@@ -82,11 +82,9 @@ function toggleCard(element) {
     } else {
         contentSel.style.display = "block";
         parentElement.classList.add("active");
+        $(parentElement).find("canvas").attr("id", Config.CHART_ID); // add chart id to identify the element
+        restGetWorkoutScores(getWorkoutIdFromDOM());
     }
-
-    $(parentElement).find("canvas").attr("id", Config.CHART_ID); // add chart id to identify the element
-
-    restGetWorkoutScores(getWorkoutIdFromDOM());
 }
 
 /**

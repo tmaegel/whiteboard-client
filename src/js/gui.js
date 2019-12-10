@@ -19,7 +19,8 @@ function hideChart() { document.getElementById(Config.CHART_ID).style.display = 
  */
 function showSearchBar() {
     let searchbar = document.getElementById("searchbar");
-    searchbar.value = "";
+    let searchbarInp = document.getElementById("inp-search-workout");
+    searchbarInp.value = "";
     searchbar.style.display = "block";
 }
 function hideSearchBar() { document.getElementById("searchbar").style.display = "none"; }

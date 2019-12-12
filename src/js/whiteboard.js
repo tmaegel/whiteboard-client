@@ -1,42 +1,6 @@
 'use strict';
 
 /**
- * Reset the view
- */
-function resetView() {
-    hideLoginModal();
-    hideWorkoutModal();
-    hideWorkoutScoreModal();
-    hideSearchBar();
-}
-
-/**
- * Full reset the view
- * Collaps menus etc, ...
- */
-function fullResetView() {
-    resetView();
-    // Remove chart element
-    $("#" + Config.CHART_ID).removeAttr("id");
-    // reset cards
-    resetCards();
-}
-
-/**
- * Hide and reset selected cards
- */
-function resetCards() {
-    let cardElements = document.querySelectorAll(".card");
-    cardElements.forEach((card, index, cardElements) => {
-        card.classList.remove("active");
-    });
-    let contentElements = document.querySelectorAll(".card-content");
-    contentElements.forEach((content, index, contentElements) => {
-        content.style.display = "none";
-    });
-}
-
-/**
  * WORKOUTS
  */
 
@@ -80,13 +44,6 @@ function initWorkoutsOnView() {
             $(template).find(".workout-description").html(workouts[i].description.replace(new RegExp('\r?\n','g'), "<br />"));
             $(template).find(".workout-datetime").text("Last updated at " + getFormatTimestamp(workouts[i].datetime));
 
-            // Allow editing only if userId > 1
-            // Remove the edit button
-            if(workouts[i].userId == 1) {
-                // @todo: If you are the admin, you can edit the data
-                $(template).find(".btn-edit-workout").remove();
-            }
-
             // If there is a next element then add the current element before it
             if(i < workouts.length - 1) {
                 var nextWorkoutElement = document.getElementById("workout-id-" + workouts[parseInt(i) + parseInt(1)].id);
@@ -118,24 +75,6 @@ function initWorkoutsOnView() {
     $(".collapsible").on("click", function() {
         toggleCard(this);
     });
-
-    /**
-     * Set 'edit workout' button
-     */
-    let btnEditWorkoutElements = document.querySelectorAll(".btn-edit-workout");
-    for (var element of btnEditWorkoutElements) {
-        element.removeEventListener("click", editWorkoutDialog); // Remove the old one
-        element.addEventListener("click", editWorkoutDialog);
-    }
-
-    /**
-     * Set 'add workout score' button
-     */
-    let btnAddWorkoutScoreElements = document.querySelectorAll(".btn-add-workout-score");
-    for (var element of btnAddWorkoutScoreElements) {
-        element.removeEventListener("click", addWorkoutScoreDialog); // Remove the old one
-        element.addEventListener("click", addWorkoutScoreDialog);
-    }
 
     hideLoader();
     showWorkoutView();

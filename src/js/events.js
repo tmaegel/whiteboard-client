@@ -31,14 +31,21 @@ function handleLoginByKey(e) {
 /**
  * Workouts
  */
-
+function addWorkoutDialog() {
+    fullResetView();
+    $("#add-workout-name").val("");
+    $("#add-workout-description").val("");
+    $("#workout-modal").find(".modal-title").text("New workout");
+    showWorkoutModal();
+}
 function editWorkoutDialog() {
     console.log("editWorkoutDialog() :: INFO: Activate card 'edit workout'");
 
     let workout;
     let workoutId = getWorkoutIdFromDOM();
+    console.log(workoutId);
     if (workoutId > 0) {
-        workout = getArrayObject("workout", workoutId);
+        workout = getArrayObjectById(workouts, workoutId);
     }
 
     if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
@@ -51,7 +58,6 @@ function editWorkoutDialog() {
     $("#workout-modal").find(".modal-title").text("Edit workout");
     showWorkoutModal();
 }
-
 function addWorkoutScoreDialog() {
     console.log("addWorkoutScoreDialog() :: INFO: Activate card 'add workout score'");
 
@@ -67,7 +73,6 @@ function addWorkoutScoreDialog() {
         selScoreId = 0; // // set to 0 to identify its not a new score
     }
 }
-
 function searchWorkout() {
     console.log("searchWorkout() :: INFO: Searching workout");
 
@@ -84,7 +89,6 @@ function searchWorkout() {
         workoutElement.style.display = "";
     });
 }
-
 function saveWorkout() {
     console.log("saveWorkout() :: INFO: Saving workout...");
 
@@ -140,7 +144,6 @@ function saveWorkout() {
     console.log("saveWorkout() :: DEBUG: workout objext is " + JSON.stringify(workout));
     resetView();
 }
-
 function saveWorkoutScore() {
     console.log("saveWorkoutScore() :: INFO: Saving workout score");
 

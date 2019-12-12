@@ -28,12 +28,12 @@ function showSearchBar() {
     let searchbarInp = document.getElementById("inp-search-workout");
     searchbarInp.value = "";
     searchbar.style.display = "block";
-    container.style.margin = "107px 0 0 0";
+    container.style.margin = "107px 0 200px 0";
 }
 function hideSearchBar() {
     let container = document.getElementById("container");
     document.getElementById("searchbar").style.display = "none";
-    container.style.margin = "50px 0 0 0";
+    container.style.margin = "50px 0 200px 0";
 }
 function toggleSearchBar() {
     var searchbar = document.getElementById("searchbar");
@@ -47,8 +47,10 @@ function toggleSearchBar() {
 /**
  * Show/Hide buttons
  */
-function showNewWorkoutBtn() { document.getElementById("btn-new-workout").style.display = "block"; }
-function hideNewWorkoutBtn() { document.getElementById("btn-new-workout").style.display = "none"; }
+function showBtnNew() { document.getElementById("btn-new").style.display = "block"; }
+function hideBtnNew() { document.getElementById("btn-new").style.display = "none"; }
+function showBtnEdit() { document.getElementById("btn-edit").style.display = "block"; }
+function hideBtnEdit() { document.getElementById("btn-edit").style.display = "none"; }
 /**
  * Show/Hide views
  */
@@ -81,46 +83,106 @@ function activateTab(tab) {
     switch(tab) {
         case "dashboard":
             document.getElementById("nav-dashboard").classList.add("active");
-            hideNewWorkoutBtn();
+            hideBtnNew();
+            hideBtnEdit();
             showDashboardView();
             break;
         case "workout":
             showLoader();
             document.getElementById("nav-workout").classList.add("active");
-            showNewWorkoutBtn();
+            showBtnNew();
             break;
         case "movement":
             showLoader();
             document.getElementById("nav-movement").classList.add("active");
-            hideNewWorkoutBtn();
+            hideBtnNew();
+            hideBtnEdit();
             break;
         case "equipment":
             showLoader();
             document.getElementById("nav-equipment").classList.add("active");
-            hideNewWorkoutBtn();
+            hideBtnNew();
+            hideBtnEdit();
             break;
     }
 }
 
 /**
- * Toggle (show/hide) the cards
+ * Doing card stuff
  */
+// Toggle /show/hide) cards
 function toggleCard(element) {
     var parentElement = element.parentElement;
     var contentSel = element.nextElementSibling;
     var state = contentSel.style.display;
+    let workoutId = parentElement.id.replace("workout-id-", "");
 
     // Reset
     resetCards()
 
     if(state === "block") {
         contentSel.style.display = "none";
+        hideBtnEdit();
     } else {
         contentSel.style.display = "block";
         parentElement.classList.add("active");
         $(parentElement).find("canvas").attr("id", Config.CHART_ID); // add chart id to identify the element
         restGetWorkoutScores(getWorkoutIdFromDOM());
+        // Allow editing only if userId > 1
+        let index = getArrayIndexById(workouts, workoutId);
+        if(index != null) {
+            if(workouts[index].userId > 1) {
+                showBtnEdit();
+            } else {
+                console.log("Hide edit workout button, because its a main workout.");
+            }
+        }
     }
+}
+// Hide and reset selected cards
+function resetCards() {
+    let cardElements = document.querySelectorAll(".card");
+    cardElements.forEach((card, index, cardElements) => {
+        card.classList.remove("active");
+    });
+    let contentElements = document.querySelectorAll(".card-content");
+    contentElements.forEach((content, index, contentElements) => {
+        content.style.display = "none";
+    });
+}
+function isAnyCardActive() {
+    let cardElements = document.querySelectorAll(".card");
+    for (var card of cardElements) {
+        if (card.classList.contains('active')) {
+            console.log("Any card is active");
+            return true;
+        }
+    }
+    console.log("No card is active");
+    return false;
+}
+
+/**
+ * Reset the view
+ */
+function resetView() {
+    hideLoginModal();
+    hideWorkoutModal();
+    hideWorkoutScoreModal();
+    hideSearchBar();
+}
+
+/**
+ * Full reset the view
+ * Collaps menus etc, ...
+ */
+function fullResetView() {
+    resetView();
+    // Remove chart element
+    $("#" + Config.CHART_ID).removeAttr("id");
+    // reset cards
+    resetCards();
+    hideBtnEdit();
 }
 
 /**

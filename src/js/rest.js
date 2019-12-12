@@ -254,12 +254,14 @@ function restGetWorkoutById(id) {
                 console.log(JSON.stringify(retWorkout));
             }
 
-            var ret = refreshArrayObject("workout", retWorkout);
+            var ret = refreshArrayObject(workouts, retWorkout);
             workouts.sort(compareByString);
             if(ret == 0) { // workout was added
                 initWorkoutsOnView();
-            } else  { // workout was updated
+            } else if(ret == 1)  { // workout was updated
                 updateWorkoutsOnView();
+            } else {
+                console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
             }
         },
         error: function(data) {

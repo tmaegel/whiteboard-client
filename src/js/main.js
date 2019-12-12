@@ -95,15 +95,16 @@ function init() {
      */
     let inpSearchWorkout = document.getElementById("inp-search-workout");
     inpSearchWorkout.addEventListener("keyup", searchWorkout);
-    let btnNewWorkout = document.getElementById("btn-new-workout");
-    btnNewWorkout.addEventListener("click", function() {
-        console.log("click() :: #btn-new-workout :: INFO: Activate card 'new workout'");
-        fullResetView();
-        $("#add-workout-name").val("");
-        $("#add-workout-description").val("");
-        $("#workout-modal").find(".modal-title").text("New workout");
-        showWorkoutModal();
+    let btnNew = document.getElementById("btn-new");
+    btnNew.addEventListener("click", function() {
+        if(isAnyCardActive()) {
+            addWorkoutScoreDialog();
+        } else {
+            addWorkoutDialog();
+        }
     });
+    let btnEdit = document.getElementById("btn-edit");
+    btnEdit.addEventListener("click", editWorkoutDialog);
     let btnSaveWorkout = document.getElementById("btn-save-workout");
     btnSaveWorkout.addEventListener("click", saveWorkout);
     let btnSaveWorkoutScore = document.getElementById("btn-save-workout-score");

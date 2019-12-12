@@ -325,9 +325,9 @@ function concatWorkoutScores() {
  * @return 1 if object updated
  * @return -1 if wrong type specified
  */
-function refreshArrayObject(type, object) {
-    if (type == "workout") {
-        for (var i in workouts) {
+function refreshArrayObject(array, object) {
+    if (array != null) {
+        for (var i in array) {
             if(object.id == workouts[i].id) {
                 workouts[i] = object;
                 return 1;
@@ -343,16 +343,16 @@ function refreshArrayObject(type, object) {
 /**
  * Search in array for object by id and return it
  */
-function getArrayObject(type, id) {
-    if (type == "workout") {
-        for (var i in workouts) {
-            if(id == workouts[i].id) {
-                return workouts[i];
+function getArrayObjectById(array, id) {
+    if (array != null) {
+        for (var i in array) {
+            if(id == array[i].id) {
+                return array[i];
             }
         }
-        return 0;
+        return null;
     } else {
-        return -1;
+        return null;
     }
 }
 
@@ -360,12 +360,16 @@ function getArrayObject(type, id) {
  * Gets the index of object by the id
  */
 function getArrayIndexById(array, id) {
-    for(var i = 0; i < array.length; i++) {
-        if (parseInt(array[i].id) == id) {
-            return i;
+    if (array != null) {
+        for(var i = 0; i < array.length; i++) {
+            if (parseInt(array[i].id) == id) {
+                return i;
+            }
         }
+        return null;
+    } else {
+        return null;
     }
-    return null;
 }
 
 /**

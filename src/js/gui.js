@@ -15,6 +15,11 @@ function hideWorkoutScoreModal() { document.getElementById("workout-score-modal"
 function showChart() { document.getElementById(Config.CHART_ID).style.display = "block"; }
 function hideChart() { document.getElementById(Config.CHART_ID).style.display = "none"; }
 /**
+ * Show/Hide loader/spinner
+ */
+function showLoader() { document.getElementById("loader").style.display = "block"; }
+function hideLoader() { document.getElementById("loader").style.display = "none"; }
+/**
  * Show/Hide searchbar
  */
 function showSearchBar() {
@@ -45,6 +50,24 @@ function toggleSearchBar() {
 function showNewWorkoutBtn() { document.getElementById("btn-new-workout").style.display = "block"; }
 function hideNewWorkoutBtn() { document.getElementById("btn-new-workout").style.display = "none"; }
 /**
+ * Show/Hide views
+ */
+function showDashboardView() { document.getElementById("dashboard-view").style.display = "block"; }
+function hideDashboardView() { document.getElementById("dashboard-view").style.display = "none"; }
+function showWorkoutView() { document.getElementById("workout-view").style.display = "block"; }
+function hideWorkoutView() { document.getElementById("workout-view").style.display = "none"; }
+function showMovementView() { document.getElementById("movement-view").style.display = "block"; }
+function hideMovementView() { document.getElementById("movement-view").style.display = "none"; }
+function showEquipmentView() { document.getElementById("equipment-view").style.display = "block"; }
+function hideEquipmentView() { document.getElementById("equipment-view").style.display = "none"; }
+function hideAllViews() {
+    hideDashboardView();
+    hideWorkoutView();
+    hideMovementView();
+    hideEquipmentView();
+}
+
+/**
  * Handle tabs
  */
 function activateTab(tab) {
@@ -53,29 +76,26 @@ function activateTab(tab) {
     document.getElementById("nav-workout").classList.remove("active");
     document.getElementById("nav-movement").classList.remove("active");
     document.getElementById("nav-equipment").classList.remove("active");
-    document.getElementById('dashboard-view').style.display='none';
-    document.getElementById('workout-view').style.display='none';
-    document.getElementById('movement-view').style.display='none';
-    document.getElementById('equipment-view').style.display='none';
+    hideAllViews();
     // set
     switch(tab) {
         case "dashboard":
-            document.getElementById("dashboard-view").style.display='block';
             document.getElementById("nav-dashboard").classList.add("active");
             hideNewWorkoutBtn();
+            showDashboardView();
             break;
         case "workout":
-            document.getElementById("workout-view").style.display='block';
+            showLoader();
             document.getElementById("nav-workout").classList.add("active");
             showNewWorkoutBtn();
             break;
         case "movement":
-            document.getElementById("movement-view").style.display='block';
+            showLoader();
             document.getElementById("nav-movement").classList.add("active");
             hideNewWorkoutBtn();
             break;
         case "equipment":
-            document.getElementById("equipment-view").style.display='block';
+            showLoader();
             document.getElementById("nav-equipment").classList.add("active");
             hideNewWorkoutBtn();
             break;

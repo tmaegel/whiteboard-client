@@ -31,12 +31,6 @@ function init() {
     // other stuff
     console.clear();
     console.log("main :: init() :: INFO: Initializing");
-    // Hide other views
-    $("#content").hide();
-    $("#dashboard-view").hide();
-    $("#workout-view").hide();
-    $("#movement-view").hide();
-    $("#equipment-view").hide();
     // Initialize view
     fullResetView();
 

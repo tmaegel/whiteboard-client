@@ -13,8 +13,7 @@ function handleLogin() {
     if (user.loggedIn == true && user.token != undefined && user.token != null) {
         console.log("handleLogin() :: INFO :: Login successful.");
         hideLoginModal();
-        $("#content").show();
-        $("#dashboard-view").show();
+        showDashboardView();
         window.removeEventListener("keypress", handleLoginByKey); // Removing if successfully logged in
     } else {
         console.log("handleLogin() :: ERROR :: Login failed.");

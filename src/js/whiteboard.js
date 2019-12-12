@@ -136,6 +136,9 @@ function initWorkoutsOnView() {
         element.removeEventListener("click", addWorkoutScoreDialog); // Remove the old one
         element.addEventListener("click", addWorkoutScoreDialog);
     }
+
+    hideLoader();
+    showWorkoutView();
 }
 
 /**
@@ -275,6 +278,8 @@ function initMovementsOnView() {
         $(template).show();
         $(template).appendTo("#movement-view ul");
     }
+    hideLoader();
+    showMovementView();
 }
 
 /**
@@ -299,4 +304,6 @@ function initEquipmentOnView() {
         $(template).show();
         $(template).appendTo("#equipment-view ul");
     }
+    hideLoader();
+    showEquipmentView();
 }

@@ -105,10 +105,32 @@ function init() {
     });
     let btnEdit = document.getElementById("btn-edit");
     btnEdit.addEventListener("click", editWorkoutDialog);
-    let btnSaveWorkout = document.getElementById("btn-save-workout");
-    btnSaveWorkout.addEventListener("click", saveWorkout);
-    let btnSaveWorkoutScore = document.getElementById("btn-save-workout-score");
-    btnSaveWorkoutScore.addEventListener("click", saveWorkoutScore);
+    let btnOk = document.getElementById("btn-ok");
+    btnOk.addEventListener("click", function() {
+        if(isAnyCardActive()) {
+            if(document.getElementById("workout-modal").style.display == "block") {
+                console.log("click() :: btn-edit-workout-score :: INFO: action: saveWorkout()");
+                saveWorkout();
+            } else if(document.getElementById("workout-score-modal").style.display == "block") {
+                console.log("click() :: btn-edit-workout-score :: INFO: action: saveWorkoutScore()");
+                saveWorkoutScore();
+            } else {
+                console.log("click() :: btn-edit-workout-score :: ERROR: No action defined.");
+            }
+        } else {
+            saveWorkout();
+        }
+    });
+
+    //let btnSaveWorkout = document.getElementById("btn-save-workout");
+    //btnSaveWorkout.addEventListener("click", saveWorkout);
+    //let btnSaveWorkoutScore = document.getElementById("btn-save-workout-score");
+    //btnSaveWorkoutScore.addEventListener("click", saveWorkoutScore);
+    let btnClose = document.getElementById("btn-close");
+    btnClose.addEventListener("click", function() {
+        hideWorkoutModal();
+        hideWorkoutScoreModal();
+    });
 
     // Listener to refresh the graph
 	window.addEventListener("resize", function() {

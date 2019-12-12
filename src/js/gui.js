@@ -5,10 +5,38 @@
  */
 function showLoginModal() { document.getElementById("login-modal").style.display = "block"; }
 function hideLoginModal() { document.getElementById("login-modal").style.display = "none"; }
-function showWorkoutModal() { document.getElementById("workout-modal").style.display = "block"; }
-function hideWorkoutModal() { document.getElementById("workout-modal").style.display = "none"; }
-function showWorkoutScoreModal() { document.getElementById("workout-score-modal").style.display = "block"; }
-function hideWorkoutScoreModal() { document.getElementById("workout-score-modal").style.display = "none"; }
+function showWorkoutModal() {
+    hideBtnNew();
+    hideBtnEdit();
+    showBtnOk();
+    showBtnClose();
+    document.getElementById("workout-modal").style.display = "block";
+}
+function hideWorkoutModal() {
+    hideBtnOk();
+    hideBtnClose();
+    showBtnNew();
+    if(isAnyCardActive()) {
+        showBtnEdit();
+    }
+    document.getElementById("workout-modal").style.display = "none";
+}
+function showWorkoutScoreModal() {
+    hideBtnNew();
+    hideBtnEdit();
+    showBtnOk();
+    showBtnClose();
+    document.getElementById("workout-score-modal").style.display = "block";
+}
+function hideWorkoutScoreModal() {
+    hideBtnOk();
+    hideBtnClose();
+    showBtnNew();
+    if(isAnyCardActive()) {
+        showBtnEdit();
+    }
+    document.getElementById("workout-score-modal").style.display = "none";
+}
 /**
  * Show/Hide canvas
  */
@@ -51,6 +79,16 @@ function showBtnNew() { document.getElementById("btn-new").style.display = "bloc
 function hideBtnNew() { document.getElementById("btn-new").style.display = "none"; }
 function showBtnEdit() { document.getElementById("btn-edit").style.display = "block"; }
 function hideBtnEdit() { document.getElementById("btn-edit").style.display = "none"; }
+function showBtnOk() { document.getElementById("btn-ok").style.display = "block"; }
+function hideBtnOk() { document.getElementById("btn-ok").style.display = "none"; }
+function showBtnClose() { document.getElementById("btn-close").style.display = "block"; }
+function hideBtnClose() { document.getElementById("btn-close").style.display = "none"; }
+function hideAllBtns() {
+    hideBtnNew();
+    hideBtnEdit();
+    hideBtnOk();
+    hideBtnClose();
+}
 /**
  * Show/Hide views
  */
@@ -79,12 +117,11 @@ function activateTab(tab) {
     document.getElementById("nav-movement").classList.remove("active");
     document.getElementById("nav-equipment").classList.remove("active");
     hideAllViews();
+    hideAllBtns();
     // set
     switch(tab) {
         case "dashboard":
             document.getElementById("nav-dashboard").classList.add("active");
-            hideBtnNew();
-            hideBtnEdit();
             showDashboardView();
             break;
         case "workout":
@@ -95,14 +132,10 @@ function activateTab(tab) {
         case "movement":
             showLoader();
             document.getElementById("nav-movement").classList.add("active");
-            hideBtnNew();
-            hideBtnEdit();
             break;
         case "equipment":
             showLoader();
             document.getElementById("nav-equipment").classList.add("active");
-            hideBtnNew();
-            hideBtnEdit();
             break;
     }
 }
@@ -184,15 +217,3 @@ function fullResetView() {
     resetCards();
     hideBtnEdit();
 }
-
-/**
- * Close modals
- */
- let btnCancelWorkoutModal = document.getElementById("btn-cancel-workout-modal");
- btnCancelWorkoutModal.addEventListener("click", function() {
-     hideWorkoutModal();
- });
- let btnCancelWorkoutScoreModal = document.getElementById("btn-cancel-workout-score-modal");
- btnCancelWorkoutScoreModal.addEventListener("click", function() {
-     hideWorkoutScoreModal();
- });

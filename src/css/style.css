@@ -250,12 +250,20 @@ ul {
     border-radius: 50%;
 }
 #btn-new {
-    bottom: 50px;
-    right: 50px;
+    bottom: 30px;
+    right: 30px;
 }
 #btn-edit {
-    bottom: 120px;
-    right: 50px;
+    bottom: 100px;
+    right: 30px;
+}
+#btn-ok {
+    bottom: 30px;
+    right: 30px;
+}
+#btn-close {
+    bottom: 100px;
+    right: 30px;
 }
 
 /**

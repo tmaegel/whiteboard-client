@@ -11,26 +11,28 @@
     </head>
     <body>
 
-        <!-- notification -->
-        <div class="notification notification-ok"></div>
-        <div class="notification notification-info"></div>
-        <div class="notification notification-warn"></div>
-        <div class="notification notification-error"></div>
-
         <!-- bar -->
-        <div class="navbar">
-            <ul>
-                <li id="nav-dashboard" class="active"><i class="fa fa-home"></i></li>
-                <li id="nav-workout" class="tutorials"><i class="fa fa-heartbeat"></i></li>
-                <li id="nav-movement" class="about"><i class="fa fa-bicycle"></i></li>
-                <li id="nav-equipment" class="news"><i class="fa fa-cube"></i></li>
-                <li id="nav-searchbar"class="contact"><i class="fa fa-search"></i></li>
-            </ul>
-        </div>
+        <div id="topbar">
+            <!-- navbar -->
+            <div id="navbar">
+                <ul>
+                    <li id="nav-dashboard" class="active"><i class="fa fa-home"></i></li>
+                    <li id="nav-workout" class="tutorials"><i class="fa fa-heartbeat"></i></li>
+                    <li id="nav-movement" class="about"><i class="fa fa-bicycle"></i></li>
+                    <li id="nav-equipment" class="news"><i class="fa fa-cube"></i></li>
+                    <li id="nav-searchbar"class="contact"><i class="fa fa-search"></i></li>
+                </ul>
+            </div>
+            <!-- searchbar -->
+            <div id="searchbar">
+                <input id="inp-search-workout" type="text" placeholder="Search...">
+            </div>
 
-        <!-- search bar -->
-        <div id="searchbar">
-            <input id="inp-search-workout" type="text" placeholder="Search...">
+            <!-- notification -->
+            <div class="notification notification-ok"></div>
+            <div class="notification notification-info"></div>
+            <div class="notification notification-warn"></div>
+            <div class="notification notification-error"></div>
         </div>
 
         <!-- beginn login-modal -->
@@ -94,14 +96,14 @@
         <!-- overlay button -->
         <button id="btn-new-workout" class="btn-overlay fa fa-plus"></button>
 
-        <div class="container">
+        <div id="container">
 
             <!-- beginn dashboard-view -->
             <div id="dashboard-view">
                 <ul>
                     <li class="dashboard-template">
                         <div class="card-header">
-                            <h5 class="dashboard-name">...</h5>
+                            <h5 class="dashboard-name"></h5>
                         </div>
                     </li>
                 </ul>
@@ -113,12 +115,12 @@
                 <ul>
                     <li class="card workout-template">
                         <div class="card-header collapsible">
-                            <h4 class="workout-name">name</h4>
+                            <h4 class="workout-name"></h4>
                         </div>
                         <div class="card-content">
                             <div class="padding-left-sm padding-right-sm">
-                                <p class="workout-description">description</p>
-                                <p><small class="workout-datetime">datetime</small></p>
+                                <p class="workout-description"></p>
+                                <p><small class="workout-datetime"></small></p>
                             </div>
                             <div class="padding-left-sm padding-right-sm">
                                 <div class="w3-right-align">
@@ -130,10 +132,10 @@
                                 <canvas></canvas>
                                 <table class="scores">
                                     <tr class="score-template">
-                                         <td class="score-rx">rx</td>
-                                         <td class="score-value">score</td>
-                                         <td class="score-datetime">date</td>
-                                         <td class="score-note">note</td>
+                                         <td class="score-rx"></td>
+                                         <td class="score-value"></td>
+                                         <td class="score-datetime"></td>
+                                         <td class="score-note"></td>
                                          <td class="w3-right-align"><button type="button" class="fa fa-edit btn-edit-workout-score"></button></td>
                                      </tr>
                                 </table>
@@ -149,7 +151,7 @@
                 <ul>
                     <li class="card movement-template">
                         <div class="card-header">
-                            <h4 class="movement-name">...</h4>
+                            <h4 class="movement-name"></h4>
                         </div>
                     </li>
                 </ul>
@@ -161,7 +163,7 @@
                 <ul>
                     <li class="card equipment-template">
                         <div class="card-header">
-                            <h4 class="equipment-name">...</h4>
+                            <h4 class="equipment-name"></h4>
                         </div>
                     </li>
                 </ul>

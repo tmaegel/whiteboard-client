@@ -18,12 +18,18 @@ function hideChart() { document.getElementById(Config.CHART_ID).style.display = 
  * Show/Hide searchbar
  */
 function showSearchBar() {
+    let container = document.getElementById("container");
     let searchbar = document.getElementById("searchbar");
     let searchbarInp = document.getElementById("inp-search-workout");
     searchbarInp.value = "";
     searchbar.style.display = "block";
+    container.style.margin = "107px 0 0 0";
 }
-function hideSearchBar() { document.getElementById("searchbar").style.display = "none"; }
+function hideSearchBar() {
+    let container = document.getElementById("container");
+    document.getElementById("searchbar").style.display = "none";
+    container.style.margin = "50px 0 0 0";
+}
 function toggleSearchBar() {
     var searchbar = document.getElementById("searchbar");
     var state = window.getComputedStyle(searchbar).display;

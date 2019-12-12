@@ -9,21 +9,41 @@ h5 { font-size: 110%; }
 h6 { font-size: 105%; }
 
 /**
+ * container
+ */
+#container {
+    margin-top: 50px;
+    margin-bottom: 110px;
+}
+
+/**
+ * topbar
+ */
+#topbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1; /* Sit on top */
+    background-color: #eee;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+/**
  * navbar
  */
-.navbar {
+#navbar {
     width: 100%; /* Full-width */
     background-color: #eee; /* Dark-grey background */
     overflow: auto; /* Overflow due to float */
 }
-.navbar ul {
+#navbar ul {
     background-color: #eee;
     list-style: none;
     text-align: center;
     padding: 0;
     margin: 0;
 }
-.navbar li {
+#navbar li {
     float: left; /* Float links side by side */
     text-align: center; /* Center-align text */
     width: 20%; /* Equal width (5 icons with 20% width each = 100%) */
@@ -33,10 +53,10 @@ h6 { font-size: 105%; }
     font-size: 20px; /* Increased font size */
     cursor: pointer;
 }
-.navbar .active {
+#navbar .active {
     background-color: #ddd; /* Add an active/current color */
 }
-.navbar li:hover {
+#navbar li:hover {
     background-color: #ddd; /* Add a hover color */
 }
 
@@ -46,7 +66,7 @@ h6 { font-size: 105%; }
 #searchbar {
     width: 100%; /* Full-width */
     background-color: #ddd; /* Dark-grey background */
-    display: none;
+    display: none; /* Hidden by default */
 }
 #inp-search-workout {
     width: 100%; /* Full-width */
@@ -55,6 +75,20 @@ h6 { font-size: 105%; }
     color: gray !important;
     margin: 5px;
 }
+
+/**
+ * notification
+ */
+.notification {
+    display: none; /* Hidden by default */
+    width: 100%; /* Could be more or less, depending on screen size */
+    color: white !important;
+    padding: 16px !important;
+}
+.notification-ok { background-color: #4CAF50; }
+.notification-info { background-color: #2196F3; }
+.notification-warn { background-color: #ffeb3b; }
+.notification-error { background-color: #f44336; }
 
 /**
  * modal
@@ -68,48 +102,32 @@ h6 { font-size: 105%; }
      width: 100%; /* Full width */
      height: 100%; /* Full height */
      overflow: auto; /* Enable scroll if needed */
-     background-color: rgb(0,0,0); /* Fallback color */
-     background-color: rgba(255,255,255,0.25); /* Black w/ opacity */
+     background-color: rgb(255,255,255); /* Fallback color */
+     background-color: rgba(255,255,255,0.80); /* white w/ opacity */
  }
 .modal-title {
      color: gray;
+     margin: 0;
 }
 .modal-content {
     background-color: #fefefe;
-    margin: 75px auto; /* 75px from the top and centered */
+    margin: 0; /* 100px from the top and centered */
     border: 1px solid #ddd;
-    width: 90%; /* Could be more or less, depending on screen size */
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.15), 0 0 20px 0 rgba(0, 0, 0, 0.15);
+    width: 100%; /* Could be more or less, depending on screen size */
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 }
 .modal-header {
-    padding: 12px 24px !important;
+    padding: 16px !important;
     border-bottom: 1px solid #ddd;
 }
 .modal-body {
-    padding: 24px !important;
+    padding: 16px !important;
 }
 .modal-footer {
     border-top: 1px solid #ddd;
-    padding: 24px 24px !important;
-}
-
-/**
- * notification
- */
-.notification {
-    display: none; /* Hidden by default */
-    position: absolute;
-    margin-right: auto;
-    margin-left: auto;
-    width: 100%; /* Could be more or less, depending on screen size */
-    bottom: 0px;
-    color: white !important;
     padding: 16px !important;
 }
-.notification-ok { background-color: #4CAF50; }
-.notification-info { background-color: #2196F3; }
-.notification-warn { background-color: #ffeb3b; }
-.notification-error { background-color: #f44336; }
+
 /**
  * card
  */
@@ -191,14 +209,16 @@ ul {
     position: fixed;
     display: none; /* Hidden by default */
     z-index: 1; /* Sit on top */
-    bottom: 30px;
-    right: 30px;
-    padding: 24px;
+    bottom: 50px;
+    right: 50px;
+    padding: 16px 18px 16px 18px;
     color: white; /* White text color */
     border: 0;
+    width: 54px;
+    height: 54px;
     background-color: #4CAF50;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 45%;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    border-radius: 50%;
 }
 
 /**

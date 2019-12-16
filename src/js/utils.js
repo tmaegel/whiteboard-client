@@ -157,8 +157,6 @@ function timestampToSeconds(timestamp) {
         console.log("timestampToSeconds() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
         return false;
     }
-
-    return datetime;
 }
 
 /**
@@ -169,9 +167,9 @@ function timestampToSeconds(timestamp) {
  * Checks if value empty or contains spaces only
  */
 function empty(value) {
-    let regExp = /^ *$/g
+    let regExp = /^ *$/g;
 
-    return regExp.test(value)
+    return regExp.test(value);
 }
 
 /**
@@ -179,9 +177,9 @@ function empty(value) {
  * [a-zA-Z_0-9ÄÜÖäüöß .,:&'-()/]
  */
 function simpleRegex(value) {
-    let regExp = /^[\wÄÜÖäüöß .,:&'\-\(\)\/]*$/gm;
+    let regExp = /^[\wÄÜÖäüöß .,:&'\-()/]*$/gm;
 
-    return regExp.test(value)
+    return regExp.test(value);
 }
 
 /**
@@ -189,7 +187,7 @@ function simpleRegex(value) {
  * [a-zA-Z_0-9ÄÜÖäüöß .,:;"#!?&@_-()%/*+]
  */
 function extendedRegex(value) {
-    let regExp = /^[\w\sÄÜÖäüöß.,:;"'!?&@\_\-\(\)\%\/\*+]*$/g;
+    let regExp = /^[\w\sÄÜÖäüöß.,:;"'!?&@_\-()%/*+]*$/g;
 
     return regExp.test(value);
 }
@@ -209,7 +207,7 @@ function numRegex(value) {
  * e.g. 17.5.2019 19:21
  */
 function datetimeRegex(value) {
-    let regExp = /^\d{1,2}.\d{1,2}.\d{4}\ \d{1,2}([:]\d{1,2}){1,2}$/gm;
+    let regExp = /^\d{1,2}.\d{1,2}.\d{4} \d{1,2}([:]\d{1,2}){1,2}$/gm;
 
     return regExp.test(value);
 }

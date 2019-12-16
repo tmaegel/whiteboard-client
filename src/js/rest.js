@@ -10,7 +10,7 @@
  * synchronious ajax call
  */
 function restUserLogin() {
-     $.ajax({
+    $.ajax({
         type: "POST",
         url: Config.REST_SERVER + ":" + Config.REST_PORT + "/authentication/login",
         data: {
@@ -49,7 +49,7 @@ function restUserLogin() {
  * Ajax GET request /authentication/validate
  */
 function restUserValidate() {
-     $.ajax({
+    $.ajax({
         type: "GET",
         url: Config.REST_SERVER + ":" + Config.REST_PORT + "/authentication/validate",
         beforeSend : function(xhr) {
@@ -472,7 +472,7 @@ function restAddWorkoutScore(score) {
  * Updating workout score
  */
 function restUpdateWorkoutScore(score) {
-     $.ajax({
+    $.ajax({
         type: "POST",
         url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score/" + score.id,
         data: score,

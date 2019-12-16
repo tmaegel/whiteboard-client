@@ -20,7 +20,7 @@ function getWorkoutIdFromDOM() {
         }
     } else {
         console.log("getWorkoutIdFromDOM() :: WARN: Couldn't find any closest object");
-        return -1
+        return -1;
     }
 }
 

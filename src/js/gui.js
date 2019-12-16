@@ -151,7 +151,7 @@ function toggleCard(element) {
     let workoutId = parentElement.id.replace("workout-id-", "");
 
     // Reset
-    resetCards()
+    resetCards();
 
     if(state === "block") {
         contentSel.style.display = "none";

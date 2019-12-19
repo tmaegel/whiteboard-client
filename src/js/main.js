@@ -59,12 +59,10 @@ function init() {
      */
     let tabDashboardView = document.getElementById("nav-dashboard");
     tabDashboardView.addEventListener("click", function() {
-        fullResetView();
         activateTab("dashboard");
     });
     let tabWorkoutView = document.getElementById("nav-workout");
     tabWorkoutView.addEventListener("click", function() {
-        fullResetView();
         activateTab("workout");
 
         restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
@@ -77,14 +75,12 @@ function init() {
     });
     let tabMovementView = document.getElementById("nav-movement");
     tabMovementView.addEventListener("click", function() {
-        fullResetView();
         activateTab("movement");
 
         restGetMovements(); // get all movements objects
     });
     let tabEquipmentView = document.getElementById("nav-equipment");
     tabEquipmentView.addEventListener("click", function() {
-        fullResetView();
         activateTab("equipment");
 
         restGetEquipment(); // get all equipment objects

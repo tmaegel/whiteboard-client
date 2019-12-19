@@ -143,22 +143,31 @@ function hideAllBtns() {
  * Show/Hide views
  */
 function showDashboardView() {
+    setTitle("Dashboard");
     hideToolBar();
+    hideSearchBar();
     document.getElementById("dashboard-view").style.display = "block";
 }
 function hideDashboardView() { document.getElementById("dashboard-view").style.display = "none"; }
 function showWorkoutView() {
+    setTitle("Workouts");
+    showBtnNew();
     showToolBar();
+    hideSearchBar();
     document.getElementById("workout-view").style.display = "block";
 }
 function hideWorkoutView() { document.getElementById("workout-view").style.display = "none"; }
 function showMovementView() {
+    setTitle("Movements");
     hideToolBar();
+    hideSearchBar();
     document.getElementById("movement-view").style.display = "block";
 }
 function hideMovementView() { document.getElementById("movement-view").style.display = "none"; }
 function showEquipmentView() {
+    setTitle("Equipment");
     hideToolBar();
+    hideSearchBar();
     document.getElementById("equipment-view").style.display = "block";
 }
 function hideEquipmentView() { document.getElementById("equipment-view").style.display = "none"; }
@@ -192,23 +201,21 @@ function activateTab(tab) {
         case "dashboard":
             document.getElementById("nav-dashboard").classList.add("active");
             showDashboardView();
-            setTitle("Dashboard");
             break;
         case "workout":
             showLoader();
             document.getElementById("nav-workout").classList.add("active");
-            setTitle("Workouts");
-            showBtnNew();
+            showWorkoutView();
             break;
         case "movement":
             showLoader();
             document.getElementById("nav-movement").classList.add("active");
-            setTitle("Movemens");
+            showMovementView();
             break;
         case "equipment":
             showLoader();
             document.getElementById("nav-equipment").classList.add("active");
-            setTitle("Equipment");
+            showEquipmentView();
             break;
     }
 }
@@ -266,25 +273,4 @@ function isAnyCardActive() {
     }
     console.log("No card is active");
     return false;
-}
-
-/**
- * Reset the view
- */
-function resetView() {
-    hideWorkoutDialog();
-    hideWorkoutScoreDialog();
-    hideSearchBar();
-}
-
-/**
- * Full reset the view
- * Collaps menus etc, ...
- */
-function fullResetView() {
-    resetView();
-    // Remove chart element
-    $("#" + Config.CHART_ID).removeAttr("id");
-    // reset cards
-    resetCards();
 }

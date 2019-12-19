@@ -17,6 +17,12 @@ h6 { font-size: 105%; }
 }
 
 /**
+ *
+ */
+.workout-template { display: none; /* Hidden by default */ }
+.movement-template { display: none; /* Hidden by default */ }
+.equipment-template { display: none; /* Hidden by default */ }
+/**
  * views
  */
 #dashboard-view { display: none; /* Hidden by default */ }

@@ -32,7 +32,6 @@ function handleLoginByKey(e) {
  * Workouts
  */
 function addWorkoutDialog() {
-    fullResetView();
     $("#add-workout-name").val("");
     $("#add-workout-description").val("");
     setTitle("New workout");
@@ -142,7 +141,7 @@ function saveWorkout() {
     }
 
     console.log("saveWorkout() :: DEBUG: workout objext is " + JSON.stringify(workout));
-    resetView();
+    hideAllDialogs();
 }
 function saveWorkoutScore() {
     console.log("saveWorkoutScore() :: INFO: Saving workout score");
@@ -204,5 +203,5 @@ function saveWorkoutScore() {
     }
 
     console.log("saveWorkoutScore() :: DEBUG: score objext is " + JSON.stringify(score));
-    resetView();
+    hideAllDialogs();
 }

@@ -64,6 +64,7 @@ function restUserValidate() {
             }
         },
         error: function(data) {
+            showLoginModal();
             if(debug) {
                 console.log("restUserValidate() :: POST /authentication/validate :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));

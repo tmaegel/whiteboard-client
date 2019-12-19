@@ -42,7 +42,7 @@ function init() {
         user.token = cookie;
         restUserValidate();
     } else {
-        document.getElementById('login-modal').style.display='block';
+        showLoginModal();
     }
 
     /**

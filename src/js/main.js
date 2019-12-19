@@ -32,7 +32,9 @@ function init() {
     console.clear();
     console.log("main :: init() :: INFO: Initializing");
     // Initialize view
-    fullResetView();
+    hideAllDialogs();
+    hideAllViews();
+    hideAllBtns();
 
     /**
      * Cookie
@@ -42,13 +44,13 @@ function init() {
         user.token = cookie;
         restUserValidate();
     } else {
-        showLoginModal();
+        showLoginDialog();
     }
 
     /**
      * Login
      */
-    let btnLogin = document.getElementById("btn-login-user");
+    let btnLogin = document.getElementById("btn-login");
     btnLogin.addEventListener("click", restUserLogin);
     window.addEventListener("keypress", handleLoginByKey);
 
@@ -93,7 +95,7 @@ function init() {
     /**
      * Workout
      */
-    let inpSearchWorkout = document.getElementById("inp-search-workout");
+    let inpSearchWorkout = document.getElementById("searchbar");
     inpSearchWorkout.addEventListener("keyup", searchWorkout);
     let btnNew = document.getElementById("btn-new");
     btnNew.addEventListener("click", function() {
@@ -108,10 +110,10 @@ function init() {
     let btnOk = document.getElementById("btn-ok");
     btnOk.addEventListener("click", function() {
         if(isAnyCardActive()) {
-            if(document.getElementById("workout-modal").style.display == "block") {
+            if(document.getElementById("workout-dialog").style.display == "block") {
                 console.log("click() :: btn-edit-workout-score :: INFO: action: saveWorkout()");
                 saveWorkout();
-            } else if(document.getElementById("workout-score-modal").style.display == "block") {
+            } else if(document.getElementById("workout-score-dialog").style.display == "block") {
                 console.log("click() :: btn-edit-workout-score :: INFO: action: saveWorkoutScore()");
                 saveWorkoutScore();
             } else {
@@ -122,14 +124,10 @@ function init() {
         }
     });
 
-    //let btnSaveWorkout = document.getElementById("btn-save-workout");
-    //btnSaveWorkout.addEventListener("click", saveWorkout);
-    //let btnSaveWorkoutScore = document.getElementById("btn-save-workout-score");
-    //btnSaveWorkoutScore.addEventListener("click", saveWorkoutScore);
     let btnClose = document.getElementById("btn-close");
     btnClose.addEventListener("click", function() {
-        hideWorkoutModal();
-        hideWorkoutScoreModal();
+        hideWorkoutDialog();
+        hideWorkoutScoreDialog();
     });
 
     // Listener to refresh the graph

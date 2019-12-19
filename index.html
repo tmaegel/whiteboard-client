@@ -11,8 +11,16 @@
     </head>
     <body>
 
-        <!-- bar -->
+        <!-- topbar -->
         <div id="topbar">
+            <div id="titlebar">
+                <h1 id="page-title">Dashboard</h1>
+                <input id="searchbar" type="text" placeholder="Search...">
+                <div id="toolbar">
+                    <span id="nav-filter" class="fa fa-filter"></span>
+                    <span id="nav-searchbar" class="fa fa-search"></span>
+                </div>
+            </div>
             <!-- navbar -->
             <div id="navbar">
                 <ul>
@@ -20,14 +28,8 @@
                     <li id="nav-workout" class="tutorials"><i class="fa fa-heartbeat"></i></li>
                     <li id="nav-movement" class="about"><i class="fa fa-bicycle"></i></li>
                     <li id="nav-equipment" class="news"><i class="fa fa-cube"></i></li>
-                    <li id="nav-searchbar"class="contact"><i class="fa fa-search"></i></li>
                 </ul>
             </div>
-            <!-- searchbar -->
-            <div id="searchbar">
-                <input id="inp-search-workout" type="text" placeholder="Search...">
-            </div>
-
             <!-- notification -->
             <div class="notification notification-ok"></div>
             <div class="notification notification-info"></div>
@@ -35,57 +37,8 @@
             <div class="notification notification-error"></div>
         </div>
 
-        <!-- beginn login-modal -->
-        <div id="login-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Login</h4>
-                </div>
-                <div class="modal-body">
-                    <input id="input-username" type="text" class="w3-input margin-bottom-sm" placeholder="username">
-                    <input id="input-password" type="password" class="w3-input" placeholder="password">
-                </div>
-                <div class="modal-footer">
-                    <button id="btn-login-user" type="button">Login</button>
-                </div>
-            </div>
-        </div>
-        <!-- end login-modal -->
-
-        <!-- beginn workout-modal -->
-        <div id="workout-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Workout</h4>
-                </div>
-                <div class="modal-body">
-                    <input id="add-workout-name" class="w3-input margin-bottom-sm" type="text" placeholder="Workout name">
-                    <textarea id="add-workout-description" class="w3-input" rows="5" placeholder="Workout description"></textarea>
-                </div>
-            </div>
-        </div>
-        <!-- end workout-modal -->
-
-        <!-- beginn workout-score-modal -->
-        <div id="workout-score-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Score</h4>
-                </div>
-                <div class="modal-body">
-                    <input id="add-score-value" class="w3-input margin-bottom-sm" type="text" placeholder="Score">
-                    <input id="add-score-datetime" class="w3-input margin-bottom-sm" type="text" placeholder="dd.mm.YYYY HH:MM">
-                    <textarea id="add-score-note" class="w3-input margin-bottom-sm" rows="3" placeholder="Note"></textarea>
-                    <label class="chbx-container">Rx
-                        <input id="add-score-rx" type="checkbox" checked="false">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <!-- end workout-score-modal -->
-
         <!-- overlay buttons -->
+        <button id="btn-login" class="btn-overlay fa fa-check"></button>
         <button id="btn-ok" class="btn-overlay fa fa-check"></button>
         <button id="btn-close" class="btn-overlay fa fa-close"></button>
         <button id="btn-new" class="btn-overlay fa fa-plus"></button>
@@ -97,6 +50,32 @@
             <div id="loader">
                 <div id="spinner"></div>
             </div>
+
+            <!-- beginn login-dialog -->
+            <div id="login-dialog" class="dialog">
+                <input id="input-username" type="text" class="w3-input margin-bottom-sm" placeholder="username">
+                <input id="input-password" type="password" class="w3-input" placeholder="password">
+            </div>
+            <!-- end login-dialog -->
+
+            <!-- beginn workout-dialog -->
+            <div id="workout-dialog" class="dialog">
+                <input id="add-workout-name" class="w3-input margin-bottom-sm" type="text" placeholder="Workout name">
+                <textarea id="add-workout-description" class="w3-input" rows="5" placeholder="Workout description"></textarea>
+            </div>
+            <!-- end workout-dialog -->
+
+            <!-- beginn workout-score-dialog -->
+            <div id="workout-score-dialog" class="dialog">
+                <input id="add-score-value" class="w3-input margin-bottom-sm" type="text" placeholder="Score">
+                <input id="add-score-datetime" class="w3-input margin-bottom-sm" type="text" placeholder="dd.mm.YYYY HH:MM">
+                <textarea id="add-score-note" class="w3-input margin-bottom-sm" rows="3" placeholder="Note"></textarea>
+                <label class="chbx-container">Rx
+                    <input id="add-score-rx" type="checkbox" checked="false">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <!-- end workout-score-dialog -->
 
             <!-- beginn dashboard-view -->
             <div id="dashboard-view">

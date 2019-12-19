@@ -12,7 +12,7 @@
 function handleLogin() {
     if (user.loggedIn == true && user.token != undefined && user.token != null) {
         console.log("handleLogin() :: INFO :: Login successful.");
-        hideLoginModal();
+        hideLoginDialog();
         showDashboardView();
         window.removeEventListener("keypress", handleLoginByKey); // Removing if successfully logged in
     } else {
@@ -35,8 +35,8 @@ function addWorkoutDialog() {
     fullResetView();
     $("#add-workout-name").val("");
     $("#add-workout-description").val("");
-    $("#workout-modal").find(".modal-title").text("New workout");
-    showWorkoutModal();
+    setTitle("New workout");
+    showWorkoutDialog();
 }
 function editWorkoutDialog() {
     console.log("editWorkoutDialog() :: INFO: Activate card 'edit workout'");
@@ -55,8 +55,8 @@ function editWorkoutDialog() {
         $("#add-workout-description").val(workout.description);
     }
 
-    $("#workout-modal").find(".modal-title").text("Edit workout");
-    showWorkoutModal();
+    setTitle("Edit workout");
+    showWorkoutDialog();
 }
 function addWorkoutScoreDialog() {
     console.log("addWorkoutScoreDialog() :: INFO: Activate card 'add workout score'");
@@ -68,15 +68,15 @@ function addWorkoutScoreDialog() {
         $("#add-score-note").val("");
         $("#add-score-rx").prop("checked", false);
 
-        $("#workout-score-modal").find(".modal-title").text("Add workout score");
-        showWorkoutScoreModal();
+        setTitle("Add workout score");
+        showWorkoutScoreDialog();
         selScoreId = 0; // // set to 0 to identify its not a new score
     }
 }
 function searchWorkout() {
     console.log("searchWorkout() :: INFO: Searching workout");
 
-    let search = document.getElementById("inp-search-workout").value;
+    let search = document.getElementById("searchbar").value;
 
     let workoutElements = document.querySelectorAll(".workout");
     workoutElements.forEach((element, index, workoutElements) => {

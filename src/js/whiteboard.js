@@ -110,7 +110,7 @@ function getWorkoutScoreIdFromDOM(elem) {
     if(obj[0]) {
         id = $(obj).attr('id').replace("score-id-", "");
     } else {
-        // here gets the id via workoutScoreModal
+        // here gets the id via workoutScoreDialog
         console.log("getWorkoutScoreIdFromDOM() :: WARN: Couldn't find any closest object");
         id = 0;
     }
@@ -171,8 +171,8 @@ function addWorkoutScoresToView(workoutId) {
                     }
                     $("#add-score-datetime").val(getShortFormatTimestamp(scoreTimestamp));
                     $("#add-score-note").val(scoreNote);
-                    $("#workout-score-modal").find(".modal-title").text("Edit workout score");
-                    showWorkoutScoreModal();
+                    setTitle("Edit workout score");
+                    showWorkoutScoreDialog();
                     selScoreId = scoreId; // set to scoreId to identify its not a new score
                 });
 

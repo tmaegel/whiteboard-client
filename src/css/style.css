@@ -85,7 +85,7 @@ h6 { font-size: 105%; }
  * search bar
  */
 #searchbar {
-    width: 80%; /* Full-width */
+    width: 60%; /* Full-width */
     font-size: 20px;
     border: 0 !important;
     background-color: #eee; /* Dark-grey background */

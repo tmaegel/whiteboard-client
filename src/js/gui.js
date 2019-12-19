@@ -81,6 +81,7 @@ function showSearchBar() {
     let searchbar = document.getElementById("searchbar");
     searchbar.value = "";
     searchbar.style.display = "block";
+    searchbar.focus();
     hidePageTitle();
 }
 function hideSearchBar() {
@@ -141,13 +142,25 @@ function hideAllBtns() {
 /**
  * Show/Hide views
  */
-function showDashboardView() { document.getElementById("dashboard-view").style.display = "block"; }
+function showDashboardView() {
+    hideToolBar();
+    document.getElementById("dashboard-view").style.display = "block";
+}
 function hideDashboardView() { document.getElementById("dashboard-view").style.display = "none"; }
-function showWorkoutView() { document.getElementById("workout-view").style.display = "block"; }
+function showWorkoutView() {
+    showToolBar();
+    document.getElementById("workout-view").style.display = "block";
+}
 function hideWorkoutView() { document.getElementById("workout-view").style.display = "none"; }
-function showMovementView() { document.getElementById("movement-view").style.display = "block"; }
+function showMovementView() {
+    hideToolBar();
+    document.getElementById("movement-view").style.display = "block";
+}
 function hideMovementView() { document.getElementById("movement-view").style.display = "none"; }
-function showEquipmentView() { document.getElementById("equipment-view").style.display = "block"; }
+function showEquipmentView() {
+    hideToolBar();
+    document.getElementById("equipment-view").style.display = "block";
+}
 function hideEquipmentView() { document.getElementById("equipment-view").style.display = "none"; }
 function hideAllViews() {
     hideDashboardView();

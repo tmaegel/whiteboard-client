@@ -194,6 +194,7 @@ function activateTab(tab) {
     document.getElementById("nav-workout").classList.remove("active");
     document.getElementById("nav-movement").classList.remove("active");
     document.getElementById("nav-equipment").classList.remove("active");
+    resetCards();
     hideAllViews();
     hideAllBtns();
     // set

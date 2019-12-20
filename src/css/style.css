@@ -82,7 +82,7 @@ h6 { font-size: 105%; }
     cursor: pointer;
 }
 #navbar .active {
-    border-bottom: 5px solid #ddd;
+    border-bottom: 5px solid gray;
 }
 #navbar li:hover {
     border-bottom: 5px solid #ddd;

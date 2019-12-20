@@ -25,14 +25,14 @@ function hideNotificationInfo() { document.querySelector(".notification-info").s
 function hideNotificationWarn() { document.querySelector(".notification-warn").style.display = "none"; }
 function hideNotificationError() { document.querySelector(".notification-error").style.display = "none"; }
 
-function resetNotifications() {
+export function resetNotifications() {
     hideNotificationOk();
     hideNotificationInfo();
     hideNotificationWarn();
     hideNotificationError();
 }
 
-function addNotification(type, message) {
+export function addNotification(type, message) {
     resetNotifications();
 
     if(type == "ok") {

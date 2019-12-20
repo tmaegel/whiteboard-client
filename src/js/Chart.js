@@ -1,12 +1,14 @@
 'use strict';
 
+import * as config from "./config.js";
+
 // Chart
 
-class Chart {
+export class Chart {
 
     constructor(data) {
         this.data = data.reverse(); // data is already sorted
-        this.canvas = document.getElementById(Config.CHART_ID);
+        this.canvas = document.getElementById(config.CHART_ID);
         if(!this.canvas.getContext) {
             console.log("Chart.init() :: WARN :: No Canvas API is supported.");
         }

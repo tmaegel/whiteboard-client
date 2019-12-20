@@ -1,8 +1,7 @@
 'use strict';
 
 // User
-
-class User {
+export class User {
 
     constructor() {
         this.token;                 /**< token */

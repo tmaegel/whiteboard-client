@@ -1,8 +1,10 @@
 'use strict';
 
-// Workout
+/**
+ * WORKOUTS
+ */
 
-class Workout {
+export class Workout {
 
     constructor(id, datetime, name, description) {
         this.id = id;                       /**< id */

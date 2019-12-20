@@ -1,9 +1,18 @@
 'use strict';
 
+import * as main from "./main.js";
+import * as request from "./rest.js";
+import * as config from "./config.js";
+
+import * as timeHelper from "./time.js";
+import * as arrayHelper from "./array.js";
+import * as workoutHelper from "./workoutHelper.js";
+import * as scoreHelper from "./scoreHelper.js";
+
 /**
  * Show/Hide dialogs
  */
-function showLoginDialog() {
+export function showLoginDialog() {
     let container = document.getElementById("container");
     hideNavBar();
     hideToolBar();
@@ -13,7 +22,7 @@ function showLoginDialog() {
     document.getElementById("login-dialog").style.display = "block";
     container.style.margin = "57px 0 200px 0";
 }
-function hideLoginDialog() {
+export function hideLoginDialog() {
     let container = document.getElementById("container");
     hideBtnLogin();
     showNavBar();
@@ -21,15 +30,38 @@ function hideLoginDialog() {
     document.getElementById("login-dialog").style.display = "none";
     container.style.margin = "113px 0 200px 0";
 }
-function showWorkoutDialog() {
+export function showWorkoutDialog(edit) {
+    edit = edit || false;
+
+    let workout, workoutId;
+
     hideBtnNew();
     hideBtnEdit();
     showBtnOk();
     showBtnClose();
     hideWorkoutView();
+
+    if(edit) { // edit workout dialog
+        setTitle("Edit workout");
+        workoutId = workoutHelper.getWorkoutIdFromDOM();
+        if (workoutId > 0) {
+            workout = arrayHelper.getArrayObjectById(request.workouts, workoutId);
+        }
+        if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
+            console.log("editWorkoutDialog() :: ERROR: No workout in array found");
+        } else {
+            $("#add-workout-name").val(workout.name);
+            $("#add-workout-description").val(workout.description);
+        }
+    } else { // add workout dialog
+        setTitle("Add workout");
+        $("#add-workout-name").val("");
+        $("#add-workout-description").val("");
+    }
+
     document.getElementById("workout-dialog").style.display = "block";
 }
-function hideWorkoutDialog() {
+export function hideWorkoutDialog() {
     hideBtnOk();
     hideBtnClose();
     showBtnNew();
@@ -40,15 +72,59 @@ function hideWorkoutDialog() {
     }
     document.getElementById("workout-dialog").style.display = "none";
 }
-function showWorkoutScoreDialog() {
+export function showWorkoutScoreDialog(edit) {
+    edit = edit || false;
+
+    let workout, workoutId, score, scoreId, index;
+
     hideBtnNew();
     hideBtnEdit();
     showBtnOk();
     showBtnClose();
     hideWorkoutView();
+
+    if(edit) { // edit workout dialog
+        setTitle("Edit workout score");
+        workoutId = workoutHelper.getWorkoutIdFromDOM();
+        if (workoutId > 0) {
+            workout = arrayHelper.getArrayObjectById(request.workouts, workoutId);
+        }
+        if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
+            console.log("editWorkoutDialog() :: ERROR: No workout in array found");
+        } else {
+            scoreId = scoreHelper.getWorkoutScoreIdFromDOM();
+            if (scoreId > 0) {
+                index = arrayHelper.getArrayIndexById(request.workouts, workoutId);
+                console.log(JSON.stringify(request.workouts[index]));
+                if(index != null) {
+                    score = arrayHelper.getArrayObjectById(request.workouts[index].score, scoreId);
+                }
+            }
+            if(score == 0 || score == -1 || score == null || score == undefined) {
+                console.log("editWorkoutDialog() :: ERROR: No workout score in array found");
+            } else {
+                $("#add-score-value").val(score.score);
+                if(score.rx == "true") {
+                    $("#add-score-rx").prop("checked", true);
+                } else {
+                    $("#add-score-rx").prop("checked", false);
+                }
+                $("#add-score-datetime").val(timeHelper.getShortFormatTimestamp(score.timestamp));
+                $("#add-score-note").val(score.note);
+            }
+        }
+    } else { // add workout dialog
+        setTitle("Add workout score");
+        $("#add-score-value").val("");
+        $("#add-score-datetime").val(timeHelper.getShortFormatTimestamp());
+        $("#add-score-note").val("");
+        $("#add-score-rx").prop("checked", false);
+
+    }
+
     document.getElementById("workout-score-dialog").style.display = "block";
 }
-function hideWorkoutScoreDialog() {
+export function hideWorkoutScoreDialog() {
     hideBtnOk();
     hideBtnClose();
     showBtnNew();
@@ -59,36 +135,37 @@ function hideWorkoutScoreDialog() {
     }
     document.getElementById("workout-score-dialog").style.display = "none";
 }
-function hideAllDialogs() {
+export function hideAllDialogs() {
     hideLoginDialog();
     hideWorkoutDialog();
     hideWorkoutScoreDialog();
 }
+
 /**
  * Show/Hide canvas
  */
-function showChart() { document.getElementById(Config.CHART_ID).style.display = "block"; }
-function hideChart() { document.getElementById(Config.CHART_ID).style.display = "none"; }
+export function showChart() { document.getElementById(config.CHART_ID).style.display = "block"; }
+export function hideChart() { document.getElementById(config.CHART_ID).style.display = "none"; }
 /**
  * Show/Hide loader/spinner
  */
-function showLoader() { document.getElementById("loader").style.display = "block"; }
-function hideLoader() { document.getElementById("loader").style.display = "none"; }
+export function showLoader() { document.getElementById("loader").style.display = "block"; }
+export function hideLoader() { document.getElementById("loader").style.display = "none"; }
 /**
  * Show/Hide searchbar
  */
-function showSearchBar() {
+export function showSearchBar() {
     let searchbar = document.getElementById("searchbar");
     searchbar.value = "";
     searchbar.style.display = "block";
     searchbar.focus();
     hidePageTitle();
 }
-function hideSearchBar() {
+export function hideSearchBar() {
     document.getElementById("searchbar").style.display = "none";
     showPageTitle();
 }
-function toggleSearchBar() {
+export function toggleSearchBar() {
     var searchbar = document.getElementById("searchbar");
     var state = window.getComputedStyle(searchbar).display;
     if(state === "none") {
@@ -97,42 +174,59 @@ function toggleSearchBar() {
         hideSearchBar();
     }
 }
+export function doSearch() {
+    console.log("searchWorkout() :: INFO: Searching workout");
+
+    let search = document.getElementById("searchbar").value;
+
+    let workoutElements = document.querySelectorAll(".workout");
+    workoutElements.forEach((element, index, workoutElements) => {
+        element.style.display = "none";
+    });
+
+    let elements = arrayHelper.getArrayObjectsByName(request.workouts, search);
+    elements.forEach((element, index, elements) => {
+        let workoutElement = document.getElementById("workout-id-" + element.id);
+        workoutElement.style.display = "";
+    });
+}
+
 /**
  * Show/Hide titlebar
  */
-function hideTitleBar() { document.getElementById("titlebar").style.display = "none"; }
-function showTitleBar() { document.getElementById("titlebar").style.display = "block"; }
+export function hideTitleBar() { document.getElementById("titlebar").style.display = "none"; }
+export function showTitleBar() { document.getElementById("titlebar").style.display = "block"; }
 
 /**
  * Show/Hide navbar
  */
-function hideNavBar() { document.getElementById("navbar").style.display = "none"; }
-function showNavBar() { document.getElementById("navbar").style.display = "block"; }
+export function hideNavBar() { document.getElementById("navbar").style.display = "none"; }
+export function showNavBar() { document.getElementById("navbar").style.display = "block"; }
 /**
  * Show/Hide pageTitle
  */
-function hidePageTitle() { document.getElementById("page-title").style.display = "none"; }
-function showPageTitle() { document.getElementById("page-title").style.display = "block"; }
+export function hidePageTitle() { document.getElementById("page-title").style.display = "none"; }
+export function showPageTitle() { document.getElementById("page-title").style.display = "block"; }
 /**
  * Show/Hide toolbar
  */
-function hideToolBar() { document.getElementById("toolbar").style.display = "none"; }
-function showToolBar() { document.getElementById("toolbar").style.display = "block"; }
+export function hideToolBar() { document.getElementById("toolbar").style.display = "none"; }
+export function showToolBar() { document.getElementById("toolbar").style.display = "block"; }
 
 /**
  * Show/Hide buttons
  */
-function showBtnLogin() { document.getElementById("btn-login").style.display = "block"; }
-function hideBtnLogin() { document.getElementById("btn-login").style.display = "none"; }
-function showBtnNew() { document.getElementById("btn-new").style.display = "block"; }
-function hideBtnNew() { document.getElementById("btn-new").style.display = "none"; }
-function showBtnEdit() { document.getElementById("btn-edit").style.display = "block"; }
-function hideBtnEdit() { document.getElementById("btn-edit").style.display = "none"; }
-function showBtnOk() { document.getElementById("btn-ok").style.display = "block"; }
-function hideBtnOk() { document.getElementById("btn-ok").style.display = "none"; }
-function showBtnClose() { document.getElementById("btn-close").style.display = "block"; }
-function hideBtnClose() { document.getElementById("btn-close").style.display = "none"; }
-function hideAllBtns() {
+export function showBtnLogin() { document.getElementById("btn-login").style.display = "block"; }
+export function hideBtnLogin() { document.getElementById("btn-login").style.display = "none"; }
+export function showBtnNew() { document.getElementById("btn-new").style.display = "block"; }
+export function hideBtnNew() { document.getElementById("btn-new").style.display = "none"; }
+export function showBtnEdit() { document.getElementById("btn-edit").style.display = "block"; }
+export function hideBtnEdit() { document.getElementById("btn-edit").style.display = "none"; }
+export function showBtnOk() { document.getElementById("btn-ok").style.display = "block"; }
+export function hideBtnOk() { document.getElementById("btn-ok").style.display = "none"; }
+export function showBtnClose() { document.getElementById("btn-close").style.display = "block"; }
+export function hideBtnClose() { document.getElementById("btn-close").style.display = "none"; }
+export function hideAllBtns() {
     hideBtnLogin();
     hideBtnNew();
     hideBtnEdit();
@@ -142,36 +236,36 @@ function hideAllBtns() {
 /**
  * Show/Hide views
  */
-function showDashboardView() {
+export function showDashboardView() {
     setTitle("Dashboard");
     hideToolBar();
     hideSearchBar();
     document.getElementById("dashboard-view").style.display = "block";
 }
-function hideDashboardView() { document.getElementById("dashboard-view").style.display = "none"; }
-function showWorkoutView() {
+export function hideDashboardView() { document.getElementById("dashboard-view").style.display = "none"; }
+export function showWorkoutView() {
     setTitle("Workouts");
     showBtnNew();
     showToolBar();
     hideSearchBar();
     document.getElementById("workout-view").style.display = "block";
 }
-function hideWorkoutView() { document.getElementById("workout-view").style.display = "none"; }
-function showMovementView() {
+export function hideWorkoutView() { document.getElementById("workout-view").style.display = "none"; }
+export function showMovementView() {
     setTitle("Movements");
     hideToolBar();
     hideSearchBar();
     document.getElementById("movement-view").style.display = "block";
 }
-function hideMovementView() { document.getElementById("movement-view").style.display = "none"; }
-function showEquipmentView() {
+export function hideMovementView() { document.getElementById("movement-view").style.display = "none"; }
+export function showEquipmentView() {
     setTitle("Equipment");
     hideToolBar();
     hideSearchBar();
     document.getElementById("equipment-view").style.display = "block";
 }
-function hideEquipmentView() { document.getElementById("equipment-view").style.display = "none"; }
-function hideAllViews() {
+export function hideEquipmentView() { document.getElementById("equipment-view").style.display = "none"; }
+export function hideAllViews() {
     hideDashboardView();
     hideWorkoutView();
     hideMovementView();
@@ -181,14 +275,14 @@ function hideAllViews() {
 /**
  * Set title
  */
-function setTitle(title) {
+export function setTitle(title) {
     document.getElementById("page-title").innerHTML = title;
 }
 
 /**
  * Handle tabs
  */
-function activateTab(tab) {
+export function activateTab(tab) {
     // unset
     document.getElementById("nav-dashboard").classList.remove("active");
     document.getElementById("nav-workout").classList.remove("active");
@@ -225,8 +319,8 @@ function activateTab(tab) {
 /**
  * Doing card stuff
  */
-// Toggle /show/hide) cards
-function toggleCard(element) {
+// Toggle (show/hide) cards
+export function toggleCard(element) {
     var parentElement = element.parentElement;
     var contentSel = element.nextElementSibling;
     var state = contentSel.style.display;
@@ -241,12 +335,12 @@ function toggleCard(element) {
     } else {
         contentSel.style.display = "block";
         parentElement.classList.add("active");
-        $(parentElement).find("canvas").attr("id", Config.CHART_ID); // add chart id to identify the element
-        restGetWorkoutScores(getWorkoutIdFromDOM());
+        $(parentElement).find("canvas").attr("id", config.CHART_ID); // add chart id to identify the element
+        request.restGetWorkoutScores(workoutHelper.getWorkoutIdFromDOM());
         // Allow editing only if userId > 1
-        let index = getArrayIndexById(workouts, workoutId);
+        let index = arrayHelper.getArrayIndexById(request.workouts, workoutId);
         if(index != null) {
-            if(workouts[index].userId > 1) {
+            if(request.workouts[index].userId > 1) {
                 showBtnEdit();
             } else {
                 console.log("Hide edit workout button, because its a main workout.");
@@ -254,8 +348,30 @@ function toggleCard(element) {
         }
     }
 }
+// Toggle (select/unselect) cardItem
+export function toggleCardItem(element) {
+    if($(element).hasClass("select")) {
+        $(".score").removeClass("select");
+        hideBtnEdit();
+    } else {
+        $(".score").removeClass("select");
+        $(element).addClass("select");
+        showBtnEdit();
+    }
+}
+export function isAnyCardItemActive() {
+    let items = document.querySelectorAll(".score");
+    for (var item of items) {
+        if (item.classList.contains('select')) {
+            console.log("Any item is active");
+            return true;
+        }
+    }
+    console.log("No item is active");
+    return false;
+}
 // Hide and reset selected cards
-function resetCards() {
+export function resetCards() {
     let cardElements = document.querySelectorAll(".card");
     cardElements.forEach((card, index, cardElements) => {
         card.classList.remove("active");
@@ -265,9 +381,9 @@ function resetCards() {
         content.style.display = "none";
     });
 }
-function isAnyCardActive() {
-    let cardElements = document.querySelectorAll(".card");
-    for (var card of cardElements) {
+export function isAnyCardActive() {
+    let cards = document.querySelectorAll(".card");
+    for (var card of cards) {
         if (card.classList.contains('active')) {
             console.log("Any card is active");
             return true;
@@ -275,4 +391,24 @@ function isAnyCardActive() {
     }
     console.log("No card is active");
     return false;
+}
+
+// event function to handle the login mechanism
+export function handleLogin() {
+    if (main.user.loggedIn == true && main.user.token != undefined && main.user.token != null) {
+        console.log("handleLogin() :: INFO :: Login successful.");
+        hideLoginDialog();
+        showDashboardView();
+        window.removeEventListener("keypress", handleLoginByKey); // Removing if successfully logged in
+    } else {
+        console.log("handleLogin() :: ERROR :: Login failed.");
+    }
+}
+
+// event function to handle the login mechanism by pressing the enter key
+export function handleLoginByKey(e) {
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode == '13') {
+        request.restUserLogin();
+    }
 }

@@ -1,29 +1,18 @@
 'use strict';
 
-// Config
-var Config = Config || {
-    REST_SERVER: "https://localhost",
-    REST_PORT: "3000",
-    DOMAIN: "localhost",
-    CHART_ID: "chart"
-};
+import { User } from "./User.js";
 
-let debug = true;
+import * as cookie from "./cookie.js";
+import * as request from "./rest.js";
+import * as guiHelper from "./gui.js";
 
-// create static user
-let user = new User();
+import * as workoutHelper from "./workoutHelper.js";
+import * as scoreHelper from "./scoreHelper.js";
 
-// create an array equipment
-let equipment = [];
-// create an array movements
-let movements = [];
-// create an array workouts
-let workouts = [];
-// workout chart object
-let workoutChart;
-
-// @todo
-let selScoreId = 0;
+// create an arrays
+export var
+    user = new User(),
+    workoutChart;
 
 window.addEventListener("load", init);
 
@@ -32,40 +21,40 @@ function init() {
     console.clear();
     console.log("main :: init() :: INFO: Initializing");
     // Initialize view
-    hideAllDialogs();
-    hideAllViews();
-    hideAllBtns();
+    guiHelper.hideAllDialogs();
+    guiHelper.hideAllViews();
+    guiHelper.hideAllBtns();
 
     /**
      * Cookie
      */
-    let cookie = readCookie("token");
-    if(cookie != null) {
-        user.token = cookie;
-        restUserValidate();
+    let session = cookie.readCookie("token");
+    if(session != null) {
+        user.token = session;
+        request.restUserValidate();
     } else {
-        showLoginDialog();
+        guiHelper.showLoginDialog();
     }
 
     /**
      * Login
      */
     let btnLogin = document.getElementById("btn-login");
-    btnLogin.addEventListener("click", restUserLogin);
-    window.addEventListener("keypress", handleLoginByKey);
+    btnLogin.addEventListener("click", request.restUserLogin);
+    window.addEventListener("keypress", guiHelper.handleLoginByKey);
 
     /**
      * Nav
      */
     let tabDashboardView = document.getElementById("nav-dashboard");
     tabDashboardView.addEventListener("click", function() {
-        activateTab("dashboard");
+        guiHelper.activateTab("dashboard");
     });
     let tabWorkoutView = document.getElementById("nav-workout");
     tabWorkoutView.addEventListener("click", function() {
-        activateTab("workout");
+        guiHelper.activateTab("workout");
 
-        restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
+        request.restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
 
         // Show all workouts
         let workoutElements = document.querySelectorAll(".workout");
@@ -75,55 +64,61 @@ function init() {
     });
     let tabMovementView = document.getElementById("nav-movement");
     tabMovementView.addEventListener("click", function() {
-        activateTab("movement");
+        guiHelper.activateTab("movement");
 
-        restGetMovements(); // get all movements objects
+        request.restGetMovements(); // get all movements objects
     });
     let tabEquipmentView = document.getElementById("nav-equipment");
     tabEquipmentView.addEventListener("click", function() {
-        activateTab("equipment");
+        guiHelper.activateTab("equipment");
 
-        restGetEquipment(); // get all equipment objects
+        request.restGetEquipment(); // get all equipment objects
     });
     let tabSearchBar = document.getElementById("nav-searchbar");
-    tabSearchBar.addEventListener("click", toggleSearchBar);
+    tabSearchBar.addEventListener("click", guiHelper.toggleSearchBar);
 
     /**
      * Workout
      */
     let inpSearchWorkout = document.getElementById("searchbar");
-    inpSearchWorkout.addEventListener("keyup", searchWorkout);
+    inpSearchWorkout.addEventListener("keyup", guiHelper.doSearch);
     let btnNew = document.getElementById("btn-new");
     btnNew.addEventListener("click", function() {
-        if(isAnyCardActive()) {
-            addWorkoutScoreDialog();
+        if(guiHelper.isAnyCardActive()) {
+            guiHelper.showWorkoutScoreDialog(); // open add workout score dialog
         } else {
-            addWorkoutDialog();
+            guiHelper.showWorkoutDialog(); // open add workout dialog
         }
     });
     let btnEdit = document.getElementById("btn-edit");
-    btnEdit.addEventListener("click", editWorkoutDialog);
+    btnEdit.addEventListener("click", function() {
+        if(guiHelper.isAnyCardItemActive()) {
+            guiHelper.showWorkoutScoreDialog(true); // open edit workout score dialog
+        } else {
+            guiHelper.showWorkoutDialog(true); // open edit workout dialog
+        }
+    });
     let btnOk = document.getElementById("btn-ok");
     btnOk.addEventListener("click", function() {
-        if(isAnyCardActive()) {
+        if(guiHelper.isAnyCardActive()) {
             if(document.getElementById("workout-dialog").style.display == "block") {
-                console.log("click() :: btn-edit-workout-score :: INFO: action: saveWorkout()");
-                saveWorkout();
+                console.log("click() :: btn-ok :: INFO: action: saveWorkout()");
+                workoutHelper.saveWorkout();
             } else if(document.getElementById("workout-score-dialog").style.display == "block") {
-                console.log("click() :: btn-edit-workout-score :: INFO: action: saveWorkoutScore()");
-                saveWorkoutScore();
+                console.log("click() :: btn-ok :: INFO: action: saveWorkoutScore()");
+                scoreHelper.saveWorkoutScore();
             } else {
-                console.log("click() :: btn-edit-workout-score :: ERROR: No action defined.");
+                console.log("click() :: btn-ok :: ERROR: No action defined.");
             }
         } else {
-            saveWorkout();
+            workoutHelper.saveWorkout();
         }
     });
 
     let btnClose = document.getElementById("btn-close");
     btnClose.addEventListener("click", function() {
-        hideWorkoutDialog();
-        hideWorkoutScoreDialog();
+        guiHelper.hideWorkoutDialog();
+        guiHelper.hideWorkoutScoreDialog();
     });
 
     // Listener to refresh the graph

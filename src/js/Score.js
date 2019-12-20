@@ -1,8 +1,11 @@
 'use strict';
 
-// Score
+/**
+ * SCORES
+ */
 
-class Score {
+// Score
+export class Score {
 
     constructor(id, workoutId, score, rx, datetime, note) {
         this.id = id;                       /**< id */

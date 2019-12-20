@@ -1,5 +1,23 @@
 'use strict';
 
+import * as main from "./main.js";
+import * as arrayHelper from "./array.js";
+import * as config from "./config.js";
+import * as cookie from "./cookie.js";
+import * as guiHelper from "./gui.js";
+import * as notification from "./notification.js";
+
+import * as workoutHelper from "./workoutHelper.js";
+import * as scoreHelper from "./scoreHelper.js";
+import * as movementHelper from "./movementHelper.js";
+import * as equipmentHelper from "./equipmentHelper.js";
+
+
+export let
+    equipment = [],
+    movements = [],
+    workouts = [];
+
 /**
  * Ajax reuests
  * authentication
@@ -9,10 +27,10 @@
  * Ajax POST request /authentication/login
  * synchronious ajax call
  */
-function restUserLogin() {
+export function restUserLogin() {
     $.ajax({
         type: "POST",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/authentication/login",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/authentication/login",
         data: {
             name: $("#input-username").val(),
             password: CryptoJS.SHA256($("#input-password").val()).toString()
@@ -21,17 +39,17 @@ function restUserLogin() {
         success: function(data) {
             // store the token
             // @todo when expired the token?
-            user.token = data.token;
-            user.loggedIn = true;
-            createCookie("token", user.token, 7);
-            handleLogin();
+            main.user.token = data.token;
+            main.user.loggedIn = true;
+            cookie.createCookie("token", main.user.token, 7);
+            guiHelper.handleLogin();
 
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(data));
             }
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restUserLogin() :: POST /authentication/login :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -39,7 +57,7 @@ function restUserLogin() {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -48,24 +66,24 @@ function restUserLogin() {
 /**
  * Ajax GET request /authentication/validate
  */
-function restUserValidate() {
+export function restUserValidate() {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/authentication/validate",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/authentication/validate",
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
-            user.loggedIn = true;
-            handleLogin();
+            main.user.loggedIn = true;
+            guiHelper.handleLogin();
 
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(data));
             }
         },
         error: function(data) {
-            showLoginDialog();
-            if(debug) {
+            guiHelper.showLoginDialog();
+            if(config.DEBUG) {
                 console.log("restUserValidate() :: POST /authentication/validate :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -73,7 +91,7 @@ function restUserValidate() {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -88,25 +106,25 @@ function restUserValidate() {
 /**
  * Ajax GET request /equipment
  */
-function restGetEquipment() {
+export function restGetEquipment() {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/equipment",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/equipment",
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             equipment = JSON.parse(data);
-            equipment.sort(compareByString);
+            equipment.sort(arrayHelper.compareByString);
 
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(equipment));
             }
 
-            initEquipmentOnView();
+            equipmentHelper.initEquipmentOnView();
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restGetEquipment() :: GET /equipment :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -114,7 +132,7 @@ function restGetEquipment() {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restGetEquipment() :: GET /equipment :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -128,25 +146,25 @@ function restGetEquipment() {
 /**
  * Ajax GET request /movement
  */
-function restGetMovements() {
+export function restGetMovements() {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/movement",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/movement",
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             movements = JSON.parse(data);
-            movements.sort(compareByString);
+            movements.sort(arrayHelper.compareByString);
 
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(movements));
             }
 
-            initMovementsOnView();
+            movementHelper.initMovementsOnView();
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restGetMovements() :: GET /movement :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -154,7 +172,7 @@ function restGetMovements() {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restGetMovements() :: GET /movement :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -168,26 +186,26 @@ function restGetMovements() {
 /**
  * Ajax GET request /workout
  */
-function restGetWorkouts() {
+export function restGetWorkouts() {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/workout",
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             workouts = JSON.parse(data);
-            workouts.sort(compareByString);
+            workouts.sort(arrayHelper.compareByString);
 
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(workouts));
             }
 
-            initWorkoutsOnView();
-            resetNotifications();
+            workoutHelper.initWorkoutsOnView();
+            notification.resetNotifications();
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restGetWorkouts() :: GET /workout :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -195,7 +213,7 @@ function restGetWorkouts() {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restGetWorkouts() :: GET /workout :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -204,28 +222,28 @@ function restGetWorkouts() {
 /**
  * Ajax GET request /workout/score/:workoutId
  */
-function restGetWorkoutScores(id) {
+export function restGetWorkoutScores(id) {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout/score/" + id,
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/workout/score/" + id,
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
-            let index = getArrayIndexById(workouts, id);
+            let index = arrayHelper.getArrayIndexById(workouts, id);
             if(index != null) {
                 workouts[index].score = JSON.parse(data);
-                workouts[index].score.sort(compareByTimestamp).reverse();
+                workouts[index].score.sort(arrayHelper.compareByTimestamp).reverse();
 
-                if(debug) {
+                if(config.DEBUG) {
                     console.log(JSON.stringify(workouts[index].score));
                 }
             }
 
-            addWorkoutScoresToView(id);
+            scoreHelper.addWorkoutScoresToView(id);
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -233,7 +251,7 @@ function restGetWorkoutScores(id) {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -242,31 +260,31 @@ function restGetWorkoutScores(id) {
 /**
  * Ajax GET request /workout/:workoutId
  */
-function restGetWorkoutById(id) {
+export function restGetWorkoutById(id) {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout/" + id,
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/workout/" + id,
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             let retWorkout = JSON.parse(data);
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(retWorkout));
             }
 
-            var ret = refreshArrayObject(workouts, retWorkout);
-            workouts.sort(compareByString);
+            var ret = arrayHelper.refreshArrayObject(workouts, retWorkout);
+            workouts.sort(arrayHelper.compareByString);
             if(ret == 0) { // workout was added
-                initWorkoutsOnView();
+                workoutHelper.initWorkoutsOnView();
             } else if(ret == 1)  { // workout was updated
-                updateWorkoutsOnView();
+                workoutHelper.updateWorkoutsOnView();
             } else {
                 console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
             }
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -274,7 +292,7 @@ function restGetWorkoutById(id) {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -284,18 +302,18 @@ function restGetWorkoutById(id) {
  * Ajax POST request /workout
  * Add new workout
  */
-function restAddWorkout(workout) {
+export function restAddWorkout(workout) {
     $.ajax({
         type: "POST",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/workout",
         data: workout,
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             console.log(JSON.stringify(data));
             let retWorkout = JSON.parse(data);
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restAddWorkout() :: POST /workout :: SUCCESS: Workout was created.");
                 console.log(JSON.stringify(retWorkout));
             }
@@ -303,10 +321,10 @@ function restAddWorkout(workout) {
             // Getting fresh state of workout and update the view
             restGetWorkoutById(retWorkout.id);
 
-            addNotification("ok", "Success: Workout was created.", true);
+            notification.addNotification("ok", "Success: Workout was created.", true);
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restAddWorkout() :: POST /workout :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -314,7 +332,7 @@ function restAddWorkout(workout) {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restAddWorkout() :: POST /workout :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -324,16 +342,16 @@ function restAddWorkout(workout) {
  * Ajax POST request /workout/id
  * Updating workout
  */
-function restUpdateWorkout(workout) {
+export function restUpdateWorkout(workout) {
     $.ajax({
         type: "POST",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/workout/" + workout.id,
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/workout/" + workout.id,
         data: workout,
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
                 console.log(JSON.stringify(data));
             }
@@ -341,10 +359,10 @@ function restUpdateWorkout(workout) {
             // Getting fresh state of workout and update the view
             restGetWorkoutById(workout.id);
 
-            addNotification("ok", "Success: Workout was updated.", true);
+            notification.addNotification("ok", "Success: Workout was updated.", true);
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -352,7 +370,7 @@ function restUpdateWorkout(workout) {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -366,23 +384,23 @@ function restUpdateWorkout(workout) {
 /**
  * Ajax GET request /score
  */
-function restGetScores() {
+export function restGetScores() {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/score",
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             scores = JSON.parse(data);
-            scores.sort(compareByTimestamp).reverse();
+            scores.sort(arrayHelper.compareByTimestamp).reverse();
 
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(scores));
             }
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restGetScores() :: GET /score :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -390,7 +408,7 @@ function restGetScores() {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restGetScores() :: GET /score :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -399,23 +417,23 @@ function restGetScores() {
 /**
  * Ajax GET request /score/:scoreId
  */
-function restGetScoreById(id) {
+export function restGetScoreById(id) {
     $.ajax({
         type: "GET",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score/" + id,
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/score/" + id,
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             let retScore = JSON.parse(data);
             // workouts[id].score = JSON.parse(data);
 
-            if(debug) {
+            if(config.DEBUG) {
                 console.log(JSON.stringify(retScore));
             }
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restGetScoreById() :: GET /score/:scoreId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -423,7 +441,7 @@ function restGetScoreById(id) {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restGetScoreById() :: GET /score/:scoreId :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -433,17 +451,17 @@ function restGetScoreById(id) {
  * Ajax POST request /score
  * Save new workout score
  */
-function restAddWorkoutScore(score) {
+export function restAddWorkoutScore(score) {
     $.ajax({
         type: "POST",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score",
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/score",
         data: score,
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
             let retScore = JSON.parse(data);
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restAddWorkoutScore() :: POST /score :: SUCCESS: Workout score was created.");
                 console.log(JSON.stringify(retScore));
             }
@@ -451,10 +469,10 @@ function restAddWorkoutScore(score) {
             // Getting fresh state of workout scores and update tehe view
             restGetWorkoutScores(retScore.workoutId);
 
-            addNotification("ok", "Success: Workout score was created.");
+            notification.addNotification("ok", "Success: Workout score was created.");
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restAddWorkoutScore() :: POST /score :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -462,7 +480,7 @@ function restAddWorkoutScore(score) {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restAddWorkoutScore() :: POST /score :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });
@@ -472,16 +490,16 @@ function restAddWorkoutScore(score) {
  * Ajax POST request /score/id
  * Updating workout score
  */
-function restUpdateWorkoutScore(score) {
+export function restUpdateWorkoutScore(score) {
     $.ajax({
         type: "POST",
-        url: Config.REST_SERVER + ":" + Config.REST_PORT + "/score/" + score.id,
+        url: config.REST_SERVER + ":" + config.REST_PORT + "/score/" + score.id,
         data: score,
         beforeSend : function(xhr) {
-            xhr.setRequestHeader("Authorization", user.token);
+            xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: SUCCESS: Workout score was updated.");
                 console.log(JSON.stringify(data));
             }
@@ -490,10 +508,10 @@ function restUpdateWorkoutScore(score) {
             // Getting fresh state of workout scores and update tehe view
             restGetWorkoutScores(score.workoutId);
 
-            addNotification("ok", "Success: Workout score was updated.");
+            notification.addNotification("ok", "Success: Workout score was updated.");
         },
         error: function(data) {
-            if(debug) {
+            if(config.DEBUG) {
                 console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Something went wrong.");
                 console.log(JSON.stringify(data));
             }
@@ -501,7 +519,7 @@ function restUpdateWorkoutScore(score) {
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Unknown error occurred.");
             } else {
-                addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
         }
     });

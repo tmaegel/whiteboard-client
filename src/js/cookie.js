@@ -1,17 +1,18 @@
 'use strict';
 
+import * as config from "./config.js";
 
-function createCookie(name, value, days) {
+export function createCookie(name, value, days) {
     let expires = "";
     if (days) {
         let date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "expires=" + date.toGMTString();
     }
-    document.cookie = name + "=" + value + ";domain=" + Config.DOMAIN + ";" + expires + ";path=/";
+    document.cookie = name + "=" + value + ";domain=" + config.DOMAIN + ";" + expires + ";path=/";
 }
 
-function readCookie(name) {
+export function readCookie(name) {
     let nameEQ = name + "=";
     let ca = document.cookie.split(";");
     for (let i = 0; i < ca.length; i++) {
@@ -26,6 +27,6 @@ function readCookie(name) {
     return null;
 }
 
-function deleteCookie(name) {
+export function deleteCookie(name) {
     createCookie(name, "", -1);
 }

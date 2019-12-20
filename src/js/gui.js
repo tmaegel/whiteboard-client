@@ -16,7 +16,6 @@ function showLoginDialog() {
 function hideLoginDialog() {
     let container = document.getElementById("container");
     hideBtnLogin();
-    setTitle("Dashboard");
     showNavBar();
     showToolBar();
     document.getElementById("login-dialog").style.display = "none";
@@ -61,6 +60,7 @@ function hideWorkoutScoreDialog() {
     document.getElementById("workout-score-dialog").style.display = "none";
 }
 function hideAllDialogs() {
+    hideLoginDialog();
     hideWorkoutDialog();
     hideWorkoutScoreDialog();
 }
@@ -195,6 +195,7 @@ function activateTab(tab) {
     document.getElementById("nav-movement").classList.remove("active");
     document.getElementById("nav-equipment").classList.remove("active");
     resetCards();
+    hideAllDialogs();
     hideAllViews();
     hideAllBtns();
     // set

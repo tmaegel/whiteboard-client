@@ -149,7 +149,12 @@ export function hideChart() { document.getElementById(config.CHART_ID).style.dis
 /**
  * Show/Hide loader/spinner
  */
-export function showLoader() { document.getElementById("loader").style.display = "block"; }
+export function showLoader() {
+    hideAllDialogs();
+    hideAllViews();
+    hideAllBtns();
+    document.getElementById("loader").style.display = "block";
+}
 export function hideLoader() { document.getElementById("loader").style.display = "none"; }
 /**
  * Show/Hide searchbar
@@ -301,17 +306,15 @@ export function activateTab(tab) {
         case "workout":
             showLoader();
             document.getElementById("nav-workout").classList.add("active");
-            showWorkoutView();
             break;
         case "movement":
             showLoader();
             document.getElementById("nav-movement").classList.add("active");
-            showMovementView();
+
             break;
         case "equipment":
             showLoader();
             document.getElementById("nav-equipment").classList.add("active");
-            showEquipmentView();
             break;
     }
 }

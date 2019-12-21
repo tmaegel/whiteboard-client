@@ -3,13 +3,66 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
-        <link rel="stylesheet" href="src/css/w3.css">
-        <!--<link rel="stylesheet" href="src/css/font-awesome.min.css">-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="src/css/style.css">
         <title>Whiteboard</title>
     </head>
     <body>
+
+        <!-- svg -->
+        <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+            <symbol id="icon-search" viewBox="0 0 32 32">
+                <title>search</title>
+                <path d="M31.008 27.231l-7.58-6.447c-0.784-0.705-1.622-1.029-2.299-0.998 1.789-2.096 2.87-4.815 2.87-7.787 0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12c2.972 0 5.691-1.081 7.787-2.87-0.031 0.677 0.293 1.515 0.998 2.299l6.447 7.58c1.104 1.226 2.907 1.33 4.007 0.23s0.997-2.903-0.23-4.007zM12 20c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"></path>
+            </symbol>
+
+            <symbol id="icon-cog" viewBox="0 0 32 32">
+                <title>cog</title>
+                <path d="M29.181 19.070c-1.679-2.908-0.669-6.634 2.255-8.328l-3.145-5.447c-0.898 0.527-1.943 0.829-3.058 0.829-3.361 0-6.085-2.742-6.085-6.125h-6.289c0.008 1.044-0.252 2.103-0.811 3.070-1.679 2.908-5.411 3.897-8.339 2.211l-3.144 5.447c0.905 0.515 1.689 1.268 2.246 2.234 1.676 2.903 0.672 6.623-2.241 8.319l3.145 5.447c0.895-0.522 1.935-0.82 3.044-0.82 3.35 0 6.067 2.725 6.084 6.092h6.289c-0.003-1.034 0.259-2.080 0.811-3.038 1.676-2.903 5.399-3.894 8.325-2.219l3.145-5.447c-0.899-0.515-1.678-1.266-2.232-2.226zM16 22.479c-3.578 0-6.479-2.901-6.479-6.479s2.901-6.479 6.479-6.479c3.578 0 6.479 2.901 6.479 6.479s-2.901 6.479-6.479 6.479z"></path>
+            </symbol>
+
+            <symbol id="icon-plus" viewBox="0 0 32 32">
+                <title>plus</title>
+                <path d="M31 12h-11v-11c0-0.552-0.448-1-1-1h-6c-0.552 0-1 0.448-1 1v11h-11c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1h11v11c0 0.552 0.448 1 1 1h6c0.552 0 1-0.448 1-1v-11h11c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1z"></path>
+            </symbol>
+
+            <symbol id="icon-home" viewBox="0 0 32 32">
+                <title>home</title>
+                <path d="M32 18.451l-16-12.42-16 12.42v-5.064l16-12.42 16 12.42zM28 18v12h-8v-8h-8v8h-8v-12l12-9z"></path>
+            </symbol>
+
+            <symbol id="icon-pencil" viewBox="0 0 32 32">
+                <title>pencil</title>
+                <path d="M27 0c2.761 0 5 2.239 5 5 0 1.126-0.372 2.164-1 3l-2 2-7-7 2-2c0.836-0.628 1.874-1 3-1zM2 23l-2 9 9-2 18.5-18.5-7-7-18.5 18.5zM22.362 11.362l-14 14-1.724-1.724 14-14 1.724 1.724z"></path>
+            </symbol>
+
+            <symbol id="icon-database" viewBox="0 0 32 32">
+                <title>database</title>
+                <path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+                <path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+                <path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+            </symbol>
+
+            <symbol id="icon-stats-dots" viewBox="0 0 32 32">
+                <title>stats-dots</title>
+                <path d="M4 28h28v4h-32v-32h4zM9 26c-1.657 0-3-1.343-3-3s1.343-3 3-3c0.088 0 0.176 0.005 0.262 0.012l3.225-5.375c-0.307-0.471-0.487-1.033-0.487-1.638 0-1.657 1.343-3 3-3s3 1.343 3 3c0 0.604-0.179 1.167-0.487 1.638l3.225 5.375c0.086-0.007 0.174-0.012 0.262-0.012 0.067 0 0.133 0.003 0.198 0.007l5.324-9.316c-0.329-0.482-0.522-1.064-0.522-1.691 0-1.657 1.343-3 3-3s3 1.343 3 3c0 1.657-1.343 3-3 3-0.067 0-0.133-0.003-0.198-0.007l-5.324 9.316c0.329 0.481 0.522 1.064 0.522 1.691 0 1.657-1.343 3-3 3s-3-1.343-3-3c0-0.604 0.179-1.167 0.487-1.638l-3.225-5.375c-0.086 0.007-0.174 0.012-0.262 0.012s-0.176-0.005-0.262-0.012l-3.225 5.375c0.307 0.471 0.487 1.033 0.487 1.637 0 1.657-1.343 3-3 3z"></path>
+            </symbol>
+
+            <symbol id="icon-accessibility" viewBox="0 0 32 32">
+                <title>accessibility</title>
+                <path d="M13 3c0-1.657 1.343-3 3-3s3 1.343 3 3c0 1.657-1.343 3-3 3s-3-1.343-3-3z"></path>
+                <path d="M20 10l10.3-4.443-0.743-1.857-12.557 4.3h-2l-12.557-4.3-0.743 1.857 10.3 4.443v8l-4.102 13.268 1.87 0.709 5.804-12.977h0.857l5.804 12.977 1.87-0.709-4.102-13.268z"></path>
+            </symbol>
+
+            <symbol id="icon-cross" viewBox="0 0 32 32">
+                <title>cross</title>
+                <path d="M31.708 25.708c-0-0-0-0-0-0l-9.708-9.708 9.708-9.708c0-0 0-0 0-0 0.105-0.105 0.18-0.227 0.229-0.357 0.133-0.356 0.057-0.771-0.229-1.057l-4.586-4.586c-0.286-0.286-0.702-0.361-1.057-0.229-0.13 0.048-0.252 0.124-0.357 0.228 0 0-0 0-0 0l-9.708 9.708-9.708-9.708c-0-0-0-0-0-0-0.105-0.104-0.227-0.18-0.357-0.228-0.356-0.133-0.771-0.057-1.057 0.229l-4.586 4.586c-0.286 0.286-0.361 0.702-0.229 1.057 0.049 0.13 0.124 0.252 0.229 0.357 0 0 0 0 0 0l9.708 9.708-9.708 9.708c-0 0-0 0-0 0-0.104 0.105-0.18 0.227-0.229 0.357-0.133 0.355-0.057 0.771 0.229 1.057l4.586 4.586c0.286 0.286 0.702 0.361 1.057 0.229 0.13-0.049 0.252-0.124 0.357-0.229 0-0 0-0 0-0l9.708-9.708 9.708 9.708c0 0 0 0 0 0 0.105 0.105 0.227 0.18 0.357 0.229 0.356 0.133 0.771 0.057 1.057-0.229l4.586-4.586c0.286-0.286 0.362-0.702 0.229-1.057-0.049-0.13-0.124-0.252-0.229-0.357z"></path>
+            </symbol>
+
+            <symbol id="icon-checkmark" viewBox="0 0 32 32">
+                <title>checkmark</title>
+                <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>
+            </symbol>
 
         <!-- topbar -->
         <div id="topbar">
@@ -17,17 +70,17 @@
                 <h1 id="page-title">Dashboard</h1>
                 <input id="searchbar" type="text" placeholder="Search...">
                 <div id="toolbar">
-                    <span id="nav-filter" class="fa fa-filter"></span>
-                    <span id="nav-searchbar" class="fa fa-search"></span>
+                    <span id="nav-filter"><svg class="icon icon-cog"><use xlink:href="#icon-cog"></use></svg><span class="mls"></span></span>
+                    <span id="nav-searchbar"><svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg><span class="mls"></span></span>
                 </div>
             </div>
             <!-- navbar -->
             <div id="navbar">
                 <ul>
-                    <li id="nav-dashboard" class="active"><i class="fa fa-home"></i></li>
-                    <li id="nav-workout" class="tutorials"><i class="fa fa-heartbeat"></i></li>
-                    <li id="nav-movement" class="about"><i class="fa fa-bicycle"></i></li>
-                    <li id="nav-equipment" class="news"><i class="fa fa-cube"></i></li>
+                    <li id="nav-dashboard" class="active"><svg class="icon icon-home"><use xlink:href="#icon-home"></use></svg><span class="mls"></span></li>
+                    <li id="nav-workout" class="tutorials"><svg class="icon icon-stats-dots"><use xlink:href="#icon-stats-dots"></use></svg><span class="mls"></span></li>
+                    <li id="nav-movement" class="about"><svg class="icon icon-accessibility"><use xlink:href="#icon-accessibility"></use></svg><span class="mls"></span></li>
+                    <li id="nav-equipment" class="news"><svg class="icon icon-database"><use xlink:href="#icon-database"></use></svg><span class="mls"></span></li>
                 </ul>
             </div>
             <!-- notification -->
@@ -38,11 +91,21 @@
         </div>
 
         <!-- overlay buttons -->
-        <button id="btn-login" class="btn-overlay fa fa-check"></button>
-        <button id="btn-ok" class="btn-overlay fa fa-check"></button>
-        <button id="btn-close" class="btn-overlay fa fa-close"></button>
-        <button id="btn-new" class="btn-overlay fa fa-plus"></button>
-        <button id="btn-edit" class="btn-overlay fa fa-edit"></button>
+        <button id="btn-login" class="btn-overlay">
+            <svg class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg><span class="mls"></span>
+        </button>
+        <button id="btn-ok" class="btn-overlay">
+            <svg class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg><span class="mls"></span>
+        </button>
+        <button id="btn-close" class="btn-overlay">
+            <svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg><span class="mls"></span>
+        </button>
+        <button id="btn-new" class="btn-overlay">
+            <svg class="icon icon-plus"><use xlink:href="#icon-plus"></use></svg><span class="mls"></span>
+        </button>
+        <button id="btn-edit" class="btn-overlay">
+            <svg class="icon icon-pencil"><use xlink:href="#icon-pencil"></use></svg><span class="mls"></span>
+        </button>
 
         <div id="container">
 
@@ -53,23 +116,23 @@
 
             <!-- beginn login-dialog -->
             <div id="login-dialog" class="dialog">
-                <input id="input-username" type="text" class="w3-input margin-bottom-sm" placeholder="username">
-                <input id="input-password" type="password" class="w3-input" placeholder="password">
+                <input id="input-username" type="text" placeholder="username">
+                <input id="input-password" type="password" placeholder="password">
             </div>
             <!-- end login-dialog -->
 
             <!-- beginn workout-dialog -->
             <div id="workout-dialog" class="dialog">
-                <input id="add-workout-name" class="w3-input margin-bottom-sm" type="text" placeholder="Workout name">
-                <textarea id="add-workout-description" class="w3-input" rows="5" placeholder="Workout description"></textarea>
+                <input id="add-workout-name" type="text" placeholder="Workout name">
+                <textarea id="add-workout-description" rows="5" placeholder="Workout description"></textarea>
             </div>
             <!-- end workout-dialog -->
 
             <!-- beginn workout-score-dialog -->
             <div id="workout-score-dialog" class="dialog">
-                <input id="add-score-value" class="w3-input margin-bottom-sm" type="text" placeholder="Score">
-                <input id="add-score-datetime" class="w3-input margin-bottom-sm" type="text" placeholder="dd.mm.YYYY HH:MM">
-                <textarea id="add-score-note" class="w3-input margin-bottom-sm" rows="3" placeholder="Note"></textarea>
+                <input id="add-score-value" type="text" placeholder="Score">
+                <input id="add-score-datetime" type="text" placeholder="dd.mm.YYYY HH:MM">
+                <textarea id="add-score-note" rows="3" placeholder="Note"></textarea>
                 <label class="chbx-container">Rx
                     <input id="add-score-rx" type="checkbox" checked="false">
                     <span class="checkmark"></span>
@@ -97,7 +160,7 @@
                             <h4 class="workout-name"></h4>
                         </div>
                         <div class="card-content">
-                            <div class="padding-left-sm padding-right-sm">
+                            <div class="card-body">
                                 <p class="workout-description"></p>
                                 <p><small class="workout-datetime"></small></p>
                             </div>

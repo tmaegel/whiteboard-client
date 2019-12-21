@@ -1,6 +1,18 @@
 /**
+ * general
+ */
+body {
+    margin: 0;
+    font-family: Dejavu Sans;
+    line-height: 1.5;
+}
+/**
  * headings
  */
+h1, h2, h3, h4, h5, h6 {
+    margin: 12px 0 12px 0;
+    font-weight: normal;
+}
 h1 { font-size: 130%; }
 h2 { font-size: 125%; }
 h3 { font-size: 120%; }
@@ -12,8 +24,9 @@ h6 { font-size: 105%; }
  * container
  */
 #container {
-    margin-top: 113px;
+    margin-top: 115px;
     margin-bottom: 200px;
+    padding: 0;
 }
 
 /**
@@ -25,6 +38,11 @@ h6 { font-size: 105%; }
 /**
  * dialogs
  */
+.dialog {
+    width: 100%;
+    padding: 24px 16px;
+    box-sizing: border-box;
+}
 #login-dialog { display: none; /* Hidden by default */ }
 #workout-dialog { display: none; /* Hidden by default */ }
 #workout-score-dialog { display: none; /* Hidden by default */ }
@@ -52,6 +70,7 @@ h6 { font-size: 105%; }
     width: 100%;
     top: 0;
     z-index: 1; /* Sit on top */
+    color: gray;
     background-color: #eee;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 }
@@ -66,7 +85,6 @@ h6 { font-size: 105%; }
 #titlebar > h1 {
     font-size: 120% !important;
     font-weight: bold !important;
-    color: gray;
     margin: 15px;
     float:left;
 }
@@ -91,7 +109,6 @@ h6 { font-size: 105%; }
     text-align: center; /* Center-align text */
     width: 25%; /* Equal width (5 icons with 20% width each = 100%) */
     padding: 10px 0; /* Some top and bottom padding */
-    color: gray;
     font-size: 20px; /* Increased font size */
     cursor: pointer;
 }
@@ -109,8 +126,7 @@ h6 { font-size: 105%; }
     font-size: 20px;
     border: 0 !important;
     background-color: #eee; /* Dark-grey background */
-    color: gray !important;
-    margin: 13px 15px 14px 15px !important;
+    margin: 17px !important;
     padding: 0 !important;
     display: none; /* Hidden by default */
     float:left;
@@ -123,15 +139,13 @@ h6 { font-size: 105%; }
     float: right;
 }
 #nav-searchbar {
-    color: gray;
-    font-size: 20px;
+    display: inline-block;
     cursor: pointer;
     padding: 15px 20px;
 
 }
 #nav-filter {
-    color: gray;
-    font-size: 20px;
+    display: inline-block;
     cursor: pointer;
     padding: 15px 20px;
 }
@@ -142,8 +156,8 @@ h6 { font-size: 105%; }
 .notification {
     display: none; /* Hidden by default */
     width: 100%; /* Could be more or less, depending on screen size */
-    color: white !important;
-    padding: 16px !important;
+    color: white;
+    padding: 12px;
 }
 .notification-ok { background-color: #4CAF50; }
 .notification-info { background-color: #2196F3; }
@@ -174,15 +188,6 @@ h6 { font-size: 105%; }
 }
 
 /**
- * dialog
- */
-.dialog {
-    width: 100%;
-    margin: 0;
-    padding: 15px;
-}
-
-/**
  * card
  */
 .card {
@@ -190,9 +195,9 @@ h6 { font-size: 105%; }
     border-bottom: 1px solid #ddd; /* Add a thin border to each list item */
     margin-top: -1px; /* Prevent double borders */
     background-color: #f6f6f6; /* Add a grey background color */
+    color: gray;
 }
 .card-header {
-    color: #444;
     text-align: left;
     font-size: 15px;
     padding: 0 12px 0 12px;
@@ -204,6 +209,9 @@ h6 { font-size: 105%; }
     overflow: hidden;
     border-top: 1px solid #ddd; /* top border if collapse */
     background-color: white;
+}
+.card-body {
+    padding: 0 12px 0 12px;
 }
 .collapsible {
     cursor: pointer;
@@ -217,44 +225,6 @@ ul {
 }
 
 /**
- * padding
- */
-.padding-sm { padding: 8px!important; }
-.padding-top-sm { padding-top: 8px!important; }
-.padding-bottom-sm { padding-bottom: 8px!important; }
-.padding-left-sm { padding-left: 8px!important; }
-.padding-right-sm { padding-right: 8px!important; }
-.padding-md { padding: 12px!important; }
-.padding-top-md { padding-top: 12px!important; }
-.padding-bottom-md { padding-bottom: 12px!important; }
-.padding-left-md { padding-left: 12px!important; }
-.padding-right-md { padding-right: 12px!important; }
-.padding-lg { padding: 16px!important; }
-.padding-top-lg { padding-top: 16px!important; }
-.padding-bottom-lg { padding-bottom: 16px!important; }
-.padding-left-lg { padding-left: 16px!important; }
-.padding-right-lg { padding-right: 16px!important; }
-
-/**
- * margin
- */
-.margin-sm { margin: 8px!important; }
-.margin-top-sm { margin-top: 8px!important; }
-.margin-bottom-sm { margin-bottom: 8px!important; }
-.margin-left-sm { margin-left: 8px!important; }
-.margin-right-sm { margin-right: 8px!important; }
-.margin-md { margin: 12px!important; }
-.margin-top-md { margin-top: 12px!important; }
-.margin-bottom-md { margin-bottom: 12px!important; }
-.margin-left-md { margin-left: 12px!important; }
-.margin-right-md { margin-right: 12px!important; }
-.margin-lg { margin: 16px!important; }
-.margin-top-lg { margin-top: 16px!important; }
-.margin-bottom-lg { margin-bottom: 16px!important; }
-.margin-left-lg { margin-left: 16px!important; }
-.margin-right-lg { margin-right: 16px!important; }
-
-/**
  * Overlay button
  */
 .btn-overlay, .btn-overlay:hover, .btn-overlay:focus {
@@ -262,7 +232,6 @@ ul {
     display: none; /* Hidden by default */
     z-index: 1; /* Sit on top */
     padding: 16px 18px 16px 18px;
-    color: white; /* White text color */
     border: 0;
     width: 54px;
     height: 54px;
@@ -296,20 +265,32 @@ ul {
  * forms
  */
 input {
-    padding: 12px !important;
-    border: 2px solid #eee !important;
-    color: gray !important;
+    display:block;
+    box-sizing : border-box;
+    padding: 12px;
+    margin-bottom: 12px;
+    width: 100%;
+    border: 2px solid #eee;
+    color: gray;
+    font-size: 14px;
 }
 input:active, input:focus {
-    border: 2px solid #ddd !important;
+    border: 2px solid #ddd;
 }
 textarea {
-    padding: 12px !important;
-    border: 2px solid #eee !important;
-    color: gray !important;
+    display:block;
+    box-sizing : border-box;
+    padding: 12px;
+    margin-bottom: 12px;
+    width: 100%;
+    border: 2px solid #eee;
+    color: gray;
+    font-family: Dejavu Sans;
+    font-size: 14px;
 }
 textarea:active, textarea:focus {
-    border: 2px solid #ddd !important;
+    border: 2px solid #ddd;
+    color: gray;
 }
 
 /**
@@ -322,6 +303,11 @@ canvas {
     padding: 0;
     /*display: none;*/
 }
+
+::placeholder { color: #ddd;
+    opacity: 1;
+}
+
 
 /**
  * Checkbox
@@ -398,11 +384,8 @@ table {
     width: 100%;
     display: table;
 }
-table tr:last-child > td {
-    padding-bottom: 8px;
-}
 table td, table th {
-    padding: 12px 8px;
+    padding: 12px;
     display: table-cell;
     text-align: left;
     vertical-align: middle
@@ -412,4 +395,63 @@ table tr {
 }
 table tr:last-child {
     border: 0;
+}
+
+/**
+ *
+ */
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    stroke-width: 0;
+    stroke: currentColor;
+    fill: currentColor;
+}
+.icon-plus {
+    /* The width and height of the SVG
+    was previously set to 1em.
+    This allows us to use `font-size`
+    to change the size of our icon: */
+    font-size: 20px;
+    /* Using currentColor above lets
+    us use `color` for changing the color
+    of our icons: */
+    color: white;
+}
+.icon-checkmark {
+    font-size: 20px;
+    color: white;
+}
+.icon-cross {
+    font-size: 20px;
+    color: white;
+}
+.icon-pencil {
+    font-size: 20px;
+    color: white;
+}
+.icon-search {
+    font-size: 20px;
+    color: gray;
+}
+.icon-cog {
+    font-size: 20px;
+    color: gray;
+}
+.icon-home {
+    font-size: 20px;
+    color: gray;
+}
+.icon-stats-dots {
+    font-size: 20px;
+    color: gray;
+}
+.icon-accessibility {
+    font-size: 20px;
+    color: gray;
+}
+.icon-database {
+    font-size: 20px;
+    color: gray;
 }

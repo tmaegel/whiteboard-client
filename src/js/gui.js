@@ -20,7 +20,7 @@ export function showLoginDialog() {
     setTitle("Login");
     showBtnLogin();
     document.getElementById("login-dialog").style.display = "block";
-    container.style.margin = "57px 0 200px 0";
+    container.style.margin = "60px 0 200px 0";
 }
 export function hideLoginDialog() {
     let container = document.getElementById("container");
@@ -28,7 +28,7 @@ export function hideLoginDialog() {
     showNavBar();
     showToolBar();
     document.getElementById("login-dialog").style.display = "none";
-    container.style.margin = "113px 0 200px 0";
+    container.style.margin = "115px 0 200px 0";
 }
 export function showWorkoutDialog(edit) {
     edit = edit || false;
@@ -103,13 +103,15 @@ export function showWorkoutScoreDialog(edit) {
             if(score == 0 || score == -1 || score == null || score == undefined) {
                 console.log("editWorkoutDialog() :: ERROR: No workout score in array found");
             } else {
+                console.log(JSON.stringify(score));
                 $("#add-score-value").val(score.score);
                 if(score.rx == "true") {
                     $("#add-score-rx").prop("checked", true);
                 } else {
                     $("#add-score-rx").prop("checked", false);
                 }
-                $("#add-score-datetime").val(timeHelper.getShortFormatTimestamp(score.timestamp));
+                console.log(score.datetime);
+                $("#add-score-datetime").val(timeHelper.getShortFormatTimestamp(score.datetime));
                 $("#add-score-note").val(score.note);
             }
         }

@@ -5,10 +5,14 @@
  */
 
 /**
- * Checks if value empty or contains spaces only
+ * Checks if value is empty or contains spaces only
  */
 export function empty(value) {
-    let regExp = /^ *$/g;
+    if(value === undefined) {
+        return false;
+    }
+
+    let regExp = /^[\n\t ]*$/g;
 
     return regExp.test(value);
 }
@@ -18,7 +22,11 @@ export function empty(value) {
  * [a-zA-Z_0-9ÄÜÖäüöß .,:&'-()/]
  */
 export function simpleRegex(value) {
-    let regExp = /^[\wÄÜÖäüöß .,:&'\-()/]*$/gm;
+    if(value === undefined) {
+        return false;
+    }
+
+    let regExp = /^[\wÄÜÖäüöß .,:&'"\-()/]*$/gm;
 
     return regExp.test(value);
 }
@@ -28,6 +36,10 @@ export function simpleRegex(value) {
  * [a-zA-Z_0-9ÄÜÖäüöß .,:;"#!?&@_-()%/*+]
  */
 export function extendedRegex(value) {
+    if(value === undefined) {
+        return false;
+    }
+
     let regExp = /^[\w\sÄÜÖäüöß.,:;"'!?&@_\-()%/*+]*$/g;
 
     return regExp.test(value);
@@ -38,16 +50,24 @@ export function extendedRegex(value) {
  * e.g. 1234
  */
 export function numRegex(value) {
+    if(value === undefined) {
+        return false;
+    }
+
     let regExp = /^\d+$/gm;
 
     return regExp.test(value);
 }
 
 /**
- * Datetime regex check
+ * Datetime regex check (dd.mm.YYY HH:MM)
  * e.g. 17.5.2019 19:21
  */
 export function datetimeRegex(value) {
+    if(value === undefined) {
+        return false;
+    }
+
     let regExp = /^\d{1,2}.\d{1,2}.\d{4} \d{1,2}([:]\d{1,2}){1,2}$/gm;
 
     return regExp.test(value);
@@ -58,6 +78,10 @@ export function datetimeRegex(value) {
  * e.g 19:21:23
  */
 export function timestampRegex(value) {
+    if(value === undefined) {
+        return false;
+    }
+
     let regExp = /^\d{1,2}(:\d{1,2}){1,2}$/gm;
 
     return regExp.test(value);
@@ -68,6 +92,10 @@ export function timestampRegex(value) {
  * Strip multiple spaces, new lines, replace tabs, ...
  */
 export function stripString(value) {
+    if(value === undefined) {
+        return false;
+    }
+
     let string = value;
     let regExpLeadingTailingSpaces = /^\s+|\s+$/g;
     string = string.replace(regExpLeadingTailingSpaces, "");

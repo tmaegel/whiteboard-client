@@ -11,8 +11,7 @@ import * as scoreHelper from "./scoreHelper.js";
 
 // create an arrays
 export var
-    user = new User(),
-    workoutChart;
+    user = new User();
 
 window.addEventListener("load", init);
 
@@ -122,10 +121,5 @@ function init() {
     });
 
     // Listener to refresh the graph
-    window.addEventListener("resize", function() {
-        if(workoutChart != null || workoutChart != undefined) {
-            workoutChart.update();
-            workoutChart.draw();
-        }
-    });
+    window.addEventListener("resize", scoreHelper.resizeWorkoutScoreChart);
 }

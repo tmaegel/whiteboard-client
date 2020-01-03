@@ -1,6 +1,7 @@
 'use strict';
 
 import * as config from "./config.js";
+import * as timeHelper from "./time.js";
 
 // Chart
 
@@ -14,8 +15,8 @@ export class Chart {
         }
         this.c = this.canvas.getContext("2d");
 
-        this.border = true;         /**< draw border */
-        this.grid = true;           /**< draw grid */
+        this.border = false;         /**< draw border */
+        this.grid = false;           /**< draw grid */
 
         this.xOffset = 8;          /**< x offset of the graph (border) */
         this.yOffset = 8;          /**< y offset of the graph (border) */
@@ -44,7 +45,7 @@ export class Chart {
             // calculate the bandwidth on the y axis (scores)
             // @todo: solve this better
             for (var i = 0; i < this.data.length; i++) {
-                this.data[i].score = timestampToSeconds(this.data[i].score); // parse to seconds
+                this.data[i].score = timeHelper.timestampToSeconds(this.data[i].score); // parse to seconds
                 var score = parseInt(this.data[i].score);
                 if (score > this.yAxisLimit) {
                     this.yAxisLimit = score;

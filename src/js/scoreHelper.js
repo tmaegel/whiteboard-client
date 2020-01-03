@@ -10,6 +10,15 @@ import * as regexHelper from "./regex.js";
 import * as arrayHelper from "./array.js";
 import * as workoutHelper from "./workoutHelper.js";
 
+let chart;
+
+export function resizeWorkoutScoreChart() {
+    if(chart != null || chart != undefined) {
+        chart.update();
+        chart.draw();
+    }
+}
+
 /**
  * Get the workout score id from DOM
  * @todo Umbenennen: isWorkoutScoreSelected?
@@ -72,11 +81,11 @@ export function addWorkoutScoresToView(workoutId) {
         }
         // Drawing workout scores
         // add canvas to display the chart
-        /*if(request.workouts[index].score.length > 0) {
-            workoutChart = new Chart(request.workouts[index].score);
-            workoutChart.init();
-            workoutChart.draw();
-        }*/
+        if(request.workouts[index].score.length > 0) {
+            chart = new Chart(request.workouts[index].score);
+            chart.init();
+            chart.draw();
+        }
     } else {
         console.log("addWorkoutScoresToView() :: ERR: No index found");
     }

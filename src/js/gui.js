@@ -377,6 +377,7 @@ export function resetCards() {
     let cardElements = document.querySelectorAll(".card");
     cardElements.forEach((card, index, cardElements) => {
         card.classList.remove("active");
+        $(card).find("canvas").attr("id", "chart-hidden");
     });
     let contentElements = document.querySelectorAll(".card-content");
     contentElements.forEach((content, index, contentElements) => {

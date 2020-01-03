@@ -169,6 +169,7 @@ h6 { font-size: 105%; }
  */
 #loader {
     display: none; /* Hidden by default */
+    box-sizing : border-box;
     width: 100%;
     padding: 25px;
     text-align: center;

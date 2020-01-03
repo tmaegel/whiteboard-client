@@ -78,9 +78,11 @@ h6 { font-size: 105%; }
  * titlebar
  */
 #titlebar {
+    height: 60px;
     width: 100%; /* Full-width */
     background-color: #eee; /* Dark-grey background */
     overflow: auto;
+    vertical-align: middle;
 }
 #titlebar > h1 {
     font-size: 120% !important;
@@ -126,7 +128,7 @@ h6 { font-size: 105%; }
     font-size: 20px;
     border: 0 !important;
     background-color: #eee; /* Dark-grey background */
-    margin: 17px !important;
+    margin: 15px;
     padding: 0 !important;
     display: none; /* Hidden by default */
     float:left;
@@ -434,11 +436,11 @@ table tr:last-child {
     color: white;
 }
 .icon-search {
-    font-size: 20px;
+    font-size: 16px;
     color: gray;
 }
 .icon-cog {
-    font-size: 20px;
+    font-size: 16px;
     color: gray;
 }
 .icon-home {

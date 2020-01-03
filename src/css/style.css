@@ -214,6 +214,7 @@ h6 { font-size: 105%; }
     padding: 0 12px 0 12px;
 }
 .collapsible {
+    box-sizing : border-box;
     cursor: pointer;
     width: 100%;
     outline: none;

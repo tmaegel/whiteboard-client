@@ -7,6 +7,19 @@ import * as timeHelper from "./time.js";
 import * as regexHelper from "./regex.js";
 import * as guiHelper from "./gui.js";
 
+export function hideWorkoutCards() {
+    let workoutElements = document.querySelectorAll(".workout");
+    workoutElements.forEach((element, index, workoutElements) => {
+        element.style.display = "none";
+    });
+}
+export function showWorkoutCards() {
+    let workoutElements = document.querySelectorAll(".workout");
+    workoutElements.forEach((element, index, workoutElements) => {
+        element.style.display = "block";
+    });
+}
+
 /**
  * Get the workout id from DOM
  * @todo Umbenennen: isWorkoutSelected?

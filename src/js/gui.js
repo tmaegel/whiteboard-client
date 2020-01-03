@@ -179,17 +179,14 @@ export function toggleSearchBar() {
         showSearchBar();
     } else {
         hideSearchBar();
+        workoutHelper.showWorkoutCards();
     }
 }
 export function doSearch() {
     console.log("searchWorkout() :: INFO: Searching workout");
 
     let search = document.getElementById("searchbar").value;
-
-    let workoutElements = document.querySelectorAll(".workout");
-    workoutElements.forEach((element, index, workoutElements) => {
-        element.style.display = "none";
-    });
+    workoutHelper.hideWorkoutCards();
 
     let elements = arrayHelper.getArrayObjectsByName(request.workouts, search);
     elements.forEach((element, index, elements) => {

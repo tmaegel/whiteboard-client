@@ -1,5 +1,7 @@
 'use strict';
 
+import * as logger from "./logger.js";
+
 /**
  * ARRAY
  */
@@ -20,7 +22,7 @@ export function compareById(object1, object2) {
         }
     }
 
-    console.log("compareById() :: ERROR :: No valid variable 'id' found to compare");
+    logger.error("array.js :: compareById() :: ERROR :: No valid variable 'id' found to compare");
 }
 
 /**
@@ -39,7 +41,7 @@ export function compareByTimestamp(object1, object2) {
         }
     }
 
-    console.log("compareByTimestamp() :: ERROR :: No valid variable 'datetime' found to compare");
+    logger.error("array.js :: compareByTimestamp() :: ERROR :: No valid variable 'datetime' found to compare");
 }
 
 /**
@@ -58,7 +60,7 @@ export function compareByString(object1, object2) {
         }
     }
 
-    console.log("compareByString() :: ERROR :: No valid variable 'name' found to compare");
+    logger.error("array.js :: compareByString() :: ERROR :: No valid variable 'name' found to compare");
 }
 
 /**

@@ -1,5 +1,6 @@
 'use strict';
 
+import * as logger from "./logger.js";
 import * as config from "./config.js";
 import * as timeHelper from "./time.js";
 
@@ -11,7 +12,7 @@ export class Chart {
         this.data = data.reverse(); // data is already sorted
         this.canvas = document.getElementById(config.CHART_ID);
         if(!this.canvas.getContext) {
-            console.log("Chart.init() :: WARN :: No Canvas API is supported.");
+            logger.log("Chart.js :: init() :: WARN :: No Canvas API is supported.");
         }
         this.c = this.canvas.getContext("2d");
 
@@ -26,12 +27,12 @@ export class Chart {
     }
 
     init() {
-        console.log("Chart.init() :: INFO :: Initializing...");
+        logger.debug("Chart.js :: init() :: INFO :: Initializing...");
 
         this.update();
 
         if(this.data == null || this.data.length < 1) {
-            console.log("Chart.init() :: WARN :: There are no datapoints available.");
+            logger.log("Chart.js :: init() :: WARN :: There are no datapoints available.");
             return;
         }
 
@@ -56,7 +57,7 @@ export class Chart {
     }
 
     update() {
-        console.log("Chart.update() :: INFO :: Updateing...");
+        logger.debug("Chart.js :: update() :: INFO :: Updateing...");
         // initialize canvas
 		this.c.clearRect(0, 0, $(this.canvas).attr("width"), $(this.canvas).attr("height"));
 
@@ -67,10 +68,10 @@ export class Chart {
     }
 
     draw() {
-        console.log("Chart.draw() :: INFO :: Drawing...");
+        logger.debug("Chart.js :: draw() :: INFO :: Drawing...");
 
         if(this.data == null || this.data.length < 1) {
-            console.log("Chart.draw() :: WARN :: There are no datapoints available.");
+            logger.log("Chart.js :: draw() :: WARN :: There are no datapoints available.");
             return;
         }
 

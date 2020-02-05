@@ -3,6 +3,7 @@
 import { Chart } from "./Chart.js";
 import { Score } from "./Score.js";
 
+import * as logger from "./logger.js";
 import * as request from "./rest.js";
 import * as guiHelper from "./gui.js";
 import * as timeHelper from "./time.js";
@@ -29,14 +30,14 @@ export function getWorkoutScoreIdFromDOM() {
     if(elem[0]) {
         let id = $(elem).attr('id').replace("score-id-", "");
         if (id > 0) {
-            console.log("getWorkoutScoreIdFromDOM() :: INFO: Get workout score id " + id);
+            logger.debug("scoreHelper.js :: getWorkoutScoreIdFromDOM() :: DEBUG: Get workout score id " + id);
             return id;
         } else {
-            console.log("getWorkoutScoreIdFromDOM() :: ERROR: Couldn't get workout score id");
+            logger.error("scoreHelper.js :: getWorkoutScoreIdFromDOM() :: ERROR: Couldn't get workout score id");
             return -1;
         }
     } else {
-        console.log("getWorkoutScoreIdFromDOM() :: WARN: Couldn't find any closest object");
+        logger.log("scoreHelper.js :: getWorkoutScoreIdFromDOM() :: WARN: Couldn't find any closest object");
         return -1;
     }
 }
@@ -50,7 +51,7 @@ export function addWorkoutScoresToView(workoutId) {
 
     if(index != null) {
         if(request.workouts[index].score.length > 0) {
-            console.log("addWorkoutScoresToView() :: INFO: There are " + request.workouts[index].score.length + " scores available to display");
+            logger.log("addWorkoutScoresToView() :: INFO: There are " + request.workouts[index].score.length + " scores available to display");
             for (var i in request.workouts[index].score) {
 
                 let scoreId = request.workouts[index].score[i].id;
@@ -78,7 +79,7 @@ export function addWorkoutScoresToView(workoutId) {
                 $(showScoreTemplateTmp).show();
             }
         } else {
-            console.log("addWorkoutScoresToView() :: INFO: There are no scores available to display");
+            logger.log("scoreHelper.js :: addWorkoutScoresToView() :: INFO: There are no scores available to display");
         }
         // Drawing workout scores
         // add canvas to display the chart
@@ -88,7 +89,7 @@ export function addWorkoutScoresToView(workoutId) {
             chart.draw();
         }
     } else {
-        console.log("addWorkoutScoresToView() :: ERR: No index found");
+        logger.error("scoreHelper.js :: addWorkoutScoresToView() :: ERROR: No index found");
     }
 
     // set select status to score
@@ -98,15 +99,15 @@ export function addWorkoutScoresToView(workoutId) {
 }
 
 export function saveWorkoutScore() {
-    console.log("saveWorkoutScore() :: INFO: Saving workout score");
+    logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Saving workout score");
 
     let workoutId = workoutHelper.getWorkoutIdFromDOM();
     let score;
     let scoreId = getWorkoutScoreIdFromDOM();
     let scoreValue = regexHelper.stripString($("#add-score-value").val());
     if(regexHelper.numRegex(scoreValue) || regexHelper.timestampRegex(scoreValue)) {
-        console.log("saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);
-        console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         notification.addNotification("error", "numRegex() :: ERROR: Found invalid characters.");
         return;
@@ -115,8 +116,8 @@ export function saveWorkoutScore() {
     let scoreDatetime = regexHelper.stripString($("#add-score-datetime").val());
     let scoreDateTimeUnix = timeHelper.getTimestamp(scoreDatetime);
     if(scoreDateTimeUnix) {
-        console.log("saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime + " (UTS:"+ scoreDateTimeUnix +")");
-        console.log("saveWorkoutScore() :: DEBUG: numRegex() success");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime + " (UTS:"+ scoreDateTimeUnix +")");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         notification.addNotification("error", "datetimeRegex() :: ERROR: Found invalid characters.");
         return;
@@ -124,8 +125,8 @@ export function saveWorkoutScore() {
 
     let scoreNote = regexHelper.stripString($("#add-score-note").val());
     if(regexHelper.simpleRegex(scoreDatetime)) {
-        console.log("saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
-        console.log("saveWorkoutScore() :: DEBUG: simpleRegex() success");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: simpleRegex() success");
     } else {
         notification.addNotification("error", "simpleRegex() :: ERROR: Found invalid characters.");
         return;
@@ -133,10 +134,10 @@ export function saveWorkoutScore() {
 
     let scoreRx;
     if($('#add-score-rx').is(":checked")) {
-        console.log("saveWorkoutScore() :: DEBUG: scoreRx is true");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreRx is true");
         scoreRx = 1;
     } else {
-        console.log("saveWorkoutScore() :: DEBUG: scoreRx is false");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreRx is false");
         scoreRx = 0;
     }
 
@@ -144,18 +145,18 @@ export function saveWorkoutScore() {
      * UPDATE
      */
     if(scoreId > 0) {
-        console.log("saveWorkoutScore() :: DEBUG: Updating workout score");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Updating workout score");
         score = new Score(scoreId, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id > 0 (update score)
         request.restUpdateWorkoutScore(score);
     /**
      * NEW
      */
     } else {
-        console.log("saveWorkoutScore() :: DEBUG: Creating workout score");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Creating workout score");
         score = new Score(0, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id = 0 (new score)
         request.restAddWorkoutScore(score);
     }
 
-    console.log("saveWorkoutScore() :: DEBUG: score objext is " + JSON.stringify(score));
+    logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: score objext is " + JSON.stringify(score));
     guiHelper.hideAllDialogs();
 }

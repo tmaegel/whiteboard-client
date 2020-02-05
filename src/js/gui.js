@@ -1,5 +1,6 @@
 'use strict';
 
+import * as logger from "./logger.js";
 import * as main from "./main.js";
 import * as request from "./rest.js";
 import * as config from "./config.js";
@@ -45,7 +46,7 @@ export function showWorkoutDialog(edit) {
             workout = arrayHelper.getArrayObjectById(request.workouts, workoutId);
         }
         if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
-            console.log("editWorkoutDialog() :: ERROR: No workout in array found");
+            logger.error("gui.js :: editWorkoutDialog() :: ERROR: No workout in array found");
         } else {
             $("#add-workout-name").val(workout.name);
             $("#add-workout-description").val(workout.description);
@@ -83,7 +84,7 @@ export function showWorkoutScoreDialog(edit) {
             workout = arrayHelper.getArrayObjectById(request.workouts, workoutId);
         }
         if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
-            console.log("editWorkoutDialog() :: ERROR: No workout in array found");
+            logger.error("gui.js :: editWorkoutDialog() :: ERROR: No workout in array found");
         } else {
             scoreId = scoreHelper.getWorkoutScoreIdFromDOM();
             if (scoreId > 0) {
@@ -93,7 +94,7 @@ export function showWorkoutScoreDialog(edit) {
                 }
             }
             if(score == 0 || score == -1 || score == null || score == undefined) {
-                console.log("editWorkoutDialog() :: ERROR: No workout score in array found");
+                logger.error("gui.js :: editWorkoutDialog() :: ERROR: No workout score in array found");
             } else {
                 $("#add-score-value").val(score.score);
                 if(score.rx == "true") {
@@ -170,7 +171,7 @@ export function toggleSearchBar() {
     }
 }
 export function doSearch() {
-    console.log("searchWorkout() :: INFO: Searching workout");
+    logger.debug("gui.js :: searchWorkout() :: INFO: Searching workout");
 
     let search = document.getElementById("searchbar").value;
     workoutHelper.hideWorkoutCards();
@@ -251,7 +252,7 @@ export function showBtnContextMenu() {
             if(request.workouts[index].userId > 1) {
                 showBtnEditWorkout();
             } else {
-                console.log("Hide edit workout button, because its a main workout.");
+                logger.debug("gui.js :: showBtnContextMenu() :: INFO: Hide edit workout button, because its a main workout.");
             }
         }
         if(isAnyCardItemActive() != -1) {
@@ -449,12 +450,12 @@ export function isAnyCardItemActive() {
 // event function to handle the login mechanism
 export function handleLogin() {
     if (main.user.loggedIn == true && main.user.token != undefined && main.user.token != null) {
-        console.log("handleLogin() :: INFO :: Login successful.");
+        logger.debug("gui.js :: handleLogin() :: INFO :: Login successful.");
         hideLoginDialog();
         showDashboardView();
         window.removeEventListener("keypress", handleLoginByKey); // Removing if successfully logged in
     } else {
-        console.log("handleLogin() :: ERROR :: Login failed.");
+        logger.error("gui.js :: handleLogin() :: ERROR :: Login failed.");
     }
 }
 

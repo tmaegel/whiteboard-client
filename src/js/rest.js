@@ -1,5 +1,6 @@
 'use strict';
 
+import * as logger from "./logger.js";
 import * as main from "./main.js";
 import * as arrayHelper from "./array.js";
 import * as config from "./config.js";
@@ -44,18 +45,14 @@ export function restUserLogin() {
             cookie.createCookie("token", main.user.token, 7);
             guiHelper.handleLogin();
 
-            if(config.DEBUG) {
-                console.log(JSON.stringify(data));
-            }
+            logger.debug(JSON.stringify(data));
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restUserLogin() :: POST /authentication/login :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restUserLogin() :: POST /authentication/login :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -77,19 +74,15 @@ export function restUserValidate() {
             main.user.loggedIn = true;
             guiHelper.handleLogin();
 
-            if(config.DEBUG) {
-                console.log(JSON.stringify(data));
-            }
+            logger.debug(JSON.stringify(data));
         },
         error: function(data) {
             guiHelper.showLoginDialog();
-            if(config.DEBUG) {
-                console.log("restUserValidate() :: POST /authentication/validate :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restUserValidate() :: POST /authentication/validate :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -117,20 +110,16 @@ export function restGetEquipment() {
             equipment = JSON.parse(data);
             equipment.sort(arrayHelper.compareByString);
 
-            if(config.DEBUG) {
-                console.log(JSON.stringify(equipment));
-            }
+            logger.debug(JSON.stringify(equipment));
 
             equipmentHelper.initEquipmentOnView();
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restGetEquipment() :: GET /equipment :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restGetEquipment() :: GET /equipment :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restGetEquipment() :: GET /equipment :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restGetEquipment() :: GET /equipment :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -157,20 +146,16 @@ export function restGetMovements() {
             movements = JSON.parse(data);
             movements.sort(arrayHelper.compareByString);
 
-            if(config.DEBUG) {
-                console.log(JSON.stringify(movements));
-            }
+            logger.debug(JSON.stringify(movements));
 
             movementHelper.initMovementsOnView();
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restGetMovements() :: GET /movement :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restGetMovements() :: GET /movement :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restGetMovements() :: GET /movement :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restGetMovements() :: GET /movement :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -197,21 +182,17 @@ export function restGetWorkouts() {
             workouts = JSON.parse(data);
             workouts.sort(arrayHelper.compareByString);
 
-            if(config.DEBUG) {
-                console.log(JSON.stringify(workouts));
-            }
+            logger.debug(JSON.stringify(workouts));
 
             workoutHelper.initWorkoutsOnView();
             notification.resetNotifications();
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restGetWorkouts() :: GET /workout :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restGetWorkouts() :: GET /workout :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restGetWorkouts() :: GET /workout :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restGetWorkouts() :: GET /workout :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -235,21 +216,17 @@ export function restGetWorkoutScores(id) {
                 workouts[index].score = JSON.parse(data);
                 workouts[index].score.sort(arrayHelper.compareByTimestamp).reverse();
 
-                if(config.DEBUG) {
-                    console.log(JSON.stringify(workouts[index].score));
-                }
+                logger.debug(JSON.stringify(workouts[index].score));
             }
 
             scoreHelper.addWorkoutScoresToView(id);
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -269,9 +246,7 @@ export function restGetWorkoutById(id) {
         },
         success: function(data) {
             let retWorkout = JSON.parse(data);
-            if(config.DEBUG) {
-                console.log(JSON.stringify(retWorkout));
-            }
+            logger.debug(JSON.stringify(retWorkout));
 
             var ret = arrayHelper.refreshArrayObject(workouts, retWorkout);
             workouts.sort(arrayHelper.compareByString);
@@ -280,17 +255,15 @@ export function restGetWorkoutById(id) {
             } else if(ret == 1)  { // workout was updated
                 workoutHelper.updateWorkoutsOnView();
             } else {
-                console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
+                logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
             }
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -311,12 +284,9 @@ export function restAddWorkout(workout) {
             xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
-            console.log(JSON.stringify(data));
             let retWorkout = JSON.parse(data);
-            if(config.DEBUG) {
-                console.log("restAddWorkout() :: POST /workout :: SUCCESS: Workout was created.");
-                console.log(JSON.stringify(retWorkout));
-            }
+            logger.log("rest.js :: restAddWorkout() :: POST /workout :: SUCCESS: Workout was created.");
+            logger.debug(JSON.stringify(retWorkout));
 
             // Getting fresh state of workout and update the view
             restGetWorkoutById(retWorkout.id);
@@ -324,13 +294,11 @@ export function restAddWorkout(workout) {
             notification.addNotification("ok", "Success: Workout was created.", true);
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restAddWorkout() :: POST /workout :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restAddWorkout() :: POST /workout :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restAddWorkout() :: POST /workout :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restAddWorkout() :: POST /workout :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -351,10 +319,8 @@ export function restUpdateWorkout(workout) {
             xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
-            if(config.DEBUG) {
-                console.log("restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
-                console.log(JSON.stringify(data));
-            }
+            logger.log("rest.js :: restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
+            logger.debug(JSON.stringify(data));
 
             // Getting fresh state of workout and update the view
             restGetWorkoutById(workout.id);
@@ -362,13 +328,11 @@ export function restUpdateWorkout(workout) {
             notification.addNotification("ok", "Success: Workout was updated.", true);
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -395,18 +359,14 @@ export function restGetScores() {
             scores = JSON.parse(data);
             scores.sort(arrayHelper.compareByTimestamp).reverse();
 
-            if(config.DEBUG) {
-                console.log(JSON.stringify(scores));
-            }
+            logger.debug(JSON.stringify(scores));
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restGetScores() :: GET /score :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restGetScores() :: GET /score :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restGetScores() :: GET /score :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restGetScores() :: GET /score :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -428,18 +388,14 @@ export function restGetScoreById(id) {
             let retScore = JSON.parse(data);
             // workouts[id].score = JSON.parse(data);
 
-            if(config.DEBUG) {
-                console.log(JSON.stringify(retScore));
-            }
+            logger.debug(JSON.stringify(retScore));
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restGetScoreById() :: GET /score/:scoreId :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restGetScoreById() :: GET /score/:scoreId :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restGetScoreById() :: GET /score/:scoreId :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restGetScoreById() :: GET /score/:scoreId :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -461,10 +417,8 @@ export function restAddWorkoutScore(score) {
         },
         success: function(data) {
             let retScore = JSON.parse(data);
-            if(config.DEBUG) {
-                console.log("restAddWorkoutScore() :: POST /score :: SUCCESS: Workout score was created.");
-                console.log(JSON.stringify(retScore));
-            }
+            logger.log("rest.js :: restAddWorkoutScore() :: POST /score :: SUCCESS: Workout score was created.");
+            logger.debug(JSON.stringify(retScore));
 
             // Getting fresh state of workout scores and update tehe view
             restGetWorkoutScores(retScore.workoutId);
@@ -472,13 +426,11 @@ export function restAddWorkoutScore(score) {
             notification.addNotification("ok", "Success: Workout score was created.");
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restAddWorkoutScore() :: POST /score :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restAddWorkoutScore() :: POST /score :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restAddWorkoutScore() :: POST /score :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restAddWorkoutScore() :: POST /score :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -499,11 +451,8 @@ export function restUpdateWorkoutScore(score) {
             xhr.setRequestHeader("Authorization", main.user.token);
         },
         success: function(data) {
-            if(config.DEBUG) {
-                console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: SUCCESS: Workout score was updated.");
-                console.log(JSON.stringify(data));
-            }
-            console.log("Success");
+            logger.log("rest.js :: restUpdateWorkoutScore() :: POST /score/:scoreId :: SUCCESS: Workout score was updated.");
+            logger.debug(JSON.stringify(data));
 
             // Getting fresh state of workout scores and update tehe view
             restGetWorkoutScores(score.workoutId);
@@ -511,13 +460,11 @@ export function restUpdateWorkoutScore(score) {
             notification.addNotification("ok", "Success: Workout score was updated.");
         },
         error: function(data) {
-            if(config.DEBUG) {
-                console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Something went wrong.");
-                console.log(JSON.stringify(data));
-            }
+            logger.error("rest.js :: restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
-                console.log("restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Unknown error occurred.");
+                logger.error("rest.js :: restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }

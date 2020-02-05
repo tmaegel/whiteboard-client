@@ -2,6 +2,7 @@
 
 import { User } from "./User.js";
 
+import * as logger from "./logger.js";
 import * as cookie from "./cookie.js";
 import * as request from "./rest.js";
 import * as guiHelper from "./gui.js";
@@ -18,7 +19,7 @@ window.addEventListener("load", init);
 function init() {
     // other stuff
     console.clear();
-    console.log("main :: init() :: INFO: Initializing");
+    logger.log("main :: init() :: INFO: Initializing");
     // Initialize view
     guiHelper.hideAllDialogs();
     guiHelper.hideAllViews();
@@ -111,7 +112,7 @@ function init() {
             } else if(document.getElementById("workout-score-dialog").style.display == "block") {
                 scoreHelper.saveWorkoutScore();
             } else {
-                console.log("click() :: btn-ok :: ERROR: No action defined.");
+                logger.log("main :: init() :: btn-ok :: ERROR: No action defined.");
             }
         } else {
             workoutHelper.saveWorkout();

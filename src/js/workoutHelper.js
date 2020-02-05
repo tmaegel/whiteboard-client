@@ -2,6 +2,7 @@
 
 import { Workout } from "./Workout.js";
 
+import * as logger from "./logger.js";
 import * as request from "./rest.js";
 import * as timeHelper from "./time.js";
 import * as regexHelper from "./regex.js";
@@ -30,14 +31,14 @@ export function getWorkoutIdFromDOM() {
     if(elem[0]) {
         let id = $(elem).attr('id').replace("workout-id-", "");
         if (id > 0) {
-            console.log("getWorkoutIdFromDOM() :: INFO: Get workout id " + id);
+            logger.debug("workoutHelper.js :: getWorkoutIdFromDOM() :: DEBUG: Get workout id " + id);
             return id;
         } else {
-            console.log("getWorkoutIdFromDOM() :: ERROR: Couldn't get workout id");
+            logger.error("workoutHelper.js :: getWorkoutIdFromDOM() :: ERROR: Couldn't get workout id");
             return -1;
         }
     } else {
-        console.log("getWorkoutIdFromDOM() :: WARN: Couldn't find any closest object");
+        logger.log("workoutHelper.js :: getWorkoutIdFromDOM() :: WARN: Couldn't find any closest object");
         return -1;
     }
 }
@@ -116,7 +117,7 @@ export function updateWorkoutsOnView() {
 }
 
 export function saveWorkout() {
-    console.log("saveWorkout() :: INFO: Saving workout...");
+    logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: Saving workout...");
 
     let workout;
     let workoutId = getWorkoutIdFromDOM();
@@ -125,7 +126,7 @@ export function saveWorkout() {
 
     if(workoutName != undefined && workoutDescription != undefined) {
         if(regexHelper.simpleRegex(workoutName) && !regexHelper.empty(workoutName)) {
-            console.debug("saveWorkout() :: DEBUG: simpleRegex() success");
+            logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: simpleRegex() success");
             workoutName = regexHelper.stripString(workoutName);
         } else {
             notification.addNotification("error", "simpleRegex() :: ERROR: Found invalid characters.");
@@ -133,33 +134,33 @@ export function saveWorkout() {
         }
 
         if(regexHelper.extendedRegex(workoutDescription) && !regexHelper.empty(workoutDescription)) {
-            console.log("saveWorkout() :: DEBUG: extendedRegex() success");
+            logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: extendedRegex() success");
             workoutDescription = regexHelper.stripString(workoutDescription);
         } else {
             notification.addNotification("error", "extendedRegex() :: ERROR: Found invalid characters.");
             return;
         }
     } else {
-        console.log("saveWorkout() :: ERROR: workoutName or workoutDescription aren't defined");
+        logger.error("workoutHelper.js :: saveWorkout() :: ERROR: workoutName or workoutDescription aren't defined");
     }
 
     /**
      * UPDATE
      */
     if(workoutId > 0) {
-        console.log("saveWorkout() :: INFO: Updating workout");
+        logger.debug("workoutHelper.js :: saveWorkout() :: INFO: Updating workout");
         workout = new Workout(workoutId, timeHelper.getTimestamp(), workoutName, workoutDescription);
         request.restUpdateWorkout(workout);
     /**
      * NEW
      */
     } else {
-        console.log("saveWorkout() :: INFO: Creating new workout");
+        logger.debug("workoutHelper.js :: saveWorkout() :: INFO: Creating new workout");
         /*workouts.sort(compareById);
         var id; // new workout id
         if(workouts.length > 0) {
             id = workouts[workouts.length - 1].id + 1;
-            console.log(id);
+            logger.debug(id);
         } else {
             id = 1;
         }*/
@@ -167,6 +168,6 @@ export function saveWorkout() {
         request.restAddWorkout(workout);
     }
 
-    console.log("saveWorkout() :: DEBUG: workout objext is " + JSON.stringify(workout));
+    logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: workout objext is " + JSON.stringify(workout));
     guiHelper.hideAllDialogs();
 }

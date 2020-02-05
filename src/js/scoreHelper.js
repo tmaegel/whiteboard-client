@@ -8,6 +8,7 @@ import * as guiHelper from "./gui.js";
 import * as timeHelper from "./time.js";
 import * as regexHelper from "./regex.js";
 import * as arrayHelper from "./array.js";
+import * as notification from "./notification.js";
 import * as workoutHelper from "./workoutHelper.js";
 
 let chart;
@@ -133,10 +134,10 @@ export function saveWorkoutScore() {
     let scoreRx;
     if($('#add-score-rx').is(":checked")) {
         console.log("saveWorkoutScore() :: DEBUG: scoreRx is true");
-        scoreRx = true;
+        scoreRx = 1;
     } else {
         console.log("saveWorkoutScore() :: DEBUG: scoreRx is false");
-        scoreRx = false;
+        scoreRx = 0;
     }
 
     /**
@@ -144,14 +145,14 @@ export function saveWorkoutScore() {
      */
     if(scoreId > 0) {
         console.log("saveWorkoutScore() :: DEBUG: Updating workout score");
-        score = new Score(scoreId, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id != -1 (update score)
+        score = new Score(scoreId, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id > 0 (update score)
         request.restUpdateWorkoutScore(score);
     /**
      * NEW
      */
     } else {
         console.log("saveWorkoutScore() :: DEBUG: Creating workout score");
-        score = new Score(-1, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id = -1 (new score)
+        score = new Score(0, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id = 0 (new score)
         request.restAddWorkoutScore(score);
     }
 

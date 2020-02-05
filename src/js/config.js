@@ -2,7 +2,7 @@
 
 // Config
 export var
-    DEBUG = true,
+    DEBUG = false,
     REST_SERVER = "https://localhost",
     REST_PORT = "3000",
     DOMAIN = "localhost",

@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
         <link rel="manifest" href="manifest.webmanifest">
-        <link rel="stylesheet" href="src/css/style.css">
+        <link rel="stylesheet" href="css/style.css">
         <title>Whiteboard</title>
     </head>
     <body>
@@ -65,6 +65,11 @@
                 <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>
             </symbol>
 
+            <symbol id="icon-menu" viewBox="0 0 32 32">
+                <title>menu</title>
+                <path d="M2 6h28v6h-28zM2 14h28v6h-28zM2 22h28v6h-28z"></path>
+            </symbol>
+
         </svg>
 
         <!-- topbar -->
@@ -94,6 +99,12 @@
         </div>
 
         <!-- overlay buttons -->
+        <div id="dropdown-menu">
+            <span id="btn-new-workout" href="#">Add workout</span>
+            <span id="btn-edit-workout" href="#">Edit workout</span>
+            <span id="btn-new-score" href="#">Add score</span>
+            <span id="btn-edit-score" href="#">Edit score</span>
+        </div>
         <button id="btn-login" class="btn-overlay">
             <svg class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg><span class="mls"></span>
         </button>
@@ -109,6 +120,10 @@
         <button id="btn-edit" class="btn-overlay">
             <svg class="icon icon-pencil"><use xlink:href="#icon-pencil"></use></svg><span class="mls"></span>
         </button>
+        <button id="btn-menu" class="btn-overlay">
+            <svg id="btn-menu-svg" class="icon icon-menu"><use xlink:href="#icon-menu"></use></svg><span class="mls"></span>
+        </button>
+
 
         <div id="container">
 
@@ -213,10 +228,10 @@
 
     </body>
     <!-- jQuery -->
-    <script src="src/js/jquery/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery/jquery-3.3.1.min.js"></script>
     <!-- CryptJS -->
-    <script src="src/js/modules/cryptjs/rollups/sha256.js"></script>
+    <script src="js/modules/cryptjs/rollups/sha256.js"></script>
     <!-- MAIN -->
-    <script type="module" src="src/js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 
 </html>

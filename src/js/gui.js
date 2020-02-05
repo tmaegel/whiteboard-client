@@ -31,12 +31,9 @@ export function hideLoginDialog() {
     container.style.margin = "115px 0 200px 0";
 }
 export function showWorkoutDialog(edit) {
-    edit = edit || false;
-
     let workout, workoutId;
 
-    hideBtnNew();
-    hideBtnEdit();
+    hideBtnMenu();
     showBtnOk();
     showBtnClose();
     hideWorkoutView();
@@ -64,12 +61,9 @@ export function showWorkoutDialog(edit) {
 export function hideWorkoutDialog() {
     hideBtnOk();
     hideBtnClose();
-    showBtnNew();
+    showBtnMenu();
     showWorkoutView();
     setTitle("Workouts");
-    if(isAnyCardActive()) {
-        showBtnEdit();
-    }
     document.getElementById("workout-dialog").style.display = "none";
 }
 export function showWorkoutScoreDialog(edit) {
@@ -77,8 +71,7 @@ export function showWorkoutScoreDialog(edit) {
 
     let workout, workoutId, score, scoreId, index;
 
-    hideBtnNew();
-    hideBtnEdit();
+    hideBtnMenu();
     showBtnOk();
     showBtnClose();
     hideWorkoutView();
@@ -95,7 +88,6 @@ export function showWorkoutScoreDialog(edit) {
             scoreId = scoreHelper.getWorkoutScoreIdFromDOM();
             if (scoreId > 0) {
                 index = arrayHelper.getArrayIndexById(request.workouts, workoutId);
-                console.log(JSON.stringify(request.workouts[index]));
                 if(index != null) {
                     score = arrayHelper.getArrayObjectById(request.workouts[index].score, scoreId);
                 }
@@ -103,14 +95,12 @@ export function showWorkoutScoreDialog(edit) {
             if(score == 0 || score == -1 || score == null || score == undefined) {
                 console.log("editWorkoutDialog() :: ERROR: No workout score in array found");
             } else {
-                console.log(JSON.stringify(score));
                 $("#add-score-value").val(score.score);
                 if(score.rx == "true") {
                     $("#add-score-rx").prop("checked", true);
                 } else {
                     $("#add-score-rx").prop("checked", false);
                 }
-                console.log(score.datetime);
                 $("#add-score-datetime").val(timeHelper.getShortFormatTimestamp(score.datetime));
                 $("#add-score-note").val(score.note);
             }
@@ -129,12 +119,9 @@ export function showWorkoutScoreDialog(edit) {
 export function hideWorkoutScoreDialog() {
     hideBtnOk();
     hideBtnClose();
-    showBtnNew();
+    showBtnMenu();
     showWorkoutView();
     setTitle("Workouts");
-    if(isAnyCardActive()) {
-        showBtnEdit();
-    }
     document.getElementById("workout-score-dialog").style.display = "none";
 }
 export function hideAllDialogs() {
@@ -222,20 +209,80 @@ export function showToolBar() { document.getElementById("toolbar").style.display
  */
 export function showBtnLogin() { document.getElementById("btn-login").style.display = "block"; }
 export function hideBtnLogin() { document.getElementById("btn-login").style.display = "none"; }
-export function showBtnNew() { document.getElementById("btn-new").style.display = "block"; }
-export function hideBtnNew() { document.getElementById("btn-new").style.display = "none"; }
-export function showBtnEdit() { document.getElementById("btn-edit").style.display = "block"; }
-export function hideBtnEdit() { document.getElementById("btn-edit").style.display = "none"; }
+export function showBtnMenu() { document.getElementById("btn-menu").style.display = "block"; }
+export function hideBtnMenu() { document.getElementById("btn-menu").style.display = "none"; }
+
+export function showBtnNewWorkout() { document.getElementById("btn-new-workout").style.display = "block"; }
+export function hideBtnNewWorkout() { document.getElementById("btn-new-workout").style.display = "none"; }
+export function showBtnEditWorkout() { document.getElementById("btn-edit-workout").style.display = "block"; }
+export function hideBtnEditWorkout() { document.getElementById("btn-edit-workout").style.display = "none"; }
+export function showBtnNewScore() { document.getElementById("btn-new-score").style.display = "block"; }
+export function hideBtnNewScore() { document.getElementById("btn-new-score").style.display = "none"; }
+export function showBtnEditScore() { document.getElementById("btn-edit-score").style.display = "block"; }
+export function hideBtnEditScore() { document.getElementById("btn-edit-score").style.display = "none"; }
+
 export function showBtnOk() { document.getElementById("btn-ok").style.display = "block"; }
 export function hideBtnOk() { document.getElementById("btn-ok").style.display = "none"; }
 export function showBtnClose() { document.getElementById("btn-close").style.display = "block"; }
 export function hideBtnClose() { document.getElementById("btn-close").style.display = "none"; }
 export function hideAllBtns() {
     hideBtnLogin();
-    hideBtnNew();
-    hideBtnEdit();
+    hideBtnMenu();
+    hideBtnNewWorkout();
+    hideBtnEditWorkout();
+    hideBtnNewScore();
+    hideBtnEditScore();
     hideBtnOk();
     hideBtnClose();
+    hideBtnContextMenu();
+}
+export function showBtnContextMenu() {
+    hideBtnNewWorkout();
+    hideBtnEditWorkout();
+    hideBtnNewScore();
+    hideBtnEditScore();
+    // Enable/Disable buttons
+    let workoutId = isAnyCardActive();
+    if(workoutId != -1) {
+        // edit workout is possible
+        // Allow editing only if userId > 1
+        let index = arrayHelper.getArrayIndexById(request.workouts, workoutId);
+        if(index != null) {
+            if(request.workouts[index].userId > 1) {
+                showBtnEditWorkout();
+            } else {
+                console.log("Hide edit workout button, because its a main workout.");
+            }
+        }
+        if(isAnyCardItemActive() != -1) {
+            // edit workout score is possible
+            showBtnEditScore();
+        } else {
+            // new score is possible
+            showBtnNewScore();
+        }
+    } else {
+        // new workout is possible only
+        showBtnNewWorkout();
+    }
+    document.getElementById("dropdown-menu").style.display = "block";
+    document.getElementById("btn-menu").style.backgroundColor = "gray";
+
+
+
+}
+export function hideBtnContextMenu() {
+    document.getElementById("dropdown-menu").style.display = "none";
+    document.getElementById("btn-menu").style.backgroundColor = "#2196F3";
+}
+export function toggleBtnContextMenu() {
+    var dropdownMenu = document.getElementById("dropdown-menu");
+    var state = window.getComputedStyle(dropdownMenu).display;
+    if(state === "none") {
+        showBtnContextMenu();
+    } else {
+        hideBtnContextMenu();
+    }
 }
 /**
  * Show/Hide views
@@ -249,7 +296,7 @@ export function showDashboardView() {
 export function hideDashboardView() { document.getElementById("dashboard-view").style.display = "none"; }
 export function showWorkoutView() {
     setTitle("Workouts");
-    showBtnNew();
+    showBtnMenu();
     showToolBar();
     hideSearchBar();
     document.getElementById("workout-view").style.display = "block";
@@ -305,11 +352,11 @@ export function activateTab(tab) {
         case "workout":
             showLoader();
             document.getElementById("nav-workout").classList.add("active");
+            hideBtnContextMenu();
             break;
         case "movement":
             showLoader();
             document.getElementById("nav-movement").classList.add("active");
-
             break;
         case "equipment":
             showLoader();
@@ -339,61 +386,64 @@ export function toggleCard(element) {
         parentElement.classList.add("active");
         $(parentElement).find("canvas").attr("id", config.CHART_ID); // add chart id to identify the element
         request.restGetWorkoutScores(workoutHelper.getWorkoutIdFromDOM());
-        // Allow editing only if userId > 1
-        let index = arrayHelper.getArrayIndexById(request.workouts, workoutId);
-        if(index != null) {
-            if(request.workouts[index].userId > 1) {
-                showBtnEdit();
-            } else {
-                console.log("Hide edit workout button, because its a main workout.");
-            }
-        }
     }
 }
 // Toggle (select/unselect) cardItem
 export function toggleCardItem(element) {
-    if($(element).hasClass("select")) {
-        $(".score").removeClass("select");
-        hideBtnEdit();
+    let select = $(element).hasClass("select");
+    resetCardItems();
+    if(select) {
+        $(element).removeClass("select");
     } else {
-        $(".score").removeClass("select");
         $(element).addClass("select");
-        showBtnEdit();
     }
-}
-export function isAnyCardItemActive() {
-    let items = document.querySelectorAll(".score");
-    for (var item of items) {
-        if (item.classList.contains('select')) {
-            console.log("Any item is active");
-            return true;
-        }
-    }
-    console.log("No item is active");
-    return false;
 }
 // Hide and reset selected cards
 export function resetCards() {
-    let cardElements = document.querySelectorAll(".card");
+    let cardElements = document.querySelectorAll(".card.active");
     cardElements.forEach((card, index, cardElements) => {
         card.classList.remove("active");
         $(card).find("canvas").attr("id", "chart-hidden");
     });
+    resetCardItems();
     let contentElements = document.querySelectorAll(".card-content");
     contentElements.forEach((content, index, contentElements) => {
         content.style.display = "none";
     });
 }
+export function resetCardItems() {
+    let cardItems = document.querySelectorAll(".score.select");
+    cardItems.forEach((item, index, cardItems) => {
+        item.classList.remove("select");
+    });
+}
+/**
+ * If card element is active returns the id of card element.
+ * If not returns -1
+ * @returns {integer} id
+ */
 export function isAnyCardActive() {
     let cards = document.querySelectorAll(".card");
     for (var card of cards) {
         if (card.classList.contains('active')) {
-            console.log("Any card is active");
-            return true;
+            return card.id.replace("workout-id-", "");
         }
     }
-    console.log("No card is active");
-    return false;
+    return -1;
+}
+/**
+ * If card item is active returns the id of card item.
+ * If not returns -1
+ * @returns {integer} id
+ */
+export function isAnyCardItemActive() {
+    let items = document.querySelectorAll(".score");
+    for (var item of items) {
+        if (item.classList.contains('select')) {
+            return item.id.replace("score-id-", "");
+        }
+    }
+    return -1;
 }
 
 // event function to handle the login mechanism

@@ -81,30 +81,34 @@ function init() {
      */
     let inpSearchWorkout = document.getElementById("searchbar");
     inpSearchWorkout.addEventListener("keyup", guiHelper.doSearch);
-    let btnNew = document.getElementById("btn-new");
-    btnNew.addEventListener("click", function() {
-        if(guiHelper.isAnyCardActive()) {
-            guiHelper.showWorkoutScoreDialog(); // open add workout score dialog
-        } else {
-            guiHelper.showWorkoutDialog(); // open add workout dialog
-        }
+    let btnNewWorkout = document.getElementById("btn-new-workout");
+    btnNewWorkout.addEventListener("click", function() {
+        guiHelper.showWorkoutDialog(false); // open add workout dialog
     });
-    let btnEdit = document.getElementById("btn-edit");
-    btnEdit.addEventListener("click", function() {
-        if(guiHelper.isAnyCardItemActive()) {
-            guiHelper.showWorkoutScoreDialog(true); // open edit workout score dialog
-        } else {
-            guiHelper.showWorkoutDialog(true); // open edit workout dialog
-        }
+    let btnEditWorkout = document.getElementById("btn-edit-workout");
+    btnEditWorkout.addEventListener("click", function() {
+        guiHelper.showWorkoutDialog(true); // open edit workout dialog
     });
+
+    /**
+     * Score
+     */
+    let btnNewScore = document.getElementById("btn-new-score");
+    btnNewScore.addEventListener("click", function() {
+        guiHelper.showWorkoutScoreDialog(false); // open add workout score dialog
+    });
+    let btnEditScore = document.getElementById("btn-edit-score");
+    btnEditScore.addEventListener("click", function() {
+        guiHelper.showWorkoutScoreDialog(true); // open edit workout score dialog
+    });
+
     let btnOk = document.getElementById("btn-ok");
     btnOk.addEventListener("click", function() {
-        if(guiHelper.isAnyCardActive()) {
+        let workoutId = guiHelper.isAnyCardActive();
+        if(workoutId != -1) {
             if(document.getElementById("workout-dialog").style.display == "block") {
-                console.log("click() :: btn-ok :: INFO: action: saveWorkout()");
                 workoutHelper.saveWorkout();
             } else if(document.getElementById("workout-score-dialog").style.display == "block") {
-                console.log("click() :: btn-ok :: INFO: action: saveWorkoutScore()");
                 scoreHelper.saveWorkoutScore();
             } else {
                 console.log("click() :: btn-ok :: ERROR: No action defined.");
@@ -118,6 +122,16 @@ function init() {
     btnClose.addEventListener("click", function() {
         guiHelper.hideWorkoutDialog();
         guiHelper.hideWorkoutScoreDialog();
+    });
+
+    let btnMenu = document.getElementById("btn-menu");
+    btnMenu.addEventListener("click", function(event) {
+        guiHelper.toggleBtnContextMenu();
+        event.stopPropagation();
+    });
+    // Hide context menu
+    document.addEventListener("click", function() {
+        guiHelper.hideBtnContextMenu();
     });
 
     // Listener to refresh the graph

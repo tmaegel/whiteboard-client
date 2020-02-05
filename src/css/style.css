@@ -72,7 +72,7 @@ h6 { font-size: 105%; }
     z-index: 1; /* Sit on top */
     color: gray;
     background-color: #eee;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 1px 13px rgba(0,0,0,0.24);
 }
 /**
  * titlebar
@@ -235,34 +235,69 @@ ul {
     position: fixed;
     display: none; /* Hidden by default */
     z-index: 1; /* Sit on top */
-    padding: 16px 18px 16px 18px;
+    padding: 16px;
     border: 0;
     width: 54px;
     height: 54px;
     background-color: #2196F3;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    box-shadow: 0px 0px 6px 4px rgba(0,0,0,0.12);
     border-radius: 50%;
     cursor: pointer;
 }
 #btn-login {
-    bottom: 25px;
-    right: 25px;
+    bottom: 20px;
+    right: 20px;
 }
 #btn-new {
-    bottom: 25px;
-    right: 25px;
+    bottom: 20px;
+    right: 20px;
 }
 #btn-edit {
-    bottom: 95px;
-    right: 25px;
+    bottom: 90px;
+    right: 20px;
+}
+#btn-menu {
+    bottom: 20px;
+    right: 20px;
 }
 #btn-ok {
-    bottom: 25px;
-    right: 25px;
+    bottom: 20px;
+    right: 20px;
 }
 #btn-close {
-    bottom: 95px;
-    right: 25px;
+    bottom: 90px;
+    right: 20px;
+}
+/**
+ * Dropdown menu
+ */
+#dropdown-menu {
+    display: none;
+    position: fixed;
+    background-color: #eee;
+    bottom: 74px;
+    right: 90px;
+    box-shadow: 0px 0px 6px 4px rgba(0,0,0,0.12);
+    z-index: 1;
+    border-radius: 5%;
+}
+#dropdown-menu span {
+    cursor: pointer;
+    color: gray;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+}
+#dropdown-menu span:hover {
+    background-color: #ddd;
+}
+#dropdown-menu span:first-child:hover {
+    border-top-right-radius: 5%;
+    border-top-left-radius: 5%;
+}
+#dropdown-menu span:last-child:hover {
+    border-bottom-right-radius: 5%;
+    border-bottom-left-radius: 5%;
 }
 
 /**
@@ -433,6 +468,10 @@ table tr:last-child {
     color: white;
 }
 .icon-pencil {
+    font-size: 20px;
+    color: white;
+}
+.icon-menu {
     font-size: 20px;
     color: white;
 }

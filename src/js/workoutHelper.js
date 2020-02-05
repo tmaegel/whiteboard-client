@@ -6,6 +6,7 @@ import * as request from "./rest.js";
 import * as timeHelper from "./time.js";
 import * as regexHelper from "./regex.js";
 import * as guiHelper from "./gui.js";
+import * as notification from "./notification.js";
 
 export function hideWorkoutCards() {
     let workoutElements = document.querySelectorAll(".workout");
@@ -124,7 +125,7 @@ export function saveWorkout() {
 
     if(workoutName != undefined && workoutDescription != undefined) {
         if(regexHelper.simpleRegex(workoutName) && !regexHelper.empty(workoutName)) {
-            console.log("saveWorkout() :: DEBUG: simpleRegex() success");
+            console.debug("saveWorkout() :: DEBUG: simpleRegex() success");
             workoutName = regexHelper.stripString(workoutName);
         } else {
             notification.addNotification("error", "simpleRegex() :: ERROR: Found invalid characters.");

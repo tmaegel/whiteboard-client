@@ -13,7 +13,6 @@ import * as scoreHelper from "./scoreHelper.js";
 import * as movementHelper from "./movementHelper.js";
 import * as equipmentHelper from "./equipmentHelper.js";
 
-
 export let
     equipment = [],
     movements = [],

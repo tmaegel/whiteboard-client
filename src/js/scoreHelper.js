@@ -51,7 +51,7 @@ export function addWorkoutScoresToView(workoutId) {
 
     if(index != null) {
         if(request.workouts[index].score.length > 0) {
-            logger.log("addWorkoutScoresToView() :: INFO: There are " + request.workouts[index].score.length + " scores available to display");
+            logger.log("scoreHelper.js :: addWorkoutScoresToView() :: INFO: There are " + request.workouts[index].score.length + " scores available to display");
             for (var i in request.workouts[index].score) {
 
                 let scoreId = request.workouts[index].score[i].id;
@@ -66,9 +66,11 @@ export function addWorkoutScoresToView(workoutId) {
                 $(showScoreTemplateTmp).attr("id", "score-id-" + scoreId);
                 $(showScoreTemplateTmp).addClass("score");
                 $(showScoreTemplateTmp).find(".score-value").text(scoreValue);
-                if(scoreRx == "true") {
+                if(scoreRx == 1) {
+                    logger.debug("scoreHelper.js :: addWorkoutScoresToView() :: DEBUG: scoreRx is true");
                     $(showScoreTemplateTmp).find(".score-rx").text("Rx");
                 } else {
+                    logger.debug("scoreHelper.js :: addWorkoutScoresToView() :: DEBUG: scoreRx is false");
                     $(showScoreTemplateTmp).find(".score-rx").text("");
                 }
                 $(showScoreTemplateTmp).find(".score-datetime").text(timeHelper.getShortFormatTimestamp(scoreTimestamp));

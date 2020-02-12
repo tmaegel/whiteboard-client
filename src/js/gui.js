@@ -97,7 +97,7 @@ export function showWorkoutScoreDialog(edit) {
                 logger.error("gui.js :: editWorkoutDialog() :: ERROR: No workout score in array found");
             } else {
                 $("#add-score-value").val(score.score);
-                if(score.rx == "true") {
+                if(score.rx == 1) {
                     $("#add-score-rx").prop("checked", true);
                 } else {
                     $("#add-score-rx").prop("checked", false);

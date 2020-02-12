@@ -68,8 +68,6 @@ export function hideWorkoutDialog() {
     document.getElementById("workout-dialog").style.display = "none";
 }
 export function showWorkoutScoreDialog(edit) {
-    edit = edit || false;
-
     let workout, workoutId, score, scoreId, index;
 
     hideBtnMenu();
@@ -381,7 +379,6 @@ export function toggleCard(element) {
 
     if(state === "block") {
         contentSel.style.display = "none";
-        hideBtnEdit();
     } else {
         contentSel.style.display = "block";
         parentElement.classList.add("active");

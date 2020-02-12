@@ -9,7 +9,7 @@ import * as timeHelper from "./time.js";
 export class Chart {
 
     constructor(data) {
-        this.data = data.reverse(); // data is already sorted
+        this.data = JSON.parse(JSON.stringify(data)).reverse(); // dont store the reference; data is already sorted
         this.canvas = document.getElementById(config.CHART_ID);
         if(!this.canvas.getContext) {
             logger.log("Chart.js :: init() :: WARN :: No Canvas API is supported.");

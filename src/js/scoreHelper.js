@@ -107,7 +107,7 @@ export function saveWorkoutScore() {
     let score;
     let scoreId = getWorkoutScoreIdFromDOM();
     let scoreValue = regexHelper.stripString($("#add-score-value").val());
-    if(regexHelper.numRegex(scoreValue) || regexHelper.timestampRegex(scoreValue)) {
+    if(regexHelper.numRegex(scoreValue) || regexHelper.floatRegex(scoreValue) || regexHelper.timestampRegex(scoreValue)) {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {

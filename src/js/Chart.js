@@ -3,6 +3,7 @@
 import * as logger from "./logger.js";
 import * as config from "./config.js";
 import * as timeHelper from "./time.js";
+import * as regexHelper from "./regex.js";
 
 // Chart
 
@@ -39,15 +40,17 @@ export class Chart {
         // calculate the bandwidth on the x axis (timestamps)
         this.yAxisLimit = 0;
         if(this.data.length > 1) {
-            var minDate = this.data[0].datetime;
-            var maxDate = this.data[this.data.length - 1].datetime;
+            let minDate = this.data[0].datetime;
+            let maxDate = this.data[this.data.length - 1].datetime;
             this.fullBandwidth = maxDate - minDate;
 
             // calculate the bandwidth on the y axis (scores)
             // @todo: solve this better
-            for (var i = 0; i < this.data.length; i++) {
-                this.data[i].score = timeHelper.timestampToSeconds(this.data[i].score); // parse to seconds
-                var score = parseInt(this.data[i].score);
+            for (let i = 0; i < this.data.length; i++) {
+                if(!regexHelper.numRegex(this.data[i].score) && !regexHelper.floatRegex(this.data[i].score)) {
+                    this.data[i].score = timeHelper.timestampToSeconds(this.data[i].score); // parse to seconds
+                }
+                let score = parseInt(this.data[i].score);
                 if (score > this.yAxisLimit) {
                     this.yAxisLimit = score;
                 }
@@ -92,10 +95,12 @@ export class Chart {
             this.c.lineWidth = 1;
             this.c.strokeStyle = "#eee";
 
+            let gridGap;
+
             // x grid
             this.c.beginPath();
-            var gridGap = this.getGraphWidth() / this.numOfXGridSec;
-            for(var index = 1; index < this.numOfXGridSec; index++) {
+            gridGap = this.getGraphWidth() / this.numOfXGridSec;
+            for(let index = 1; index < this.numOfXGridSec; index++) {
                 this.c.moveTo(this.xOffset + gridGap * index, this.yOffset);
                 this.c.lineTo(this.xOffset + gridGap * index, this.getGraphHeight() + this.yOffset);
             }
@@ -103,8 +108,8 @@ export class Chart {
 
             // y grid
             this.c.beginPath();
-            var gridGap = this.getGraphHeight() / this.numOfYGridSec;
-            for(var index = 1; index < this.numOfYGridSec; index++) {
+            gridGap = this.getGraphHeight() / this.numOfYGridSec;
+            for(let index = 1; index < this.numOfYGridSec; index++) {
                 this.c.moveTo(this.xOffset, this.yOffset + gridGap * index);
                 this.c.lineTo(this.getGraphWidth() + this.xOffset, this.yOffset + gridGap * index);
             }
@@ -121,9 +126,9 @@ export class Chart {
         this.c.strokeStyle = "#2196F3";
         if(this.data.length > 1) {
             this.c.beginPath();
-            for(var index = 0; index < this.data.length; index++) {
-                var x = this.getXCoordinate(index);
-                var y = this.getYCoordinate(index);
+            for(let index = 0; index < this.data.length; index++) {
+                let x = this.getXCoordinate(index);
+                let y = this.getYCoordinate(index);
                 // draw line
                 this.c.lineTo(x, y);
             }
@@ -133,9 +138,9 @@ export class Chart {
         // draw points
 		this.c.lineWidth = 1;
 		this.c.beginPath();
-    	for(var index = 0; index < this.data.length; index++) {
-            var x = this.getXCoordinate(index);
-            var y = this.getYCoordinate(index);
+        for(let index = 0; index < this.data.length; index++) {
+            let x = this.getXCoordinate(index);
+            let y = this.getYCoordinate(index);
 
             // draw points
             this.c.moveTo(x, y);
@@ -149,9 +154,9 @@ export class Chart {
 	 * get x coordinate for graph
 	 */
 	getXCoordinate(index) {
-		var min = this.data[0].datetime;
-		var max = this.data[index].datetime;
-        var partBandwidth = max - min;
+		let min = this.data[0].datetime;
+		let max = this.data[index].datetime;
+        let partBandwidth = max - min;
 
         // if less than 2 datapoints
         if(this.data.length < 2) {

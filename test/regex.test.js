@@ -79,6 +79,32 @@ describe('regex.js', function() {
             assert.equal(regexHelper.numRegex(), false);
         });
     });
+    describe('#floatRegex()', function() {
+        it('should return true when value contains valid floating number (1)', function() {
+            assert.equal(regexHelper.floatRegex("123"), true);
+        });
+        it('should return true when value contains valid floating number (2)', function() {
+            assert.equal(regexHelper.floatRegex("123.45"), true);
+        });
+        it('should return false when value contains valid floating number (1) (negative)', function() {
+            assert.equal(regexHelper.floatRegex("-123"), false);
+        });
+        it('should return false when value contains valid floating number (2) (negative)', function() {
+            assert.equal(regexHelper.floatRegex("-123.45"), false);
+        });
+        it('should return false when value contains invalid floating number (1)', function() {
+            assert.equal(regexHelper.floatRegex(".123"), false);
+        });
+        it('should return false when value contains invalid floating number (2)', function() {
+            assert.equal(regexHelper.floatRegex("213.45.7"), false);
+        });
+        it('should return false when value contains illegally chararcters', function() {
+            assert.equal(regexHelper.floatRegex("abc"), false);
+        });
+        it('should return false when value is undefined', function() {
+            assert.equal(regexHelper.floatRegex(), false);
+        });
+    });
     describe('#datetimeRegex()', function() {
         it('should return true when the value has a valid forma (dd.mm.YYY HH:MM)', function() {
             assert.equal(regexHelper.datetimeRegex("09.05.2019 19:21"), true);

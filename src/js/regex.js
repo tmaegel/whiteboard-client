@@ -60,6 +60,20 @@ export function numRegex(value) {
 }
 
 /**
+ * Floating number regex check
+ * e.g. 123.45
+ */
+export function floatRegex(value) {
+    if(value === undefined) {
+        return false;
+    }
+
+    let regExp = /^[0-9]+[.]?[0-9]+$/gm;
+
+    return regExp.test(value);
+}
+
+/**
  * Datetime regex check (dd.mm.YYY HH:MM)
  * e.g. 17.5.2019 19:21
  */

@@ -11,16 +11,16 @@ describe('time.js', function() {
             expect(timeHelper.getTimestamp()).to.be.a('number');
         });
         it('should return a Unix Time Stamp (pass "December 21, 2019 14:45:30")', function() {
-            expect(timeHelper.getTimestamp("December 21, 2019 14:45:30")).to.be.a('number');
+            expect(timeHelper.getTimestamp("December 21, 2019 14:45:30")).to.equal(1576935930);
         });
         it('should return a Unix Time Stamp (pass "2019-12-21T14:45:30")', function() {
-            expect(timeHelper.getTimestamp("2019-12-21T14:45:30")).to.be.a('number');
+            expect(timeHelper.getTimestamp("2019-12-21T14:45:30")).to.equal(1576935930);
         });
         it('should return a Unix Time Stamp (pass "21.12.2019 14:45:30")', function() {
-            expect(timeHelper.getTimestamp("21.12.2019 14:45:30")).to.be.a('number');
+            expect(timeHelper.getTimestamp("21.12.2019 14:45:30")).to.equal(1576935900);
         });
         it('should return a Unix Time Stamp (pass "21.12.2019 14:45")', function() {
-            expect(timeHelper.getTimestamp("21.12.2019 14:45")).to.be.a('number');
+            expect(timeHelper.getTimestamp("21.12.2019 14:45")).to.equal(1576935900);
         });
         it('should return false when passing a invalid timestamp', function() {
             assert.equal(timeHelper.getTimestamp("21-12-2019 14:45:30"), false);
@@ -52,13 +52,13 @@ describe('time.js', function() {
     });
     describe('#timestampToSeconds()', function() {
         it('should return a Unix Time Stamp (pass "1234567890")', function() {
-            expect(timeHelper.timestampToSeconds("1234567890")).to.be.a('number');
+            expect(timeHelper.timestampToSeconds("1234567890")).to.equal(1234567890);
         });
         it('should return a Unix Time Stamp (pass "14:45")', function() {
-            expect(timeHelper.timestampToSeconds("14:45")).to.be.a('number');
+            expect(timeHelper.timestampToSeconds("14:45")).to.equal(885);
         });
         it('should return a Unix Time Stamp (pass "14:45:00")', function() {
-            expect(timeHelper.timestampToSeconds("14:45:00")).to.be.a('number');
+            expect(timeHelper.timestampToSeconds("14:45:00")).to.equal(53100);
         });
         it('should return false when the value is not a number', function() {
             assert.equal(timeHelper.timestampToSeconds("abc"), false);

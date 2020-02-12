@@ -148,16 +148,21 @@ export function getShortFormatTimestamp(timestamp) {
  * Convert timestamp to seconds
  * Valid timestamp format is "HH:MM:SS"
  */
-export function timestampToSeconds(timestamp) {
-    if(regexHelper.numRegex(timestamp)) {
-        logger.log("time.js :: timestampToSeconds() :: INFO: Value is already a number. There is nothing to do.");
-        return parseInt(timestamp);
-    } else if(regexHelper.timestampRegex(timestamp)) {
-        logger.log("time.js :: timestampToSeconds() :: INFO: Detect timestamp (HH:MM:SS)");
-        var time = timestamp.split(":");
-        return (parseInt(time[0]*3600) + parseInt(time[1]*60) + parseInt(time[2]));
-    } else {
-        logger.error("time.js :: timestampToSeconds() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
-        return false;
-    }
-}
+ export function timestampToSeconds(timestamp) {
+     if(regexHelper.numRegex(timestamp)) {
+         logger.log("time.js :: timestampToSeconds() :: INFO: Value is already a number. There is nothing to do.");
+         return parseInt(timestamp);
+     } else if(regexHelper.timestampRegex(timestamp)) {
+         let time = timestamp.split(":");
+         if(time.length === 2) {
+             logger.log("time.js :: timestampToSeconds() :: INFO: Detect timestamp (MM:SS)");
+             return (parseInt(time[0]*60) + parseInt(time[1]));
+         } else if(time.length === 3) {
+             logger.log("time.js :: timestampToSeconds() :: INFO: Detect timestamp (HH:MM:SS)");
+             return (parseInt(time[0]*3600) + parseInt(time[1]*60) + parseInt(time[2]));
+         }
+     }
+
+     logger.error("time.js :: timestampToSeconds() :: ERROR: Couldn't parse timestamp to UNIX timestamp.");
+     return false;
+ }

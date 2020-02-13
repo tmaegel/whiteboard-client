@@ -26,7 +26,7 @@
   "scripts": {
     "build": "docker build -t whiteboard-client:prod .",
     "startDev": "docker run --name whiteboard-client-dev -p 8080:80 -v ${PWD}/src/:/usr/share/nginx/html:ro -d nginx",
-    "start": "docker run --name whiteboard-client-prod -p 8080:80 -p 8081:443 -d whiteboard-client:prod",
+    "start": "docker run --name whiteboard-client-prod -p 8081:443 -d whiteboard-client:prod",
     "stopDev": "docker stop whiteboard-client-dev",
     "stop": "docker stop whiteboard-client-prod",
     "rmDev": "docker rm whiteboard-client-dev",

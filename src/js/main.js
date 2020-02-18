@@ -39,8 +39,8 @@ function init() {
     /**
      * Login
      */
-    let btnLogin = document.getElementById("btn-login");
-    btnLogin.addEventListener("click", request.restUserLogin);
+    //let btnLogin = document.getElementById("btn-login");
+    //btnLogin.addEventListener("click", request.restUserLogin);
     window.addEventListener("keypress", guiHelper.handleLoginByKey);
 
     /**
@@ -53,26 +53,25 @@ function init() {
     let tabWorkoutView = document.getElementById("nav-workout");
     tabWorkoutView.addEventListener("click", function() {
         guiHelper.activateTab("workout");
-
         request.restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
-
         // Show all workouts
         let workoutElements = document.querySelectorAll(".workout");
         workoutElements.forEach((element, index, workoutElements) => {
             element.style.display = "block";
         });
+        guiHelper.showWorkoutView();
     });
     let tabMovementView = document.getElementById("nav-movement");
     tabMovementView.addEventListener("click", function() {
         guiHelper.activateTab("movement");
-
         request.restGetMovements(); // get all movements objects
+        guiHelper.showMovementView();
     });
     let tabEquipmentView = document.getElementById("nav-equipment");
     tabEquipmentView.addEventListener("click", function() {
         guiHelper.activateTab("equipment");
-
         request.restGetEquipment(); // get all equipment objects
+        guiHelper.showEquipmentView();
     });
     let tabSearchBar = document.getElementById("nav-searchbar");
     tabSearchBar.addEventListener("click", guiHelper.toggleSearchBar);
@@ -82,57 +81,30 @@ function init() {
      */
     let inpSearchWorkout = document.getElementById("searchbar");
     inpSearchWorkout.addEventListener("keyup", guiHelper.doSearch);
-    let btnNewWorkout = document.getElementById("btn-new-workout");
+    /*let btnNewWorkout = document.getElementById("btn-new-workout");
     btnNewWorkout.addEventListener("click", function() {
         guiHelper.showWorkoutDialog(false); // open add workout dialog
     });
     let btnEditWorkout = document.getElementById("btn-edit-workout");
     btnEditWorkout.addEventListener("click", function() {
         guiHelper.showWorkoutDialog(true); // open edit workout dialog
-    });
+    });*/
 
     /**
      * Score
      */
-    let btnNewScore = document.getElementById("btn-new-score");
+    /*let btnNewScore = document.getElementById("btn-new-score");
     btnNewScore.addEventListener("click", function() {
         guiHelper.showWorkoutScoreDialog(false); // open add workout score dialog
     });
     let btnEditScore = document.getElementById("btn-edit-score");
     btnEditScore.addEventListener("click", function() {
         guiHelper.showWorkoutScoreDialog(true); // open edit workout score dialog
-    });
+    });*/
 
-    let btnOk = document.getElementById("btn-ok");
-    btnOk.addEventListener("click", function() {
-        let workoutId = guiHelper.isAnyCardActive();
-        if(workoutId != -1) {
-            if(document.getElementById("workout-dialog").style.display == "block") {
-                workoutHelper.saveWorkout();
-            } else if(document.getElementById("workout-score-dialog").style.display == "block") {
-                scoreHelper.saveWorkoutScore();
-            } else {
-                logger.log("main :: init() :: btn-ok :: ERROR: No action defined.");
-            }
-        } else {
-            workoutHelper.saveWorkout();
-        }
-    });
-
-    let btnClose = document.getElementById("btn-close");
-    btnClose.addEventListener("click", function() {
-        guiHelper.hideWorkoutDialog();
-        guiHelper.hideWorkoutScoreDialog();
-    });
-
-    let btnMenu = document.getElementById("btn-menu");
-    btnMenu.addEventListener("click", function(event) {
-        guiHelper.toggleBtnContextMenu();
-        event.stopPropagation();
-    });
     // Hide context menu
     document.addEventListener("click", function() {
-        guiHelper.hideBtnContextMenu();
+        request.app.$refs.dropdownMenu.hide();
     });
 
     // Listener to refresh the graph

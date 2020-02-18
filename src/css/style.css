@@ -206,9 +206,8 @@ h6 { font-size: 105%; }
     padding: 0 12px 0 12px;
     border: none;
 }
-/* Style the collapsible content. Note: hidden by default */
+/* Style the collapsible content */
 .card-content {
-    display: none;
     overflow: hidden;
     border-top: 1px solid #ddd; /* top border if collapse */
     background-color: white;
@@ -233,7 +232,6 @@ ul {
  */
 .btn-overlay, .btn-overlay:hover, .btn-overlay:focus {
     position: fixed;
-    display: none; /* Hidden by default */
     z-index: 1; /* Sit on top */
     padding: 16px;
     border: 0;
@@ -244,35 +242,11 @@ ul {
     border-radius: 50%;
     cursor: pointer;
 }
-#btn-login {
-    bottom: 20px;
-    right: 20px;
-}
-#btn-new {
-    bottom: 20px;
-    right: 20px;
-}
-#btn-edit {
-    bottom: 90px;
-    right: 20px;
-}
-#btn-menu {
-    bottom: 20px;
-    right: 20px;
-}
-#btn-ok {
-    bottom: 20px;
-    right: 20px;
-}
-#btn-close {
-    bottom: 90px;
-    right: 20px;
-}
+
 /**
  * Dropdown menu
  */
 #dropdown-menu {
-    display: none;
     position: fixed;
     background-color: #eee;
     bottom: 74px;

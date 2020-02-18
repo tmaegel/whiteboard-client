@@ -73,162 +73,158 @@
         </svg>
 
         <!-- topbar -->
-        <div id="topbar">
-            <div id="titlebar">
-                <h1 id="page-title">Dashboard</h1>
-                <input id="searchbar" type="text" placeholder="Search...">
-                <div id="toolbar">
-                    <span id="nav-filter"><svg class="icon icon-cog"><use xlink:href="#icon-cog"></use></svg><span class="mls"></span></span>
-                    <span id="nav-searchbar"><svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg><span class="mls"></span></span>
+        <div id="app">
+
+            <!-- topbar -->
+            <div id="topbar">
+                <div id="titlebar">
+                    <h1 id="page-title">Dashboard</h1>
+                    <input id="searchbar" type="text" placeholder="Search...">
+                    <div id="toolbar">
+                        <span id="nav-filter"><svg class="icon icon-cog"><use xlink:href="#icon-cog"></use></svg><span class="mls"></span></span>
+                        <span id="nav-searchbar"><svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg><span class="mls"></span></span>
+                    </div>
                 </div>
-            </div>
-            <!-- navbar -->
-            <div id="navbar">
-                <ul>
-                    <li id="nav-dashboard" class="active"><svg class="icon icon-home"><use xlink:href="#icon-home"></use></svg><span class="mls"></span></li>
-                    <li id="nav-workout" class="tutorials"><svg class="icon icon-stats-dots"><use xlink:href="#icon-stats-dots"></use></svg><span class="mls"></span></li>
-                    <li id="nav-movement" class="about"><svg class="icon icon-accessibility"><use xlink:href="#icon-accessibility"></use></svg><span class="mls"></span></li>
-                    <li id="nav-equipment" class="news"><svg class="icon icon-database"><use xlink:href="#icon-database"></use></svg><span class="mls"></span></li>
-                </ul>
-            </div>
-            <!-- notification -->
-            <div class="notification notification-ok"></div>
-            <div class="notification notification-info"></div>
-            <div class="notification notification-warn"></div>
-            <div class="notification notification-error"></div>
-        </div>
-
-        <!-- overlay buttons -->
-        <div id="dropdown-menu">
-            <span id="btn-new-workout" href="#">Add workout</span>
-            <span id="btn-edit-workout" href="#">Edit workout</span>
-            <span id="btn-new-score" href="#">Add score</span>
-            <span id="btn-edit-score" href="#">Edit score</span>
-        </div>
-        <button id="btn-login" class="btn-overlay">
-            <svg class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg><span class="mls"></span>
-        </button>
-        <button id="btn-ok" class="btn-overlay">
-            <svg class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg><span class="mls"></span>
-        </button>
-        <button id="btn-close" class="btn-overlay">
-            <svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg><span class="mls"></span>
-        </button>
-        <button id="btn-new" class="btn-overlay">
-            <svg class="icon icon-plus"><use xlink:href="#icon-plus"></use></svg><span class="mls"></span>
-        </button>
-        <button id="btn-edit" class="btn-overlay">
-            <svg class="icon icon-pencil"><use xlink:href="#icon-pencil"></use></svg><span class="mls"></span>
-        </button>
-        <button id="btn-menu" class="btn-overlay">
-            <svg id="btn-menu-svg" class="icon icon-menu"><use xlink:href="#icon-menu"></use></svg><span class="mls"></span>
-        </button>
-
-
-        <div id="container">
-
-            <!-- loader/spinner -->
-            <div id="loader">
-                <div id="spinner"></div>
+                <!-- navbar -->
+                <div id="navbar">
+                    <ul>
+                        <li id="nav-dashboard" class="active"><svg class="icon icon-home"><use xlink:href="#icon-home"></use></svg><span class="mls"></span></li>
+                        <li id="nav-workout" class="tutorials"><svg class="icon icon-stats-dots"><use xlink:href="#icon-stats-dots"></use></svg><span class="mls"></span></li>
+                        <li id="nav-movement" class="about"><svg class="icon icon-accessibility"><use xlink:href="#icon-accessibility"></use></svg><span class="mls"></span></li>
+                        <li id="nav-equipment" class="news"><svg class="icon icon-database"><use xlink:href="#icon-database"></use></svg><span class="mls"></span></li>
+                    </ul>
+                </div>
+                <!-- notification -->
+                <div class="notification notification-ok"></div>
+                <div class="notification notification-info"></div>
+                <div class="notification notification-warn"></div>
+                <div class="notification notification-error"></div>
             </div>
 
-            <!-- beginn login-dialog -->
-            <div id="login-dialog" class="dialog">
-                <input id="input-username" type="text" placeholder="username">
-                <input id="input-password" type="password" placeholder="password">
-            </div>
-            <!-- end login-dialog -->
+            <!-- overlay buttons -->
+            <!--<div id="dropdown-menu">
+                <span id="btn-new-workout" href="#">Add workout</span>
+                <span id="btn-edit-workout" href="#">Edit workout</span>
+                <span id="btn-new-score" href="#">Add score</span>
+                <span id="btn-edit-score" href="#">Edit score</span>
+            </div>-->
 
-            <!-- beginn workout-dialog -->
-            <div id="workout-dialog" class="dialog">
-                <input id="add-workout-name" type="text" placeholder="Workout name">
-                <textarea id="add-workout-description" rows="5" placeholder="Workout description"></textarea>
-            </div>
-            <!-- end workout-dialog -->
 
-            <!-- beginn workout-score-dialog -->
-            <div id="workout-score-dialog" class="dialog">
-                <input id="add-score-value" type="text" placeholder="Score">
-                <input id="add-score-datetime" type="text" placeholder="dd.mm.YYYY HH:MM">
-                <textarea id="add-score-note" rows="3" placeholder="Note"></textarea>
-                <label class="chbx-container">Rx
-                    <input id="add-score-rx" type="checkbox" checked="false">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-            <!-- end workout-score-dialog -->
+            <btn-login ref="btnLogin"></btn-login>
+            <btn-ok ref="btnOk"></btn-ok>
+            <btn-close ref="btnClose"></btn-close>
+            <btn-menu ref="btnMenu"></btn-menu>
+            <dropdown-menu ref="dropdownMenu"></dropdown-menu>
 
-            <!-- beginn dashboard-view -->
-            <div id="dashboard-view">
-                <ul>
-                    <li class="dashboard-template">
-                        <div class="card-header">
-                            <h5 class="dashboard-name"></h5>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!-- end dashboard-view -->
+            <div id="container">
 
-            <!-- beginn workout-view -->
-            <div id="workout-view">
-                <ul>
-                    <li class="card workout-template">
-                        <div class="card-header collapsible">
-                            <h4 class="workout-name"></h4>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <p class="workout-description"></p>
-                                <p><small class="workout-datetime"></small></p>
+                <!-- loader/spinner -->
+                <div id="loader">
+                    <div id="spinner"></div>
+                </div>
+
+                <!-- beginn login-dialog -->
+                <div id="login-dialog" class="dialog">
+                    <input id="input-username" type="text" placeholder="username">
+                    <input id="input-password" type="password" placeholder="password">
+                </div>
+                <!-- end login-dialog -->
+
+                <!-- beginn workout-dialog -->
+                <div id="workout-dialog" class="dialog">
+                    <input id="add-workout-name" type="text" placeholder="Workout name">
+                    <textarea id="add-workout-description" rows="5" placeholder="Workout description"></textarea>
+                </div>
+                <!-- end workout-dialog -->
+
+                <!-- beginn workout-score-dialog -->
+                <div id="workout-score-dialog" class="dialog">
+                    <input id="add-score-value" type="text" placeholder="Score">
+                    <input id="add-score-datetime" type="text" placeholder="dd.mm.YYYY HH:MM">
+                    <textarea id="add-score-note" rows="3" placeholder="Note"></textarea>
+                    <label class="chbx-container">Rx
+                        <input id="add-score-rx" type="checkbox" checked="false">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <!-- end workout-score-dialog -->
+
+                <!-- beginn dashboard-view -->
+                <div id="dashboard-view">
+                    <ul>
+                        <li class="dashboard-template">
+                            <div class="card-header">
+                                <h5 class="dashboard-name"></h5>
                             </div>
-                            <div>
-                                <canvas></canvas>
-                                <table class="scores">
-                                    <tr class="score-template">
-                                         <td class="score-rx"></td>
-                                         <td class="score-value"></td>
-                                         <td class="score-datetime"></td>
-                                         <td class="score-note"></td>
-                                     </tr>
-                                </table>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end dashboard-view -->
+
+                <!-- beginn workout-view -->
+                <div id="workout-view">
+                    <ul>
+                        <li v-for="(workoutItem, workoutIndex) in workoutsSortByName" class="card workout" v-bind:key="workoutItem.id">
+                            <div v-on:click="toggleWorkoutCard(workoutIndex)" class="card-header collapsible">
+                                <h4 class="workout-name">{{ workoutItem.name }}</h4>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!-- end workout-view -->
+                            <div v-if="workoutItem.active" class="card-content">
+                                <div class="card-body">
+                                    <p v-html="getWorkoutDescription(workoutItem.description)" class="workout-description"></p>
+                                    <p><small class="workout-datetime">{{ getFormatTimestamp(workoutItem.datetime) }}</small></p>
+                                </div>
+                                <div>
+                                    <canvas></canvas>
+                                    <table class="scores">
+                                        <tr v-on:click="toggleWorkoutScoreItem(workoutIndex, scoreIndex)" v-for="(scoreItem, scoreIndex) in workoutItem.score" v-bind:class="{ select: scoreItem.selected }" class="score">
+                                             <td class="score-rx">{{ scoreItem.rx }}</td>
+                                             <td class="score-value">{{ scoreItem.score }}</td>
+                                             <td class="score-datetime">{{ getShortFormatTimestamp(scoreItem.datetime) }}</td>
+                                             <td class="score-note">{{ scoreItem.note }}</td>
+                                         </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end workout-view -->
 
-            <!-- beginn movements-view -->
-            <div id="movement-view">
-                <ul>
-                    <li class="card movement-template">
-                        <div class="card-header">
-                            <h4 class="movement-name"></h4>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!-- end movements-view -->
+                <!-- beginn movements-view -->
+                <div id="movement-view">
+                    <ul>
+                        <li v-for="movementItem in movementsSortByName" class="card movement">
+                            <div class="card-header">
+                                <h4 class="movement-name">{{ movementItem.movement }}</h4>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end movements-view -->
 
-            <!-- beginn equipment-view -->
-            <div id="equipment-view">
-                <ul>
-                    <li class="card equipment-template">
-                        <div class="card-header">
-                            <h4 class="equipment-name"></h4>
-                        </div>
-                    </li>
-                </ul>
+                <!-- beginn equipment-view -->
+                <div id="equipment-view">
+                    <ul>
+                        <li v-for="equipmentItem in equipmentSortByName" class="card equipment">
+                            <div class="card-header">
+                                <h4 class="equipment-name">{{ equipmentItem.equipment }}</h4>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end equipment-view -->
+
             </div>
-            <!-- end equipment-view -->
+            <!-- end container -->
 
         </div>
-        <!-- end container -->
+        <!-- end app -->
 
     </body>
     <!-- jQuery -->
     <script src="js/jquery/jquery-3.3.1.min.js"></script>
+    <!-- Vue.js -->
+    <script src="js/modules/vue.js/vue.js"></script>
     <!-- CryptJS -->
     <script src="js/modules/cryptjs/rollups/sha256.js"></script>
     <!-- MAIN -->

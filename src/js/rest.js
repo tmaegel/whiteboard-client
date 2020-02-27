@@ -14,6 +14,243 @@ import * as scoreHelper from "./scoreHelper.js";
 import * as movementHelper from "./movementHelper.js";
 import * as equipmentHelper from "./equipmentHelper.js";
 
+let workoutComponent = Vue.component('workout-component', {
+    props: ['workoutIndex', 'workout'],
+    methods: {
+        toggleWorkoutCard: function() {
+            let state = this.workout.active;
+            for(let index in app.workouts) {
+                Vue.set(app.workouts[index], 'active', false);
+            }
+            if(!state) {
+                Vue.set(app.workouts[this.workoutIndex], 'active', true);
+                restGetWorkoutScores(this.workout.id);
+            }
+        },
+        getWorkoutDescription: function(text) {
+            return text.toString().replace(new RegExp('\r?\n','g'), "<br />");
+        },
+        getFormatTimestamp: function(datetime) {
+            return timeHelper.getFormatTimestamp(datetime);
+        },
+    },
+    template: '<li class="card workout"> \
+        <div v-on:click="toggleWorkoutCard" class="card-header collapsible"> \
+            <h4>{{ workout.name }}</h4> \
+        </div> \
+        <div v-if="workout.active" class="card-content"> \
+            <div class="card-body"> \
+                <p v-html="getWorkoutDescription(workout.description)"></p> \
+                <p><small>{{ getFormatTimestamp(workout.datetime) }}</small></p> \
+            </div> \
+            <div> \
+                <table> \
+                    <tr is="score-component" \
+                        v-for="(scoreItem, scoreIndex) in workout.score" \
+                        v-bind:key="scoreItem.id" \
+                        v-bind:score-index="scoreIndex" \
+                        v-bind:score="scoreItem" \
+                        v-bind:workout-index="workoutIndex" \
+                    ></tr> \
+                </table> \
+            </div> \
+        </div> \
+    </li>'
+});
+
+let scoreComponent = Vue.component('score-component', {
+    props: ['scoreIndex', 'score', 'workoutIndex'],
+    methods: {
+        toggleScoreItem: function(workoutIndex, scoreIndex) {
+            let state = app.workouts[this.workoutIndex].score[this.scoreIndex].selected;
+            for(let index in app.workouts[this.workoutIndex].score) {
+                Vue.set(app.workouts[this.workoutIndex].score[index], 'selected', false);
+            }
+            if(!state) {
+                Vue.set(app.workouts[this.workoutIndex].score[this.scoreIndex], 'selected', true);
+            }
+        },
+        getShortFormatTimestamp: function(datetime) {
+            return timeHelper.getShortFormatTimestamp(datetime);
+        },
+        getRx: function() {
+            if(this.score.rx) {
+                return "Rx";
+            } else {
+                return "";
+            }
+        }
+    },
+    template: '<tr \
+        v-on:click="toggleScoreItem" \
+        v-bind:class="{ select: score.selected }" class="cursor"> \
+         <td>{{ getRx() }}</td> \
+         <td>{{ score.score }}</td> \
+         <td>{{ getShortFormatTimestamp(score.datetime) }}</td> \
+         <td>{{ score.note }}</td> \
+     </tr>'
+});
+
+let movementComponent = Vue.component('movement-component', {
+    props: ['movement'],
+    template: '<li class="card movement"> \
+        <div class="card-header"> \
+            <h4>{{ movement.movement }}</h4> \
+        </div> \
+    </li>'
+});
+
+let equipmentComponent = Vue.component('equipment-component', {
+    props: ['equipment'],
+    template: '<li class="card equipment"> \
+        <div class="card-header"> \
+            <h4>{{ equipment.equipment }}</h4> \
+        </div> \
+    </li>'
+});
+
+// Define a new component called dialog-workout
+let dialogWorkout = Vue.component('dialog-workout', {
+    data: function () {
+        return {
+            seen: false,
+            name: "",
+            description: ""
+        }
+    },
+    methods: {
+        hide: function() { this.seen = false; },
+        show: function() { this.seen = true; },
+        open: function(edit) {
+            let workout, workoutId;
+
+            app.hideAllBtns();
+            app.hideAllDialogs();
+            app.hideAllViews();
+
+            app.$refs.btnOk.show();
+            app.$refs.btnClose.show();
+
+            if(edit) { // edit workout dialog
+                app.setTitle("Edit workout");
+                workoutId = workoutHelper.isWorkoutCardActive();
+                if (workoutId > 0) {
+                    workout = arrayHelper.getArrayObjectById(app.workouts, workoutId);
+                }
+                if(workout == 0 || workout == -1 || workout == null || workout == undefined) {
+                    logger.error("request.js :: dialogWorkout :: open() :: ERROR: No workout in array found");
+                } else {
+                    this.name = workout.name;
+                    this.description = workout.description;
+                }
+            } else { // add workout dialog
+                app.setTitle("Add workout");
+                this.name = "";
+                this.description =  "";
+            }
+            this.show();
+        },
+        getName: function() {
+            return this.name;
+        },
+        getDescription: function() {
+            return this.description;
+        }
+    },
+    template: '<div v-if="seen" class="dialog"> \
+        <input type="text" placeholder="Workout name" v-model="name"> \
+        <textarea rows="5" placeholder="Workout description" v-model="description">{{ description }}</textarea> \
+    </div>'
+});
+
+// Define a new component called dialog-workout-score
+let dialogWorkoutScore = Vue.component('dialog-workout-score', {
+    data: function () {
+        return {
+            seen: false,
+            score: "",
+            datetime: "",
+            note: "",
+            rx: false,
+        }
+    },
+    methods: {
+        hide: function() { this.seen = false; },
+        show: function() { this.seen = true; },
+        open: function(edit) {
+            let workout, workoutId, score, scoreId, index;
+
+            app.hideAllBtns();
+            app.hideAllDialogs();
+            app.hideAllViews();
+
+            app.$refs.btnOk.show();
+            app.$refs.btnClose.show();
+
+            if(edit) { // edit workout dialog
+                app.setTitle("Edit workout score");
+                workoutId = workoutHelper.isWorkoutCardActive();
+                console.log(workoutId);
+                if (workoutId > 0) {
+                    console.log(workoutId);
+                    let workoutIndex = arrayHelper.getArrayIndexById(app.workouts, workoutId);
+                    console.log(workoutIndex);
+                    if(workoutIndex != null) {
+                        scoreId = scoreHelper.isScoreItemSelected(workoutIndex)
+                        if (scoreId > 0) {
+                            score = arrayHelper.getArrayObjectById(app.workouts[workoutIndex].score, scoreId);
+                        }
+                        if(score == 0 || score == -1 || score == null || score == undefined) {
+                            logger.error("request.js :: dialogWorkoutScore :: open() :: ERROR: No workout score in array found");
+                        } else {
+                            this.score = score.score;
+                            if(score.rx == 1) {
+                                this.rx = true;
+                            } else {
+                                this.rx = false;
+                            }
+                            this.datetime = timeHelper.getShortFormatTimestamp(score.datetime);
+                            this.note = score.note;
+                        }
+                    } else {
+                        logger.error("request.js :: dialogWorkoutScore :: open() :: ERROR: No workout found in array");
+                    }
+                } else {
+                    logger.error("request.js :: dialogWorkoutScore :: open() :: ERROR: No workout active to edit");
+                }
+            } else { // add workout dialog
+                app.setTitle("Add workout score");
+                this.score = "";
+                this.datetime = timeHelper.getShortFormatTimestamp();
+                this.note = "";
+                this.rx = false;
+            }
+            this.show();
+        },
+        getScore: function() {
+            return this.score;
+        },
+        getDatetime: function() {
+            return this.datetime;
+        },
+        getNote: function() {
+            return this.note;
+        },
+        getRx: function() {
+            return this.rx;
+        }
+    },
+    template: '<div v-if="seen" class="dialog"> \
+        <input type="text" placeholder="Score" v-model="score"> \
+        <input type="text" placeholder="dd.mm.YYYY HH:MM" v-model="datetime"> \
+        <textarea rows="3" placeholder="Note" v-model="note">{{ note }}</textarea> \
+        <label class="chbx-container">Rx \
+            <input type="checkbox" v-model="rx"> \
+            <span class="checkmark"></span> \
+        </label> \
+    </div>'
+});
+
 // Define a new component called btn-login
 let btnLogin = Vue.component('btn-login', {
     data: function () {
@@ -27,7 +264,7 @@ let btnLogin = Vue.component('btn-login', {
         toggle: function() { this.seen = !this.seen; },
         click: function() {
             console.log("click btn-login");
-            request.restUserLogin();
+            restUserLogin();
         }
     },
     template: '<button v-if="seen" v-on:click="click" class="btn-overlay" style="bottom:20px;right:20px;"> \
@@ -70,9 +307,9 @@ let btnOk = Vue.component('btn-ok', {
         click: function() {
             let workoutId = workoutHelper.isWorkoutCardActive();
             if(workoutId != -1) {
-                if(document.getElementById("workout-dialog").style.display == "block") {
+                if(app.$refs.dialogWorkout.seen && !app.$refs.dialogWorkoutScore.seen) {
                     workoutHelper.saveWorkout();
-                } else if(document.getElementById("workout-score-dialog").style.display == "block") {
+                } else if(app.$refs.dialogWorkoutScore.seen && !app.$refs.dialogWorkout.seen) {
                     scoreHelper.saveWorkoutScore();
                 } else {
                     logger.log("main :: init() :: btn-ok :: ERROR: No action defined.");
@@ -99,8 +336,8 @@ let btnClose = Vue.component('btn-close', {
         show: function() { this.seen = true; },
         toggle: function() { this.seen = !this.seen; },
         click: function() {
-            guiHelper.hideWorkoutDialog();
-            guiHelper.hideWorkoutScoreDialog();
+            app.hideAllDialogs();
+            app.showWorkoutView(); // @todo: Show view depends on active tab
         }
     },
     template: '<button v-if="seen" v-on:click="click" class="btn-overlay" style="bottom:90px;right:20px;"> \
@@ -165,16 +402,16 @@ let dropdownMenu = Vue.component('dropdown-menu', {
             this.seenEditScore = false;
         },
         newWorkout: function() {
-            guiHelper.showWorkoutDialog(false); // open add workout dialog
+            app.$refs.dialogWorkout.open(false);
         },
         editWorkout: function() {
-            guiHelper.showWorkoutDialog(true); // open edit workout dialog
+            app.$refs.dialogWorkout.open(true); // open edit workout dialog
         },
         newScore: function() {
-            guiHelper.showWorkoutScoreDialog(false); // open add workout score dialog
+            app.$refs.dialogWorkoutScore.open(false); // open add workout score dialog
         },
         editScore: function() {
-            guiHelper.showWorkoutScoreDialog(true); // open edit workout score dialog
+            app.$refs.dialogWorkoutScore.open(true); // open edit workout score dialog
         }
     },
     template: '<div v-if="seen" id="dropdown-menu"> \
@@ -188,6 +425,11 @@ let dropdownMenu = Vue.component('dropdown-menu', {
 export let app = new Vue({
     el: '#app',
     data: {
+        title: "none",
+        seenDashboard: false,
+        seenWorkout: false,
+        seenMovement: false,
+        seenEquipment: false,
         equipment: [],
         movements: [],
         workouts: []
@@ -197,7 +439,9 @@ export let app = new Vue({
         'btn-ok': btnOk,
         'btn-close': btnClose,
         'btn-menu': btnMenu,
-        'dropdown-menu': dropdownMenu
+        'dropdown-menu': dropdownMenu,
+        'dialog-workout': dialogWorkout,
+        'dialog-workout-score': dialogWorkoutScore
     },
     computed: {
         equipmentSortByName: function() {
@@ -220,6 +464,15 @@ export let app = new Vue({
         }
     },
     methods: {
+        /**
+         * Set title
+         */
+        setTitle: function(title) {
+            this.title = title;
+        },
+        /**
+         * Show/Hide workout
+         */
         hideWorkout: function(workoutIndex) {
             Vue.set(this.workouts[workoutIndex], 'seen', false);
         },
@@ -236,40 +489,78 @@ export let app = new Vue({
                 this.showWorkout(workoutIndex);
             }
         },
-        toggleWorkoutCard: function(workoutIndex) {
-            let state = this.workouts[workoutIndex].active;
-            for(let workoutIndex in this.workouts) {
-                Vue.set(this.workouts[workoutIndex], 'active', false);
-            }
-            if(!state) {
-                Vue.set(this.workouts[workoutIndex], 'active', true);
-                restGetWorkoutScores(this.workouts[workoutIndex].id);
-            }
+        /**
+         * Show/Hide views
+         */
+        hideAllViews: function() {
+            this.seenDashboard = false;
+            this.seenWorkout = false;
+            this.seenMovement = false;
+            this.seenEquipment = false;
+            // hideToolBar();
+            // hideSearchBar();
         },
-        toggleWorkoutScoreItem: function(workoutIndex, scoreIndex) {
-            let state = this.workouts[workoutIndex].score[scoreIndex].selected;
-            for(let score of this.workouts[workoutIndex].score) {
-                Vue.set(score, 'selected', false);
-            }
-            if(!state) {
-                Vue.set(this.workouts[workoutIndex].score[scoreIndex], 'selected', true);
-            }
+        showDashboardView: function() {
+            this.setTitle("Dashboard");
+            this.hideAllBtns();
+            this.hideAllDialogs();
+            this.hideAllViews();
+            this.seenDashboard = true;
         },
-        getFormatTimestamp: function(datetime) {
-            return timeHelper.getFormatTimestamp(datetime);
+        hideDashboardView: function() {
+            this.seenDashboard = false;
         },
-        getShortFormatTimestamp: function(datetime) {
-            return timeHelper.getShortFormatTimestamp(datetime);
+        showWorkoutView: function() {
+            this.setTitle("Workouts");
+            this.hideAllBtns();
+            this.hideAllDialogs();
+            this.hideAllViews();
+            this.showAllWorkout(); // show all workouts
+            this.showMenuBtn();
+            this.seenWorkout = true;
         },
-        getWorkoutDescription: function(text) {
-            return text.toString().replace(new RegExp('\r?\n','g'), "<br />");
+        hideWorkoutView: function() {
+            this.seenWorkout = false;
         },
-        scoresSortByDatetime: function(workoutIndex) {
-            if(this.workouts[workoutIndex].score)  {
-                return this.workouts[workoutIndex].score.sort(arrayHelper.compareByTimestamp);
-            } else {
-                return null;
-            }
+        showMovementView: function() {
+            this.setTitle("Movements");
+            this.hideAllBtns();
+            this.hideAllDialogs();
+            this.hideAllViews();
+            this.seenMovement = true;
+        },
+        hideMovementView: function() {
+            this.seenMovement = false;
+        },
+        showEquipmentView: function() {
+            this.setTitle("Equipment");
+            this.hideAllBtns();
+            this.hideAllDialogs();
+            this.hideAllViews();
+            this.seenEquipment = true;
+        },
+        hideEquipmentView: function() {
+            this.seenEquipment = false;
+        },
+        /**
+         * Show/hide dialogs
+         */
+        hideAllDialogs: function()  {
+            app.$refs.dialogWorkout.hide();
+            app.$refs.dialogWorkoutScore.hide();
+        },
+        /**
+         * Show/hide buttons
+         */
+        hideAllBtns: function() {
+            app.$refs.btnLogin.hide();
+            app.$refs.btnOk.hide();
+            app.$refs.btnClose.hide();
+            app.$refs.btnMenu.hide();
+        },
+        showMenuBtn: function() {
+            this.hideAllBtns();
+            app.$refs.btnMenu.show();
         }
     }
 });

@@ -30,12 +30,6 @@ h6 { font-size: 105%; }
 }
 
 /**
- * template
- */
-.workout-template { display: none; /* Hidden by default */ }
-.movement-template { display: none; /* Hidden by default */ }
-.equipment-template { display: none; /* Hidden by default */ }
-/**
  * dialogs
  */
 .dialog {
@@ -43,22 +37,11 @@ h6 { font-size: 105%; }
     padding: 24px 16px;
     box-sizing: border-box;
 }
-#login-dialog { display: none; /* Hidden by default */ }
-#workout-dialog { display: none; /* Hidden by default */ }
-#workout-score-dialog { display: none; /* Hidden by default */ }
-/**
- * views
- */
-#dashboard-view { display: none; /* Hidden by default */ }
-#workout-view { display: none; /* Hidden by default */ }
-#movement-view { display: none; /* Hidden by default */ }
-#equipment-view { display: none; /* Hidden by default */ }
-/**
- * score
- */
-.score {
+
+.cursor {
     cursor: pointer;
 }
+
 .select {
     background-color: #f6f6f6;
 }

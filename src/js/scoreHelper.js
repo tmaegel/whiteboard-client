@@ -43,7 +43,7 @@ export function saveWorkoutScore() {
     let workoutId = workoutHelper.isWorkoutCardActive();
     let score;
     let scoreId = isScoreItemSelected(arrayHelper.getArrayIndexById(request.app.workouts, workoutId));
-    let scoreValue = regexHelper.stripString($("#add-score-value").val());
+    let scoreValue = regexHelper.stripString(request.app.$refs.dialogWorkoutScore.getScore());
     if(regexHelper.numRegex(scoreValue) || regexHelper.floatRegex(scoreValue) || regexHelper.timestampRegex(scoreValue)) {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: numRegex() success");
@@ -52,7 +52,7 @@ export function saveWorkoutScore() {
         return;
     }
 
-    let scoreDatetime = regexHelper.stripString($("#add-score-datetime").val());
+    let scoreDatetime = regexHelper.stripString(request.app.$refs.dialogWorkoutScore.getDatetime());
     let scoreDateTimeUnix = timeHelper.getTimestamp(scoreDatetime);
     if(scoreDateTimeUnix) {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime + " (UTS:"+ scoreDateTimeUnix +")");
@@ -62,7 +62,7 @@ export function saveWorkoutScore() {
         return;
     }
 
-    let scoreNote = regexHelper.stripString($("#add-score-note").val());
+    let scoreNote = regexHelper.stripString(request.app.$refs.dialogWorkoutScore.getNote());
     if(regexHelper.simpleRegex(scoreDatetime)) {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: simpleRegex() success");
@@ -72,7 +72,7 @@ export function saveWorkoutScore() {
     }
 
     let scoreRx;
-    if($('#add-score-rx').is(":checked")) {
+    if(request.app.$refs.dialogWorkoutScore.getRx()) {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreRx is true");
         scoreRx = 1;
     } else {
@@ -97,5 +97,6 @@ export function saveWorkoutScore() {
     }
 
     logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: score objext is " + JSON.stringify(score));
-    guiHelper.hideAllDialogs();
+    request.app.hideAllDialogs();
+    request.app.showWorkoutView();
 }

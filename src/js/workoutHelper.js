@@ -24,20 +24,13 @@ export function isWorkoutCardActive() {
     return -1
 }
 
-export function hideWorkoutCards() {
-    request.app.hideAllWorkout();
-}
-export function showWorkoutCards() {
-    request.app.showAllWorkout();
-}
-
 export function saveWorkout() {
     logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: Saving workout...");
 
     let workout;
     let workoutId = isWorkoutCardActive();
-    let workoutName = $("#add-workout-name").val();
-    let workoutDescription = $("#add-workout-description").val();
+    let workoutName = request.app.$refs.dialogWorkout.getName();
+    let workoutDescription = request.app.$refs.dialogWorkout.getDescription();
 
     if(workoutName != undefined && workoutDescription != undefined) {
         if(regexHelper.simpleRegex(workoutName) && !regexHelper.empty(workoutName)) {
@@ -84,5 +77,6 @@ export function saveWorkout() {
     }
 
     logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: workout objext is " + JSON.stringify(workout));
-    guiHelper.hideAllDialogs();
+    request.app.hideAllDialogs();
+    request.app.showWorkoutView();
 }

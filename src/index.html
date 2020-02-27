@@ -78,7 +78,7 @@
             <!-- topbar -->
             <div id="topbar">
                 <div id="titlebar">
-                    <h1 id="page-title">Dashboard</h1>
+                    <h1>{{ title }}</h1>
                     <input id="searchbar" type="text" placeholder="Search...">
                     <div id="toolbar">
                         <span id="nav-filter"><svg class="icon icon-cog"><use xlink:href="#icon-cog"></use></svg><span class="mls"></span></span>
@@ -101,15 +101,6 @@
                 <div class="notification notification-error"></div>
             </div>
 
-            <!-- overlay buttons -->
-            <!--<div id="dropdown-menu">
-                <span id="btn-new-workout" href="#">Add workout</span>
-                <span id="btn-edit-workout" href="#">Edit workout</span>
-                <span id="btn-new-score" href="#">Add score</span>
-                <span id="btn-edit-score" href="#">Edit score</span>
-            </div>-->
-
-
             <btn-login ref="btnLogin"></btn-login>
             <btn-ok ref="btnOk"></btn-ok>
             <btn-close ref="btnClose"></btn-close>
@@ -118,39 +109,20 @@
 
             <div id="container">
 
-                <!-- loader/spinner -->
-                <div id="loader">
-                    <div id="spinner"></div>
-                </div>
-
-                <!-- beginn login-dialog -->
+                <!-- login-dialog -->
                 <div id="login-dialog" class="dialog">
                     <input id="input-username" type="text" placeholder="username">
                     <input id="input-password" type="password" placeholder="password">
                 </div>
-                <!-- end login-dialog -->
 
-                <!-- beginn workout-dialog -->
-                <div id="workout-dialog" class="dialog">
-                    <input id="add-workout-name" type="text" placeholder="Workout name">
-                    <textarea id="add-workout-description" rows="5" placeholder="Workout description"></textarea>
-                </div>
-                <!-- end workout-dialog -->
+                <!-- workout-dialog -->
+                <dialog-workout ref="dialogWorkout"></dialog-workout>
 
-                <!-- beginn workout-score-dialog -->
-                <div id="workout-score-dialog" class="dialog">
-                    <input id="add-score-value" type="text" placeholder="Score">
-                    <input id="add-score-datetime" type="text" placeholder="dd.mm.YYYY HH:MM">
-                    <textarea id="add-score-note" rows="3" placeholder="Note"></textarea>
-                    <label class="chbx-container">Rx
-                        <input id="add-score-rx" type="checkbox" checked="false">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <!-- end workout-score-dialog -->
+                <!-- workout-score-dialog -->
+                <dialog-workout-score ref="dialogWorkoutScore"></dialog-workout-score>
 
                 <!-- beginn dashboard-view -->
-                <div id="dashboard-view">
+                <div v-if="seenDashboard" id="dashboard-view">
                     <ul>
                         <li class="dashboard-template">
                             <div class="card-header">
@@ -162,57 +134,46 @@
                 <!-- end dashboard-view -->
 
                 <!-- beginn workout-view -->
-                <div id="workout-view">
+                <div v-if="seenWorkout">
                     <ul>
-                        <li v-for="(workoutItem, workoutIndex) in workoutsSortByName" class="card workout" v-bind:key="workoutItem.id">
-                            <div v-on:click="toggleWorkoutCard(workoutIndex)" class="card-header collapsible">
-                                <h4 class="workout-name">{{ workoutItem.name }}</h4>
-                            </div>
-                            <div v-if="workoutItem.active" class="card-content">
-                                <div class="card-body">
-                                    <p v-html="getWorkoutDescription(workoutItem.description)" class="workout-description"></p>
-                                    <p><small class="workout-datetime">{{ getFormatTimestamp(workoutItem.datetime) }}</small></p>
-                                </div>
-                                <div>
-                                    <canvas></canvas>
-                                    <table class="scores">
-                                        <tr v-on:click="toggleWorkoutScoreItem(workoutIndex, scoreIndex)" v-for="(scoreItem, scoreIndex) in workoutItem.score" v-bind:class="{ select: scoreItem.selected }" class="score">
-                                             <td class="score-rx">{{ scoreItem.rx }}</td>
-                                             <td class="score-value">{{ scoreItem.score }}</td>
-                                             <td class="score-datetime">{{ getShortFormatTimestamp(scoreItem.datetime) }}</td>
-                                             <td class="score-note">{{ scoreItem.note }}</td>
-                                         </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </li>
+                        <li is="workout-component"
+                            v-for="(workoutItem, workoutIndex) in workoutsSortByName"
+                            v-bind:key="workoutItem.id"
+                            v-bind:workout-index="workoutIndex"
+                            v-bind:workout="workoutItem"
+                        ></li>
                     </ul>
                 </div>
                 <!-- end workout-view -->
 
                 <!-- beginn movements-view -->
-                <div id="movement-view">
+                <div v-if="seenMovement">
                     <ul>
-                        <li v-for="movementItem in movementsSortByName" class="card movement">
-                            <div class="card-header">
-                                <h4 class="movement-name">{{ movementItem.movement }}</h4>
-                            </div>
-                        </li>
+                        <li is="movement-component"
+                            v-for="movementItem in movementsSortByName"
+                            v-bind:key="movementItem.id"
+                            v-bind:movement="movementItem"
+                        ></li>
                     </ul>
                 </div>
                 <!-- end movements-view -->
 
                 <!-- beginn equipment-view -->
-                <div id="equipment-view">
+                <div v-if="seenEquipment">
                     <ul>
-                        <li v-for="equipmentItem in equipmentSortByName" class="card equipment">
-                            <div class="card-header">
-                                <h4 class="equipment-name">{{ equipmentItem.equipment }}</h4>
-                            </div>
-                        </li>
+                        <li is="equipment-component"
+                            v-for="equipmentItem in equipmentSortByName"
+                            v-bind:key="equipmentItem.id"
+                            v-bind:equipment="equipmentItem"
+                        ></li>
                     </ul>
                 </div>
                 <!-- end equipment-view -->
+
+                <!-- loader/spinner -->
+                <div id="loader">
+                    <div id="spinner"></div>
+                </div>
 
             </div>
             <!-- end container -->

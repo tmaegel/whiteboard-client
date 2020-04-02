@@ -1,11 +1,19 @@
 {
-  "type": "module",
   "name": "whiteboard-client",
   "version": "1.0.0",
   "description": "whiteboard web client",
+  "private": true,
   "main": "gulpfile.js",
   "author": "Toni Mägel <tmaegel@posteo.de>",
-  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tmaegel/whiteboard-client"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "vue": "^2.6.11"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.12.0",
     "@typescript-eslint/parser": "^2.12.0",
@@ -15,18 +23,21 @@
     "chai": "^4.2.0",
     "deep-eql": "^4.0.0",
     "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
     "expect.js": "^0.3.1",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-rename": "^2.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^2.0.0",
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "scripts": {
-    "build": "docker build -t whiteboard-client:prod .",
-    "startDev": "docker run --name whiteboard-client-dev -p 8080:80 -v ${PWD}/src/:/usr/share/nginx/html:ro -d nginx",
-    "start": "docker run --name whiteboard-client-prod -p 8081:443 -d whiteboard-client:prod",
+    "build": "docker build --pull -t whiteboard-client:prod .",
+    "startDev": "docker run --name whiteboard-client-dev -p 127.0.0.1:8080:80 -v ${PWD}/dist/:/usr/share/nginx/html:ro -v ${PWD}/build/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx:mainline",
+    "start": "docker run --name whiteboard-client-prod -p 127.0.0.1:8080:8080 -d whiteboard-client:prod",
     "stopDev": "docker stop whiteboard-client-dev",
     "stop": "docker stop whiteboard-client-prod",
     "rmDev": "docker rm whiteboard-client-dev",

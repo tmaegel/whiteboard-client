@@ -32,10 +32,32 @@ h6 { font-size: 105%; }
 /**
  * dialogs
  */
+
+/* The Modal (background) */
 .dialog {
-    width: 100%;
-    padding: 24px 16px;
-    box-sizing: border-box;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top, behind overlay buttons */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.25); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.dialog-content {
+    background-color: #ffffff;
+    margin: 150px auto; /* 15% from the top and centered */
+    padding: 25px;
+    width: 85%; /* Could be more or less, depending on screen size */
+    box-shadow: 0 1px 13px rgba(0,0,0,0.24);
+    border: 5px solid gray;
+}
+.dialog-content h5 {
+    color: gray;
+    margin: 0 0 16px 0;
 }
 
 .cursor {
@@ -77,7 +99,6 @@ h6 { font-size: 105%; }
  * navbar
  */
 #navbar {
-    display: none; /* Hidden by default */
     width: 100%; /* Full-width */
     background-color: #eee; /* Dark-grey background */
     overflow: auto; /* Overflow due to float */
@@ -113,14 +134,12 @@ h6 { font-size: 105%; }
     background-color: #eee; /* Dark-grey background */
     margin: 15px;
     padding: 0 !important;
-    display: none; /* Hidden by default */
     float:left;
 }
 /**
  * tool bar
  */
 #toolbar {
-    display: none; /* Hidden by default */
     float: right;
 }
 #nav-searchbar {
@@ -139,10 +158,14 @@ h6 { font-size: 105%; }
  * notification
  */
 .notification {
-    display: none; /* Hidden by default */
+    left: 0;
+    top: 0;
+    position: fixed;
+    z-index: 2; /* Sit on top */
     width: 100%; /* Could be more or less, depending on screen size */
     color: white;
     padding: 12px;
+    box-shadow: 0 1px 13px rgba(0,0,0,0.24);
 }
 .notification-ok { background-color: #4CAF50; }
 .notification-info { background-color: #2196F3; }
@@ -153,7 +176,6 @@ h6 { font-size: 105%; }
  * loader
  */
 #loader {
-    display: none; /* Hidden by default */
     box-sizing : border-box;
     width: 100%;
     padding: 25px;
@@ -215,7 +237,7 @@ ul {
  */
 .btn-overlay, .btn-overlay:hover, .btn-overlay:focus {
     position: fixed;
-    z-index: 1; /* Sit on top */
+    z-index: 2; /* Sit on top */
     padding: 16px;
     border: 0;
     width: 54px;
@@ -260,6 +282,9 @@ ul {
 /**
  * forms
  */
+.invalid {
+    border: 2px solid  #f44336 !important;
+}
 input {
     display:block;
     box-sizing : border-box;
@@ -277,12 +302,13 @@ textarea {
     display:block;
     box-sizing : border-box;
     padding: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 0;
     width: 100%;
     border: 2px solid #eee;
     color: gray;
     font-family: Dejavu Sans;
     font-size: 14px;
+    resize: none;
 }
 textarea:active, textarea:focus {
     border: 2px solid #ddd;
@@ -440,19 +466,20 @@ table tr:last-child {
     font-size: 16px;
     color: gray;
 }
+
 .icon-home {
     font-size: 20px;
     color: gray;
 }
-.icon-stats-dots {
+.icon-workouts {
     font-size: 20px;
     color: gray;
 }
-.icon-accessibility {
+.icon-movements {
     font-size: 20px;
     color: gray;
 }
-.icon-database {
+.icon-equipment {
     font-size: 20px;
     color: gray;
 }

@@ -1,34 +1,19 @@
 'use strict';
 
 import { Chart } from "./Chart.js";
-import { Score } from "./Score.js";
+
+import store from './store.js';
+import app from "./index.js";
+import notification from "./notification.js";
 
 import * as logger from "./logger.js";
 import * as request from "./rest.js";
-import * as guiHelper from "./gui.js";
 import * as timeHelper from "./time.js";
 import * as regexHelper from "./regex.js";
 import * as arrayHelper from "./array.js";
-import * as notification from "./notification.js";
 import * as workoutHelper from "./workoutHelper.js";
 
 let chart;
-
-/**
- * If score item is selected returns the id of item
- * If not returns -1
- * @returns {integer} id
- */
-export function isScoreItemSelected(index) {
-    if(index >= 0) {
-        for(let score of request.app.workouts[index].score) {
-            if(score.selected) {
-                return score.id;
-            }
-        }
-    }
-    return -1;
-}
 
 export function resizeWorkoutScoreChart() {
     if(chart != null || chart != undefined) {
@@ -40,31 +25,29 @@ export function resizeWorkoutScoreChart() {
 export function saveWorkoutScore() {
     logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Saving workout score");
 
-    let workoutId = workoutHelper.isWorkoutCardActive();
-    let score;
-    let scoreId = isScoreItemSelected(arrayHelper.getArrayIndexById(request.app.workouts, workoutId));
-    let scoreValue = regexHelper.stripString(request.app.$refs.dialogWorkoutScore.getScore());
-    if(regexHelper.numRegex(scoreValue) || regexHelper.floatRegex(scoreValue) || regexHelper.timestampRegex(scoreValue)) {
-        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreValue is " + scoreValue);
+    let score = store.getScoreDialogObject();
+    score.score = regexHelper.stripString(score.score);
+    if(regexHelper.numRegex(score.score) || regexHelper.floatRegex(score.score) || regexHelper.timestampRegex(score.score)) {
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreValue is " + score.score);
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         notification.addNotification("error", "numRegex() :: ERROR: Found invalid characters.");
         return;
     }
 
-    let scoreDatetime = regexHelper.stripString(request.app.$refs.dialogWorkoutScore.getDatetime());
-    let scoreDateTimeUnix = timeHelper.getTimestamp(scoreDatetime);
+    score.datetime = regexHelper.stripString(score.datetime);
+    let scoreDateTimeUnix = timeHelper.getTimestamp(score.datetime);
     if(scoreDateTimeUnix) {
-        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreDatetime is " + scoreDatetime + " (UTS:"+ scoreDateTimeUnix +")");
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreDatetime is " + score.datetime + " (UTS:"+ scoreDateTimeUnix +")");
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: numRegex() success");
     } else {
         notification.addNotification("error", "datetimeRegex() :: ERROR: Found invalid characters.");
         return;
     }
 
-    let scoreNote = regexHelper.stripString(request.app.$refs.dialogWorkoutScore.getNote());
-    if(regexHelper.simpleRegex(scoreDatetime)) {
-        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreNote is " + scoreNote);
+    score.note = regexHelper.stripString(score.note);
+    if(regexHelper.simpleRegex(score.note)) {
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreNote is " + score.note);
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: simpleRegex() success");
     } else {
         notification.addNotification("error", "simpleRegex() :: ERROR: Found invalid characters.");
@@ -72,31 +55,50 @@ export function saveWorkoutScore() {
     }
 
     let scoreRx;
-    if(request.app.$refs.dialogWorkoutScore.getRx()) {
+    if(score.rx) {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreRx is true");
-        scoreRx = 1;
+        score.rx = 1;
     } else {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreRx is false");
-        scoreRx = 0;
+        score.rx = 0;
     }
 
-    /**
-     * UPDATE
-     */
-    if(scoreId > 0) {
-        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Updating workout score");
-        score = new Score(scoreId, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id > 0 (update score)
-        request.restUpdateWorkoutScore(score);
-    /**
-     * NEW
-     */
+    let scoreObj;
+    let workoutId = store.getActiveWorkoutId();
+    let scoreId = store.getSelectedScoreId(workoutId);
+    if(workoutId != -1) {
+        /**
+         * UPDATE
+         */
+        if(scoreId > 0) {
+            logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Updating workout score");
+            scoreObj = {
+                id: scoreId, // id > 0 (update score)
+                workoutId: workoutId,
+                score: score.score,
+                rx: score.rx,
+                datetime: scoreDateTimeUnix,
+                note: score.note
+            }
+            request.restUpdateWorkoutScore(scoreObj);
+        /**
+         * NEW
+         */
+        } else {
+            logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Creating workout score");
+            scoreObj = {
+                id: 0, // id = 0 (new score)
+                workoutId: workoutId,
+                score: score.score,
+                rx: score.rx,
+                datetime: scoreDateTimeUnix,
+                note: score.note
+            }
+            request.restAddWorkoutScore(scoreObj);
+        }
+        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: score objext is " + JSON.stringify(scoreObj));
     } else {
-        logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Creating workout score");
-        score = new Score(0, workoutId, scoreValue, scoreRx, scoreDateTimeUnix, scoreNote); // id = 0 (new score)
-        request.restAddWorkoutScore(score);
+        logger.error("scoreHelper.js :: saveWorkoutScore() :: ERROR: No workoutId could be determined");
     }
-
-    logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: score objext is " + JSON.stringify(score));
-    request.app.hideAllDialogs();
-    request.app.showWorkoutView();
+    app.resetView();
 }

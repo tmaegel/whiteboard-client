@@ -62,9 +62,8 @@ export class Chart {
     update() {
         logger.debug("Chart.js :: update() :: INFO :: Updateing...");
         // initialize canvas
-		this.c.clearRect(0, 0, $(this.canvas).attr("width"), $(this.canvas).attr("height"));
-
-		$(this.canvas).attr("width", $(this.canvas).parent().width());
+		this.c.clearRect(0, 0, this.canvas.getAttribute("width"), this.canvas.getAttribute("height"));
+		this.canvas.setAttribute("width", this.canvas.parentElement.getAttribute("width"));
 
 		this.width = this.canvas.width;
 		this.height = this.canvas.height;

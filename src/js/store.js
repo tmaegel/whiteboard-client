@@ -9,46 +9,36 @@ import * as regexHelper from "./regex.js";
 import * as workoutHelper from "./workoutHelper.js";
 import * as scoreHelper from "./scoreHelper.js";
 
-let timer, store;
+let store;
 export default store = {
     state: {
+        app: {
+            searchbar: false, // if true show searchbar
+            context: false, // if true shoe context menu
+            currentView: "home",
+            previousWiew: "home"
+        },
         user: {
             user: "",
             password: "",
             token: null,
             logout: true
         },
-        search: {
-            seen: false,
-            value: ""
-        },
         dialog: {
             workout: {
                 seen: false,
-                title: "",
-                validName: true,
-                validDescription: true,
+                edit: false,
                 name: "",
                 description: ""
             },
             score: {
                 seen: false,
-                title: "",
-                validScore: true,
-                validDatetime: true,
-                validNote: true,
+                edit: false,
                 score: "",
                 datetime: "",
                 note: "",
                 rx: false
             }
-        },
-        context: {
-            seen: false,
-            newWorkout: false,
-            editWorkout: false,
-            newScore: false,
-            editScore: false
         },
         equipment: [],
         movements: [],
@@ -75,43 +65,21 @@ export default store = {
         return this.state.user;
     },
     /******************************
-     * Searchbar specific
+     * Gerneral
      *******************************/
-    showSearchBar() {
-        logger.debug("store.js :: showSearchBar() :: triggered");
-        this.state.search.seen = true;
+    showLoader() {
+        logger.debug("store.js :: showLoader() :: triggered");
+        this.state.app.previousWiew = this.state.app.currentView;
+        this.state.app.currentView = "loader";
     },
-    hideSearchBar() {
-        logger.debug("store.js :: hideSearchBar() :: triggered");
-        this.resetSearchBar();
-        this.showAllWorkouts();
-        this.state.search.seen = false;
+    hideLoader() {
+        logger.debug("store.js :: hideLoader() :: triggered");
+        this.state.app.currentView = this.state.app.previousWiew;
+        this.hideDialog();
     },
-    toggleSearchBar() {
-        logger.debug("store.js :: toggleSearchBar() :: triggered");
-        if(this.state.search.seen) {
-            this.hideSearchBar();
-        } else {
-            this.showSearchBar();
-        }
-    },
-    resetSearchBar() {
-        this.state.search.value = "";
-    },
-    doSearch() {
-        logger.debug("store.js :: doSearch() :: triggered with " + this.state.search.value);
-        if(timer) {
-            clearTimeout(timer);
-        }
-        timer = setTimeout(function() {
-            for(let workoutIndex in this.state.workouts) {
-                if (this.state.workouts[workoutIndex].name.toLowerCase().includes(this.state.search.value)) { // case insensitive
-                    this.showWorkout(workoutIndex);
-                } else {
-                    this.hideWorkout(workoutIndex);
-                }
-            }
-        }.bind(this), 1000);
+    hideContextMenu() {
+        logger.debug("store.js :: hideContextMenu() :: triggered");
+        this.state.app.context = false;
     },
     /******************************
      * Dialog specific
@@ -135,53 +103,17 @@ export default store = {
         logger.debug("store.js :: hideDialog() :: triggered");
         this.state.dialog.workout.seen = false;
         this.state.dialog.score.seen = false;
-        this.state.dialog.workout.validName = true;
-        this.state.dialog.workout.validDescription = true;
+        //this.state.dialog.workout.validName = true;
+        //this.state.dialog.workout.validDescription = true;
         this.state.dialog.score.validScore = true;
         this.state.dialog.score.validDatetime = true;
         this.state.dialog.score.validNote = true;
-    },
-    validateWorkoutInput() {
-        logger.debug("store.js :: validateWorkoutInput() :: triggered");
-        if(regexHelper.simpleRegex(this.state.dialog.workout.name)) {
-            this.state.dialog.workout.validName = true;
-        } else {
-            logger.debug("store.js :: validateWorkoutInput() :: invalid input detected");
-            this.state.dialog.workout.validName = false;
-        }
-        if(regexHelper.extendedRegex(this.state.dialog.workout.description)) {
-            this.state.dialog.workout.validDescription = true;
-        } else {
-            this.state.dialog.workout.validDescription = false;
-            logger.debug("store.js :: validateWorkoutInput() :: invalid input detected");
-        }
-    },
-    validateScoreInput() {
-        logger.debug("store.js :: validateScoreInput() :: triggered");
-        if(regexHelper.numRegex(this.state.dialog.score.score) || regexHelper.floatRegex(this.state.dialog.score.score) || regexHelper.timestampRegex(this.state.dialog.score.score)) {
-            this.state.dialog.score.validScore = true;
-        } else {
-            logger.debug("store.js :: validateScoreInput() :: invalid input detected");
-            this.state.dialog.score.validScore = false;
-        }
-        if(regexHelper.datetimeRegex(this.state.dialog.score.datetime)) {
-            this.state.dialog.score.validDatetime = true;
-        } else {
-            this.state.dialog.score.validDatetime = false;
-            logger.debug("store.js :: validateScoreInput() :: invalid input detected");
-        }
-        if(regexHelper.simpleRegex(this.state.dialog.score.note)) {
-            this.state.dialog.score.validNote = true;
-        } else {
-            this.state.dialog.score.validNote = false;
-            logger.debug("store.js :: validateScoreInput() :: invalid input detected");
-        }
     },
     showWorkoutDialog(edit) {
         logger.debug("store.js :: showWorkoutDialog() :: triggered");
         this.hideDialog();
         if(edit) { // edit workout dialog
-            this.state.dialog.workout.title = "Edit workout";
+            this.state.dialog.workout.edit = true;
             let workout = this.getActiveWorkout();
             if(workout == null || workout == undefined) {
                 logger.error("store.js :: showWorkoutDialog() :: ERROR: No active workout found");
@@ -190,7 +122,7 @@ export default store = {
                 this.state.dialog.workout.description = workout.description;
             }
         } else { // add workout dialog
-            this.state.dialog.workout.title = "Add workout";
+            this.state.dialog.workout.edit = false;
             this.state.dialog.workout.name = "";
             this.state.dialog.workout.description =  "";
         }
@@ -207,8 +139,8 @@ export default store = {
     showScoreDialog(edit) {
         logger.debug("store.js :: showScoreDialog() :: triggered");
         this.hideDialog();
-        if(edit) { // edit workout dialog
-            this.state.dialog.score.title = "Edit workout score";
+        if(edit) { // edit workout score dialog
+            this.state.dialog.workout.edit= true;
             let workoutId = this.getActiveWorkoutId();
             if(workoutId != -1) {
                 let score = this.getSelectedScore(workoutId);
@@ -228,7 +160,7 @@ export default store = {
                 logger.error("store.js :: showScoreDialog() :: ERROR: No active workout found");
             }
         } else { // add workout dialog
-            this.state.dialog.score.title = "Add workout score";
+            this.state.dialog.workout.edit = false;
             this.state.dialog.score.score = "";
             this.state.dialog.score.datetime = timeHelper.getShortFormatTimestamp();
             this.state.dialog.score.note = "";
@@ -247,79 +179,55 @@ export default store = {
         return dialogScore;
     },
     /******************************
-     * Context menu specific
-     *******************************/
-    toggleContextMenu(event) {
-        logger.debug("store.js :: toggleContextMenu() :: triggered");
-        if(this.state.context.seen) {
-            this.hideContextMenu();
-        } else {
-            this.showContextMenu();
-        }
-    },
-    showContextMenu() {
-        logger.debug("store.js :: showContextMenu() :: triggered");
-        this.state.context.seen = true;
-        this.state.context.newWorkout = false;
-        this.state.context.editWorkout = false;
-        this.state.context.newScore = false;
-        this.state.context.editScore = false;
-        // Enable/Disable buttons
-        let workoutId = this.getActiveWorkoutId();
-        if(workoutId != -1) { // edit workout is possible
-            // Allow editing only if userId > 1
-            // hide edit workout button, because its a main workout.
-            let index = this.getActiveWorkoutIndex()
-            if(this.state.workouts[index].userId > 1) {
-                this.state.context.editWorkout = true
-            }
-            if(this.getSelectedScoreId(workoutId) != -1) { // edit workout score is possible
-                this.state.context.editScore = true;
-            } else { // new score is possible
-                this.state.context.newScore = true;
-            }
-        } else { // new workout is possible only
-            this.state.context.newWorkout = true;
-        }
-    },
-    hideContextMenu() {
-        logger.debug("store.js :: hideContextMenu() :: triggered");
-        this.state.context.seen = false;
-    },
-    /******************************
      * Equipment specific
      *******************************/
-    setEquipment(value) {
-        logger.debug("store.js :: setEquipment() :: triggered with " + JSON.stringify(value));
-        this.state.equipment = value;
+    setEquipment(data) {
+        logger.debug("store.js :: setEquipment() :: triggered with " + JSON.stringify(data));
+        this.state.equipment = data;
     },
     /******************************
      * Movement specific
      *******************************/
-    setMovements(value) {
-        logger.debug("store.js :: setMovements() :: triggered with " + JSON.stringify(value));
-        this.state.movements = value;
+    setMovements(data) {
+        logger.debug("store.js :: setMovements() :: triggered with " + JSON.stringify(data));
+        this.state.movements = data;
     },
     /******************************
      * Workout specific
      *******************************/
-    setWorkouts(value) {
-        logger.debug("store.js :: setWorkouts() :: triggered with " + JSON.stringify(value));
-        this.state.workouts = value;
+    setWorkouts(data) {
+        logger.debug("store.js :: setWorkouts() :: triggered with " + JSON.stringify(data));
+        // Initialize active property
+        for(let workoutIndex in data) {
+            data[workoutIndex].active = false;
+            data[workoutIndex].score = [];
+        }
+        this.state.workouts = data;
     },
-    setWorkoutByIndex(value, workoutIndex) {
-        logger.debug("store.js :: setWorkoutByIndex() :: triggered with " + JSON.stringify(value) + "(" + workoutIndex + ")");
-        Vue.set(this.state.workouts, workoutIndex, value);
+    setWorkout(data) {
+        logger.debug("store.js :: setWorkout() :: triggered with " + JSON.stringify(data));
+        data.active = false;
+        data.score = [];
+        this.state.workouts.push(data);
+    },
+    setWorkoutByIndex(data, workoutIndex) {
+        logger.debug("store.js :: setWorkoutByIndex() :: triggered with " + JSON.stringify(data) + "(" + workoutIndex + ")");
+        // Initialize active property
+        data.active = false;
+        data.score = [];
+        Vue.set(this.state.workouts, workoutIndex, data);
     },
     activateWorkout(workoutId) {
-        //logger.debug("store.js :: activateWorkout() :: triggered with " + workoutId);
-        let index = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
-        Vue.set(this.state.workouts[index], 'active', true);
+        logger.debug("store.js :: activateWorkout() :: triggered with " + workoutId);
+        this.state.workouts.map((workout) => {
+            workout.id === workoutId ? workout.active = true : workout.active = false;
+        });
     },
     deactivateWorkout(workoutId) {
-        //logger.debug("store.js :: deactivateWorkout() :: triggered with " + workoutIndex);
-        let index = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
-        Vue.set(this.state.workouts[index], 'active', false);
+        logger.debug("store.js :: deactivateWorkout() :: triggered with " + workoutId);
+        this.state.workouts.map((workout) => {
+            workout.active = false;
+        });
     },
     /**
      * Returns the id of active workout object.
@@ -388,21 +296,43 @@ export default store = {
         logger.debug("store.js :: setScores() :: triggered with " + value);
         this.state.scores = JSON.parse(value);
     },*/
-    setScoresByIndex(value, workoutIndex) {
-        logger.debug("store.js :: setScoresByIndex() :: triggered with " + JSON.stringify(value) + "(" + workoutIndex + ")");
-        Vue.set(this.state.workouts[workoutIndex], 'score', value);
+    setScoresByIndex(data, workoutIndex) {
+        logger.debug("store.js :: setScoresByIndex() :: triggered with " + JSON.stringify(data) + "(" + workoutIndex + ")");
+        // Initialize selected property
+        for(let scoreIndex in data) {
+            data[scoreIndex].selected = false;
+        }
+        Vue.set(this.state.workouts[workoutIndex], 'score', data);
     },
-    setScoreByIndex(value, workoutIndex, scoreIndex) {
-        logger.debug("store.js :: setScoresByIndex() :: triggered with " + JSON.stringify(value) + "(" + workoutIndex + "," + scoreIndex + ")");
-        Vue.set(this.state.workouts[workoutIndex].score, scoreIndex, value);
+    setScore(data, workoutIndex) {
+        logger.debug("store.js :: setScore() :: triggered with " + JSON.stringify(data) + "(" + workoutIndex + ")");
+        data.selected = false;
+        this.state.workouts[workoutIndex].score.push(data);
     },
-    selectScore(workoutIndex, scoreIndex) {
-        logger.debug("store.js :: selectScore() :: triggered with " + workoutIndex + "," + scoreIndex);
-        Vue.set(this.state.workouts[workoutIndex].score[scoreIndex], 'selected', true);
+    setScoreByIndex(data, workoutIndex, scoreIndex) {
+        logger.debug("store.js :: setScoresByIndex() :: triggered with " + JSON.stringify(data) + "(" + workoutIndex + "," + scoreIndex + ")");
+        data.selected = false;
+        Vue.set(this.state.workouts[workoutIndex].score, scoreIndex, data);
     },
-    unselectScore(workoutIndex, scoreIndex) {
-        logger.debug("store.js :: unselectScore() :: triggered with " + workoutIndex + "," + scoreIndex);
-        Vue.set(this.state.workouts[workoutIndex].score[scoreIndex], 'selected', false);
+    selectScore(workoutId, scoreId) {
+        logger.debug("store.js :: selectScore() :: triggered with " + workoutId + "," + scoreId);
+        this.state.workouts.map((workout) => {
+            if(workout.id === workoutId) {
+                workout.score.map((score) => {
+                    score.id === scoreId ? score.selected = true : score.selected = false;
+                });
+            }
+        });
+    },
+    unselectScore(workoutId, scoreId) {
+        logger.debug("store.js :: unselectScore() :: triggered with " + workoutId + "," + scoreId);
+        this.state.workouts.map((workout) => {
+            if(workout.id === workoutId) {
+                workout.score.map((score) => {
+                    score.selected = false;
+                });
+            }
+        });
     },
     /**
      * If score item is selected returns the id of item

@@ -100,5 +100,5 @@ export function saveWorkoutScore() {
     } else {
         logger.error("scoreHelper.js :: saveWorkoutScore() :: ERROR: No workoutId could be determined");
     }
-    app.resetView();
+    store.hideLoader();
 }

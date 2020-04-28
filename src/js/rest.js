@@ -3,7 +3,7 @@
 //import CryptoJS from 'crypt-js';
 import sha256 from 'crypto-js/sha256';
 
-import app from "./index.js";
+import * as app from "./index.js";
 import store from './store.js';
 import notification from "./notification.js";
 
@@ -11,7 +11,6 @@ import * as logger from "./logger.js";
 import * as arrayHelper from "./array.js";
 import * as config from "./config.js";
 import * as cookie from "./cookie.js";
-import * as guiHelper from "./gui.js";
 import * as timeHelper from "./time.js";
 
 import * as workoutHelper from "./workoutHelper.js";
@@ -42,7 +41,7 @@ export function restUserLogin() {
             // @todo when expired the token?
             store.setToken(data.token);
             cookie.createCookie("token", store.getUserObject().token, 7);
-            guiHelper.handleLogin();
+            app.handleLogin();
 
             logger.debug(JSON.stringify(data));
         },
@@ -71,12 +70,11 @@ export function restUserValidate() {
         },
         success: function(data) {
             store.login();
-            guiHelper.handleLogin();
+            app.handleLogin();
 
             logger.debug(JSON.stringify(data));
         },
         error: function(data) {
-            //guiHelper.showLoginDialog();
             logger.error("rest.js :: restUserValidate() :: POST /authentication/validate :: ERROR: Something went wrong.");
             logger.debug(JSON.stringify(data));
 
@@ -108,7 +106,7 @@ export function restGetEquipment() {
         success: function(data) {
             logger.debug(JSON.stringify(data));
             store.setEquipment(data);
-            app.resetView();
+            store.hideLoader();
         },
         error: function(data) {
             logger.error("rest.js :: restGetEquipment() :: GET /equipment :: ERROR: Something went wrong.");
@@ -141,7 +139,7 @@ export function restGetMovements() {
         success: function(data) {
             logger.debug(JSON.stringify(data));
             store.setMovements(data);
-            app.resetView();
+            store.hideLoader();
         },
         error: function(data) {
             logger.error("rest.js :: restGetMovements() :: GET /movement :: ERROR: Something went wrong.");
@@ -174,7 +172,7 @@ export function restGetWorkouts() {
         success: function(data) {
             logger.debug(JSON.stringify(data));
             store.setWorkouts(data);
-            app.resetView();
+            store.hideLoader();
         },
         error: function(data) {
             logger.error("rest.js :: restGetWorkouts() :: GET /workout :: ERROR: Something went wrong.");
@@ -203,7 +201,6 @@ export function restGetWorkoutScores(id) {
             logger.debug(JSON.stringify(data));
             let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, id);
             if(workoutIndex != null) {
-                // Vue.set(store.workouts[workoutIndex], 'score', data);
                 store.setScoresByIndex(data, workoutIndex);
             } else {
                 logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/ :: ERROR: Unable to update/add workout scores to array.");
@@ -236,7 +233,6 @@ export function restGetWorkoutById(id) {
             logger.debug(JSON.stringify(data));
             let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, id);
             if(workoutIndex != null) {
-                // Vue.set(store.workouts, workoutIndex, data);
                 store.setWorkoutByIndex(data, workoutIndex);
             } else {
                 logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
@@ -269,9 +265,9 @@ export function restAddWorkout(workout) {
         },
         success: function(data) {
             logger.debug(JSON.stringify(data));
-            store.state.workouts.push(data);
+            store.setWorkout(data);
             logger.log("rest.js :: restAddWorkout() :: POST /workout :: SUCCESS: Workout was created.");
-            notification.addNotification("ok", "Success: Workout was created.", true);
+            notification.addNotification("ok", "Success: Workout was created.");
         },
         error: function(data) {
             logger.error("rest.js :: restAddWorkout() :: POST /workout :: ERROR: Something went wrong.");
@@ -302,10 +298,9 @@ export function restUpdateWorkout(workout) {
             logger.debug(JSON.stringify(data));
             let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, workout.id);
             if(workoutIndex != null) {
-                // Vue.set(store.workouts, workoutIndex, data);
                 store.setWorkoutByIndex(data, workoutIndex);
                 logger.log("rest.js :: restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
-                notification.addNotification("ok", "Success: Workout was updated.", true);
+                notification.addNotification("ok", "Success: Workout was updated.");
             } else {
                 logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
             }
@@ -398,11 +393,11 @@ export function restAddWorkoutScore(score) {
             logger.debug(JSON.stringify(data));
             let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, score.workoutId);
             if(workoutIndex != null) {
-                store.state.workouts[workoutIndex].score.push(data);
+                store.setScore(data, workoutIndex);
                 logger.log("rest.js :: restAddWorkoutScore() :: POST /score :: SUCCESS: Workout score was created.");
                 notification.addNotification("ok", "Success: Workout score was created.");
             } else {
-                logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
+                logger.error("rest.js :: restAddWorkoutScore() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
             }
         },
         error: function(data) {
@@ -436,15 +431,14 @@ export function restUpdateWorkoutScore(score) {
             if(workoutIndex != null) {
                 let scoreIndex = arrayHelper.getArrayIndexById(store.state.workouts[workoutIndex].score, score.id);
                 if(scoreIndex != null) {
-                    // Vue.set(store.workouts[workoutIndex].score, scoreIndex, data);
                     store.setScoreByIndex(data, workoutIndex, scoreIndex);
                     logger.log("rest.js :: restUpdateWorkoutScore() :: POST /score/:scoreId :: SUCCESS: Workout score was updated.");
                     notification.addNotification("ok", "Success: Workout score was updated.");
                 } else {
-                    logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
+                    logger.error("rest.js :: restUpdateWorkoutScore() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
                 }
             } else {
-                logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
+                logger.error("rest.js :: restUpdateWorkoutScore() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
             }
         },
         error: function(data) {

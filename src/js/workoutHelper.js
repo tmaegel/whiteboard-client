@@ -61,5 +61,5 @@ export function saveWorkout() {
         request.restAddWorkout(workoutObj);
     }
     logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: workout objext is " + JSON.stringify(workoutObj));
-    app.resetView();
+    store.hideLoader();
 }

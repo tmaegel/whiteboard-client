@@ -1,7 +1,6 @@
 'use strict';
 
 import store from './store.js';
-import app from "./index.js";
 import notification from "./notification.js";
 
 import * as logger from "./logger.js";
@@ -9,10 +8,9 @@ import * as request from "./rest.js";
 import * as timeHelper from "./time.js";
 import * as regexHelper from "./regex.js";
 
-export function saveWorkout() {
+export function saveWorkout(workout) {
     logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: Saving workout...");
 
-    let workout = store.getWorkoutDialogObject();
     if(workout.name != undefined && workout.description != undefined) {
         if(regexHelper.simpleRegex(workout.name) && !regexHelper.empty(workout.name)) {
             logger.debug("workoutHelper.js :: saveWorkout() :: DEBUG: simpleRegex() success");

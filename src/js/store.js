@@ -4,17 +4,15 @@ import Vue from 'vue';
 
 import * as logger from "./logger.js";
 import * as arrayHelper from "./array.js";
-import * as timeHelper from "./time.js";
-import * as regexHelper from "./regex.js";
-import * as workoutHelper from "./workoutHelper.js";
-import * as scoreHelper from "./scoreHelper.js";
 
 let store;
 export default store = {
     state: {
         app: {
             searchbar: false, // if true show searchbar
-            context: false, // if true shoe context menu
+            context: false, // if true show context menu
+            workoutDialog: false, // if true show workout dialog
+            scoreDialog: false, // if true show score dialog
             currentView: "home",
             previousWiew: "home"
         },
@@ -23,22 +21,6 @@ export default store = {
             password: "",
             token: null,
             logout: true
-        },
-        dialog: {
-            workout: {
-                seen: false,
-                edit: false,
-                name: "",
-                description: ""
-            },
-            score: {
-                seen: false,
-                edit: false,
-                score: "",
-                datetime: "",
-                note: "",
-                rx: false
-            }
         },
         equipment: [],
         movements: [],
@@ -67,6 +49,14 @@ export default store = {
     /******************************
      * Gerneral
      *******************************/
+    getCurrentView() {
+        logger.debug("store.js :: getCurrentView() :: triggered with " + this.state.app.currentView);
+        return this.state.app.currentView;
+    },
+    setCurrentView(value) {
+        logger.debug("store.js :: setCurrentView() :: triggered with " + value);
+        this.state.app.currentView = value;
+    },
     showLoader() {
         logger.debug("store.js :: showLoader() :: triggered");
         this.state.app.previousWiew = this.state.app.currentView;
@@ -81,102 +71,18 @@ export default store = {
         logger.debug("store.js :: hideContextMenu() :: triggered");
         this.state.app.context = false;
     },
-    /******************************
-     * Dialog specific
-     *******************************/
-    applyDialog() {
-        logger.debug("store.js :: applyDialog() :: triggered");
-        let workoutId = this.getActiveWorkoutId();
-        if(workoutId != -1) {
-            if(this.state.dialog.workout.seen && !this.state.dialog.score.seen) {
-                workoutHelper.saveWorkout();
-            } else if(this.state.dialog.score.seen && !this.state.dialog.workout.seen) {
-                scoreHelper.saveWorkoutScore();
-            } else {
-                logger.log("store.js :: applyDialog() :: ERROR: No action defined.");
-            }
-        } else {
-            workoutHelper.saveWorkout();
-        }
-    },
     hideDialog() {
         logger.debug("store.js :: hideDialog() :: triggered");
-        this.state.dialog.workout.seen = false;
-        this.state.dialog.score.seen = false;
-        //this.state.dialog.workout.validName = true;
-        //this.state.dialog.workout.validDescription = true;
-        this.state.dialog.score.validScore = true;
-        this.state.dialog.score.validDatetime = true;
-        this.state.dialog.score.validNote = true;
+        this.state.app.workoutDialog = false;
+        this.state.app.scoreDialog = false;
     },
-    showWorkoutDialog(edit) {
-        logger.debug("store.js :: showWorkoutDialog() :: triggered");
-        this.hideDialog();
-        if(edit) { // edit workout dialog
-            this.state.dialog.workout.edit = true;
-            let workout = this.getActiveWorkout();
-            if(workout == null || workout == undefined) {
-                logger.error("store.js :: showWorkoutDialog() :: ERROR: No active workout found");
-            } else {
-                this.state.dialog.workout.name = workout.name;
-                this.state.dialog.workout.description = workout.description;
-            }
-        } else { // add workout dialog
-            this.state.dialog.workout.edit = false;
-            this.state.dialog.workout.name = "";
-            this.state.dialog.workout.description =  "";
-        }
-        this.state.dialog.workout.seen = true;
+    showSearchbar() {
+        logger.debug("store.js :: showSearchbar() :: triggered");
+        this.state.app.searchbar = true;
     },
-    getWorkoutDialogObject() {
-        logger.debug("store.js :: getWorkoutDialogObject() :: triggered");
-        let dialogWorkout = {
-            name: this.state.dialog.workout.name,
-            description: this.state.dialog.workout.description
-        };
-        return dialogWorkout;
-    },
-    showScoreDialog(edit) {
-        logger.debug("store.js :: showScoreDialog() :: triggered");
-        this.hideDialog();
-        if(edit) { // edit workout score dialog
-            this.state.dialog.workout.edit= true;
-            let workoutId = this.getActiveWorkoutId();
-            if(workoutId != -1) {
-                let score = this.getSelectedScore(workoutId);
-                if(score == null || score == undefined) {
-                    logger.error("store.js :: showScoreDialog() :: ERROR: No selected score found");
-                } else {
-                    this.state.dialog.score.score = score.score;
-                    if(score.rx == 1) {
-                        this.state.dialog.score.rx = true;
-                    } else {
-                        this.state.dialog.score.rx = false;
-                    }
-                    this.state.dialog.score.datetime = timeHelper.getShortFormatTimestamp(score.datetime);
-                    this.state.dialog.score.note = score.note;
-                }
-            } else {
-                logger.error("store.js :: showScoreDialog() :: ERROR: No active workout found");
-            }
-        } else { // add workout dialog
-            this.state.dialog.workout.edit = false;
-            this.state.dialog.score.score = "";
-            this.state.dialog.score.datetime = timeHelper.getShortFormatTimestamp();
-            this.state.dialog.score.note = "";
-            this.state.dialog.score.rx = false;
-        }
-        this.state.dialog.score.seen = true;
-    },
-    getScoreDialogObject() {
-        logger.debug("store.js :: getScoreDialogObject() :: triggered");
-        let dialogScore = {
-            score: this.state.dialog.score.score,
-            datetime: this.state.dialog.score.datetime,
-            note: this.state.dialog.score.note,
-            rx: this.state.dialog.score.rx
-        };
-        return dialogScore;
+    hideSearchbar() {
+        logger.debug("store.js :: hideSearchbar() :: triggered");
+        this.state.app.searchbar = false;
     },
     /******************************
      * Equipment specific
@@ -199,6 +105,7 @@ export default store = {
         logger.debug("store.js :: setWorkouts() :: triggered with " + JSON.stringify(data));
         // Initialize active property
         for(let workoutIndex in data) {
+            data[workoutIndex].seen = true;
             data[workoutIndex].active = false;
             data[workoutIndex].score = [];
         }
@@ -206,6 +113,7 @@ export default store = {
     },
     setWorkout(data) {
         logger.debug("store.js :: setWorkout() :: triggered with " + JSON.stringify(data));
+        data.seen = true;
         data.active = false;
         data.score = [];
         this.state.workouts.push(data);
@@ -213,6 +121,7 @@ export default store = {
     setWorkoutByIndex(data, workoutIndex) {
         logger.debug("store.js :: setWorkoutByIndex() :: triggered with " + JSON.stringify(data) + "(" + workoutIndex + ")");
         // Initialize active property
+        data.seen = true;
         data.active = false;
         data.score = [];
         Vue.set(this.state.workouts, workoutIndex, data);
@@ -271,11 +180,11 @@ export default store = {
     },
     hideWorkout(workoutIndex) {
         // logger.debug("store.js :: hideWorkout() :: triggered with " + workoutIndex);
-        Vue.set(this.state.workouts[workoutIndex], 'seen', false);
+        this.state.workouts[workoutIndex].seen = false;
     },
     showWorkout(workoutIndex) {
         //logger.debug("store.js :: showWorkout() :: triggered with " + workoutIndex);
-        Vue.set(this.state.workouts[workoutIndex], 'seen', true);
+        this.state.workouts[workoutIndex].seen = true;
     },
     hideAllWorkout() {
         logger.debug("store.js :: hideAllWorkout() :: triggered");

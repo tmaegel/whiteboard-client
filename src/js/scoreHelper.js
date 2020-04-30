@@ -1,17 +1,14 @@
 'use strict';
 
-import { Chart } from "./Chart.js";
+//import { Chart } from "./Chart.js";
 
 import store from './store.js';
-import app from "./index.js";
 import notification from "./notification.js";
 
 import * as logger from "./logger.js";
 import * as request from "./rest.js";
 import * as timeHelper from "./time.js";
 import * as regexHelper from "./regex.js";
-import * as arrayHelper from "./array.js";
-import * as workoutHelper from "./workoutHelper.js";
 
 let chart;
 
@@ -22,10 +19,9 @@ export function resizeWorkoutScoreChart() {
     }
 }
 
-export function saveWorkoutScore() {
+export function saveWorkoutScore(score) {
     logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: Saving workout score");
 
-    let score = store.getScoreDialogObject();
     score.score = regexHelper.stripString(score.score);
     if(regexHelper.numRegex(score.score) || regexHelper.floatRegex(score.score) || regexHelper.timestampRegex(score.score)) {
         logger.debug("scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreValue is " + score.score);

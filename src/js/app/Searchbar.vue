@@ -26,11 +26,11 @@ export default {
         toggleSearchBar: function() {
             if(this.share.state.app.searchbar) { // hide searchbar
                 this.value = "";
-                this.share.state.app.searchbar = false
+                this.share.hideSearchbar();
                 this.share.showAllWorkouts();
             } else { // show searchbar
                 this.value = "";
-                this.share.state.app.searchbar = true;
+                this.share.showSearchbar();
                 this.share.showAllWorkouts();
             }
         },

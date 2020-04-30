@@ -1,12 +1,14 @@
 <template>
     <div>
+        <WorkoutDialog v-bind:edit="editWorkoutDialog"></WorkoutDialog>
+        <ScoreDialog v-bind:edit="editScoreDialog"></ScoreDialog>
         <div v-if="share.state.app.context && !share.state.user.logout" id="dropdown-menu">
-            <span v-if="newWorkoutMenuItem" v-on:click="share.showWorkoutDialog(false)" id="btn-new-workout" href="#">Add workout</span>
-            <span v-if="editWorkoutMenuItem" v-on:click="share.showWorkoutDialog(true)" id="btn-edit-workout" href="#">Edit workout</span>
-            <span v-if="newScoreMenuItem" v-on:click="share.showScoreDialog(false)" id="btn-new-score" href="#">Add score</span>
-            <span v-if="editScoreMenuItem" v-on:click="share.showScoreDialog(true)" id="btn-edit-score" href="#">Edit score</span>
+            <span v-if="newWorkoutMenuItem" v-on:click="showDialog('workout', false)" id="btn-new-workout" href="#">Add workout</span>
+            <span v-if="editWorkoutMenuItem" v-on:click="showDialog('workout', true)" id="btn-edit-workout" href="#">Edit workout</span>
+            <span v-if="newScoreMenuItem" v-on:click="showDialog('score', false)" id="btn-new-score" href="#">Add score</span>
+            <span v-if="editScoreMenuItem" v-on:click="showDialog('score', true)" id="btn-edit-score" href="#">Edit score</span>
             </div>
-        <button v-if="!share.state.dialog.workout.seen && !share.state.dialog.score.seen && !share.state.user.logout" v-on:click="toggleContextMenu" id="btn-menu" class="btn-overlay">
+        <button v-if="!share.state.app.workoutDialog && !share.state.app.scoreDialog && !share.state.user.logout" v-on:click="toggleContextMenu" id="btn-menu" class="btn-overlay">
             <svg id="btn-menu-svg" class="icon icon-menu"><use xlink:href="#icon-menu"></use></svg><span class="mls"></span>
         </button>
     </div>
@@ -14,11 +16,16 @@
 
 <script>
 import store from '../store.js';
+import WorkoutDialog from './WorkoutDialog.vue';
+import ScoreDialog from './ScoreDialog.vue';
+import * as logger from "../logger.js";
 
 export default {
     name: 'ContextMenu',
     data: function () {
         return {
+            editWorkoutDialog: false,
+            editScoreDialog: false,
             newWorkoutMenuItem: false,
             editWorkoutMenuItem: false,
             newScoreMenuItem: false,
@@ -27,7 +34,23 @@ export default {
         }
     },
     methods: {
+        showDialog: function(type, edit) {
+            logger.debug("ContextMenu.vue :: showDialog() :: triggered");
+            switch(type) {
+                case "workout":
+                    this.share.state.app.workoutDialog = true;
+                    this.editWorkoutDialog = edit;
+                    break;
+                case "score":
+                    this.share.state.app.scoreDialog = true;
+                    this.editScoreDialog = edit;
+                    break;
+                default:
+                    logger.debug("ContextMenu.vue :: showDialog() :: No valid type");
+            }
+        },
         toggleContextMenu: function(event) {
+            logger.debug("ContextMenu.vue :: toggleContextMenu() :: triggered");
             if(this.share.state.app.context) {
                 this.share.state.app.context = false;
             } else {
@@ -57,6 +80,10 @@ export default {
             event.stopPropagation();
         }
     },
+    components: {
+        WorkoutDialog,
+        ScoreDialog
+    }
 }
 </script>
 

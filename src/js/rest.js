@@ -11,12 +11,6 @@ import * as logger from "./logger.js";
 import * as arrayHelper from "./array.js";
 import * as config from "./config.js";
 import * as cookie from "./cookie.js";
-import * as timeHelper from "./time.js";
-
-import * as workoutHelper from "./workoutHelper.js";
-import * as scoreHelper from "./scoreHelper.js";
-import * as movementHelper from "./movementHelper.js";
-import * as equipmentHelper from "./equipmentHelper.js";
 
 /**
  * Ajax reuests

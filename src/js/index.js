@@ -3,25 +3,11 @@
 import Vue from 'vue';
 
 import store from './store.js';
-import Topbar from './app/Topbar.vue'
-import HomeView from './app/HomeView.vue';
-import WorkoutsView from './app/WorkoutsView.vue';
-import MovementsView from './app/MovementsView.vue';
-import EquipmentView from './app/EquipmentView.vue';
-import LoaderView from './app/LoaderView.vue';
-import ContextMenu from './app/ContextMenu.vue';
-import NotificationComponent from './app/NotificationComponent.vue';
-import LoginDialog from './app/LoginDialog.vue';
-import WorkoutDialog from './app/WorkoutDialog.vue';
-import ScoreDialog from './app/ScoreDialog.vue';
-
+import App from './app/App.vue'
 import * as logger from "./logger.js";
 import * as cookie from "./cookie.js";
 import * as request from "./rest.js";
 import * as arrayHelper from "./array.js";
-import * as timeHelper from "./time.js";
-
-let app;
 
 window.addEventListener("load", init);
 
@@ -70,37 +56,7 @@ export function handleLoginByKey(e) {
     }
 }
 
-export default app = new Vue({
+new Vue({
     el: '#app',
-    data: {
-        share: store
-    },
-    created: function () {
-        if (this.debug) console.log("Instance created.");
-    },
-    mounted: function () {
-        if (this.debug) console.log("Instance mounted.");
-    },
-    updated: function () {
-        if (this.debug) console.log("Instance updated.");
-    },
-    components: {
-        'topbar': Topbar,
-        'context-menu': ContextMenu,
-        'notification-component': NotificationComponent,
-        'homeView': HomeView,
-        'workoutsView': WorkoutsView,
-        'movementsView': MovementsView,
-        'equipmentView': EquipmentView,
-        'loaderView': LoaderView,
-        'login-dialog': LoginDialog,
-        'workout-dialog': WorkoutDialog,
-        'score-dialog': ScoreDialog,
-    },
-    computed: {
-        getCurrentViewComponent: function() {
-            logger.debug("index.js :: getCurrentViewComponent() :: triggered with " + this.share.state.app.currentView);
-            return this.share.state.app.currentView + "View";
-        }
-    }
+    render: h => h(App),
 });

@@ -2,7 +2,8 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
+    //mode: 'development',
     entry: './src/js/index.js',
     output: {
         filename: 'main.min.js',
@@ -11,14 +12,10 @@ module.exports = {
     optimization: {
         minimize: true
     },
-    // full build instead
-    // Remove it for the runtime-only build
-    // this will include additional JavaScript payload into your distribution
-    // use precompiled Vue templates
-    resolve: {
-        alias: {
-            'vue': 'vue/dist/vue.esm.js'
-        }
+    performance: {
+        hints: 'error',
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
     },
     module: {
         rules: [

@@ -25,9 +25,9 @@ export default {
     },
     methods: {
         activateTab: function(tab) {
-            this.share.state.app.currentView = tab;
-            this.share.state.app.searchbar = false;
-            switch(this.share.state.app.currentView) {
+            this.share.setCurrentView(tab);
+            this.share.hideSearchbar();
+            switch(this.share.getCurrentView()) {
                 case "home":
                     this.title = "Home"
                     break;
@@ -35,7 +35,6 @@ export default {
                     this.title = "Workouts";
                     this.share.showLoader();
                     request.restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
-                    this.share.showAllWorkouts(); // show all workouts
                     break;
                 case "movements":
                     this.title = "Movements";

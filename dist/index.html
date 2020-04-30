@@ -73,102 +73,7 @@
 
         </svg>
 
-        <!-- topbar -->
-        <div id="app">
-
-            <!-- notification -->
-            <notification ref="notification"></notification>
-
-            <!-- notification -->
-            <!--<div class="notification notification-ok"></div>
-            <div class="notification notification-info"></div>
-            <div class="notification notification-warn"></div>
-            <div class="notification notification-error"></div>-->
-
-            <!-- topbar -->
-            <div id="topbar">
-                <div id="titlebar">
-                    <h1 v-if="!share.state.search.seen">{{ title }}</h1>
-                    <input v-if="share.state.search.seen" v-model="share.state.search.value" v-on:keyup="share.doSearch()" id="searchbar" type="text" placeholder="Search...">
-                    <div id="toolbar">
-                        <span id="nav-filter"><svg class="icon icon-cog"><use xlink:href="#icon-cog"></use></svg><span class="mls"></span></span>
-                        <span id="nav-searchbar" v-on:click="share.toggleSearchBar()"><svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg><span class="mls"></span></span>
-                    </div>
-                </div>
-                <!-- navbar -->
-                <div id="navbar">
-                    <ul>
-                        <li v-for="tab in tabs"
-                            v-bind:key="tab"
-                            v-bind:class="{ active: currentView === tab }"
-                            v-on:click="activateTab(tab)">
-                            <svg v-bind:class="'icon icon-' + tab"><use v-bind:xlink:href="'#icon-' + tab"></use></svg><span class="mls"></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- login button -->
-            <button v-if="share.state.user.logout" v-on:click="request.restUserLogin()" class="btn-overlay" style="bottom:20px;right:20px;">
-                <svg class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg><span class="mls"></span>
-            </button>
-
-            <!-- apply button -->
-            <button v-if="isInputValid && isDialogVisible" v-on:click="share.applyDialog()" class="btn-overlay" style="bottom:90px;right:20px;">
-                <svg class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg><span class="mls"></span>
-            </button>
-
-            <!-- cancel button -->
-            <button v-if="isDialogVisible" v-on:click="share.hideDialog()" class="btn-overlay" style="bottom:20px;right:20px;">
-                <svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg><span class="mls"></span>
-            </button>
-
-            <!-- dropdown menu/button-->
-            <dropdown-menu></dropdown-menu>
-
-            <!-- begin container -->
-            <div id="container">
-
-                <!-- login-dialog -->
-                <div v-if="share.state.user.logout" class="dialog">
-                     <div class="dialog-content">
-                        <h5>Login</h5>
-                        <input type="text" placeholder="username" v-model="share.state.user.name">
-                        <input type="password" placeholder="password" v-model="share.state.user.password">
-                     </div>
-                </div>
-
-                <!-- workout-dialog -->
-                <div v-if="share.state.dialog.workout.seen && !share.state.user.logout" class="dialog">
-                     <div class="dialog-content">
-                        <h5>{{ share.state.dialog.workout.title }}</h5>
-                        <input type="text" placeholder="Workout name" v-model="share.state.dialog.workout.name" v-on:keyup="share.validateWorkoutInput()" v-bind:class="{ invalid: !share.state.dialog.workout.validName }">
-                        <textarea rows="7" placeholder="Workout description" v-model="share.state.dialog.workout.description" v-on:keyup="share.validateWorkoutInput()" v-bind:class="{ invalid: !share.state.dialog.workout.validDescription }">{{ share.state.dialog.workout.description }}</textarea>
-                     </div>
-                </div>
-
-                <!-- workout-score-dialog -->
-                <div v-if="share.state.dialog.score.seen && !share.state.user.logout" class="dialog">
-                    <div class="dialog-content">
-                        <h5>{{ title }}</h5>
-                        <input type="text" placeholder="Score" v-model="share.state.dialog.score.score" v-on:keyup="share.validateScoreInput()" v-bind:class="{ invalid: !share.state.dialog.score.validScore }">
-                        <input type="text" placeholder="dd.mm.YYYY HH:MM" v-model="share.state.dialog.score.datetime" v-on:keyup="share.validateScoreInput()" v-bind:class="{ invalid: !share.state.dialog.score.validDatetime }">
-                        <textarea rows="3" placeholder="Note" v-model="share.state.dialog.score.note" v-on:keyup="share.validateScoreInput()" v-bind:class="{ invalid: !share.state.dialog.score.validNote }">{{ share.state.dialog.score.note }}</textarea>
-                        <label class="chbx-container">Rx
-                            <input type="checkbox" v-model="share.state.dialog.score.rx">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- tab-home, tab-workouts, tab-movements, tab-equipment, spinner -->
-                <component v-bind:is="getCurrentViewComponent"></component>
-
-            </div>
-            <!-- end container -->
-
-        </div>
-        <!-- end app -->
+        <div id="app"></div>
 
     </body>
     <!-- jQuery -->
@@ -176,6 +81,6 @@
     <!-- CryptJS -->
     <!--<script src="js/modules/cryptjs/rollups/sha256.js"></script>-->
     <!-- MAIN -->
-    <script src="main.js"></script>
+    <script src="main.min.js"></script>
 
 </html>

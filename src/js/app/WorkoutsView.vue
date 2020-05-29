@@ -16,11 +16,22 @@ import * as arrayHelper from "../array.js";
 
 export default {
     name: 'WorkoutsView',
+    data: function () {
+        return {
+            share: store
+        }
+    },
     computed: {
         workoutsSortByName: function() { // returns all visible workout cards in sort order
-            return store.state.workouts.sort(arrayHelper.compareByString).filter(function(workout) {
-                return workout.seen != false;
-            });
+            if(this.share.state.app.sortAsc) {
+                return store.state.workouts.sort(arrayHelper.compareByString).filter(function(workout) {
+                    return workout.seen != false;
+                });
+            } else {
+                return store.state.workouts.sort(arrayHelper.compareByString).reverse().filter(function(workout) {
+                    return workout.seen != false;
+                });
+            }
         }
     },
     components: {

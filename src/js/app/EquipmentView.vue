@@ -16,9 +16,18 @@ import * as arrayHelper from "../array.js";
 
 export default {
     name: 'EquipmentView',
+    data: function () {
+        return {
+            share: store
+        }
+    },
     computed: {
         equipmentSortByName: function() {
-            return store.state.equipment.sort(arrayHelper.compareByString);
+            if(this.share.state.app.sortAsc) {
+                return store.state.equipment.sort(arrayHelper.compareByString);
+            } else {
+                return store.state.equipment.sort(arrayHelper.compareByString).reverse();
+            }
         }
     },
     components: {

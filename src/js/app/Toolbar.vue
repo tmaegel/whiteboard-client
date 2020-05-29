@@ -1,19 +1,23 @@
 <template>
-    <div id="titlebar">
-        <h1 v-if="!share.state.app.searchbar">{{ title }}</h1>
-        <input v-if="share.state.app.searchbar" v-model="value" v-on:keyup="doSearch()" id="searchbar" type="text" placeholder="Search...">
-        <div id="toolbar">
-            <span id="nav-filter"><svg class="icon icon-cog"><use xlink:href="#icon-cog"></use></svg><span class="mls"></span></span>
-            <span id="nav-searchbar" v-on:click="toggleSearchBar()"><svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg><span class="mls"></span></span>
+    <div>
+        <div id="titlebar">
+            <h1 v-if="!share.state.app.searchbar">{{ title }}</h1>
+            <input v-if="share.state.app.searchbar" v-model="value" v-on:keyup="doSearch()" id="searchbar" type="text" placeholder="Search...">
+            <div id="toolbar">
+                <span id="nav-searchbar" v-on:click="toggleSearchBar"><svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg></span>
+                <span id="nav-filter" v-on:click="toggleFilterMenu"><svg class="icon icon-cog"><use xlink:href="#icon-cog"></use></svg></span>
+            </div>
         </div>
+        <FilterMenu></FilterMenu>
     </div>
 </template>
 
 <script>
 import store from '../store.js';
+import FilterMenu from './FilterMenu.vue';
 
 export default {
-    name: 'Titlebar',
+    name: 'Toolbar',
     props: ['title'],
     data: function () {
         return {
@@ -48,6 +52,17 @@ export default {
                 }
             }.bind(this), 1000);
         },
+        toggleFilterMenu: function(event) {
+            if(this.share.state.app.filterMenu) { // hide filter menu
+                this.share.hideFilterMenu();
+            } else { // show filter menu
+                this.share.showFilterMenu();
+            }
+            event.stopPropagation();
+        }
+    },
+    components: {
+        FilterMenu
     }
 }
 </script>

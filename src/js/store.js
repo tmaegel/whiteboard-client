@@ -10,7 +10,9 @@ export default store = {
     state: {
         app: {
             searchbar: false, // if true show searchbar
-            context: false, // if true show context menu
+            filterMenu: false, // if true show filter menu
+            sortAsc: true, // sort ascending/descending
+            contextMenu: false, // if true show context menu
             workoutDialog: false, // if true show workout dialog
             scoreDialog: false, // if true show score dialog
             currentView: "home",
@@ -69,7 +71,7 @@ export default store = {
     },
     hideContextMenu() {
         logger.debug("store.js :: hideContextMenu() :: triggered");
-        this.state.app.context = false;
+        this.state.app.contextMenu = false;
     },
     hideDialog() {
         logger.debug("store.js :: hideDialog() :: triggered");
@@ -83,6 +85,14 @@ export default store = {
     hideSearchbar() {
         logger.debug("store.js :: hideSearchbar() :: triggered");
         this.state.app.searchbar = false;
+    },
+    showFilterMenu() {
+        logger.debug("store.js :: showFilterMenu() :: triggered");
+        this.state.app.filterMenu = true;
+    },
+    hideFilterMenu() {
+        logger.debug("store.js :: hideFilterMenu() :: triggered");
+        this.state.app.filterMenu = false;
     },
     /******************************
      * Equipment specific

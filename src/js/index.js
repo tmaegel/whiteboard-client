@@ -32,6 +32,7 @@ function init() {
     // Hide context menu
     document.addEventListener("click", function(event) {
         store.hideContextMenu();
+        store.hideFilterMenu();
     });
 
     // Listener to refresh the graph

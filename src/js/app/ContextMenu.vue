@@ -2,12 +2,12 @@
     <div>
         <WorkoutDialog v-bind:edit="editWorkoutDialog"></WorkoutDialog>
         <ScoreDialog v-bind:edit="editScoreDialog"></ScoreDialog>
-        <div v-if="share.state.app.context && !share.state.user.logout" id="dropdown-menu">
+        <div v-if="share.state.app.contextMenu && !share.state.user.logout" class="dropdown-menu" id="context-menu">
             <span v-if="newWorkoutMenuItem" v-on:click="showDialog('workout', false)" id="btn-new-workout" href="#">Add workout</span>
             <span v-if="editWorkoutMenuItem" v-on:click="showDialog('workout', true)" id="btn-edit-workout" href="#">Edit workout</span>
             <span v-if="newScoreMenuItem" v-on:click="showDialog('score', false)" id="btn-new-score" href="#">Add score</span>
             <span v-if="editScoreMenuItem" v-on:click="showDialog('score', true)" id="btn-edit-score" href="#">Edit score</span>
-            </div>
+        </div>
         <button v-if="!share.state.app.workoutDialog && !share.state.app.scoreDialog && !share.state.user.logout" v-on:click="toggleContextMenu" id="btn-menu" class="btn-overlay">
             <svg id="btn-menu-svg" class="icon icon-menu"><use xlink:href="#icon-menu"></use></svg><span class="mls"></span>
         </button>
@@ -51,10 +51,10 @@ export default {
         },
         toggleContextMenu: function(event) {
             logger.debug("ContextMenu.vue :: toggleContextMenu() :: triggered");
-            if(this.share.state.app.context) {
-                this.share.state.app.context = false;
+            if(this.share.state.app.contextMenu) {
+                this.share.state.app.contextMenu = false;
             } else {
-                this.share.state.app.context = true;
+                this.share.state.app.contextMenu = true;
                 this.newWorkoutMenuItem = false;
                 this.editWorkoutMenuItem = false;
                 this.newScoreMenuItem = false;
@@ -88,35 +88,12 @@ export default {
 </script>
 
 <style lang="css" scoped>
+#context-menu {
+    bottom: 74px;
+    right: 90px;
+}
 #btn-menu {
     bottom:20px;
     right: 20px;
-}
-#dropdown-menu {
-    position: fixed;
-    background-color: #eee;
-    bottom: 74px;
-    right: 90px;
-    box-shadow: 0px 0px 6px 4px rgba(0,0,0,0.12);
-    z-index: 1;
-    border-radius: 5%;
-}
-#dropdown-menu span {
-    cursor: pointer;
-    color: gray;
-    padding: 10px 16px;
-    text-decoration: none;
-    display: block;
-}
-#dropdown-menu span:hover {
-    background-color: #ddd;
-}
-#dropdown-menu span:first-child:hover {
-    border-top-right-radius: 5%;
-    border-top-left-radius: 5%;
-}
-#dropdown-menu span:last-child:hover {
-    border-bottom-right-radius: 5%;
-    border-bottom-left-radius: 5%;
 }
 </style>

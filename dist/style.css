@@ -263,7 +263,37 @@ table tr:last-child {
 }
 
 /**
- *
+ * dropdown menu
+ */
+.dropdown-menu {
+    position: fixed;
+    background-color: #eee;
+    box-shadow: 0px 0px 6px 4px rgba(0,0,0,0.12);
+    z-index: 1;
+    border-radius: 5%;
+}
+.dropdown-menu span {
+    cursor: pointer;
+    color: gray;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 18px;
+}
+.dropdown-menu span:hover {
+    background-color: #ddd;
+}
+.dropdown-menu span:first-child:hover {
+    border-top-right-radius: 5%;
+    border-top-left-radius: 5%;
+}
+.dropdown-menu span:last-child:hover {
+    border-bottom-right-radius: 5%;
+    border-bottom-left-radius: 5%;
+}
+
+/**
+ * icons
  */
 .icon {
     display: inline-block;
@@ -273,7 +303,8 @@ table tr:last-child {
     stroke: currentColor;
     fill: currentColor;
 }
-.icon-plus {
+/* icons: buttons */
+.icon-menu,.icon-checkmark,.icon-cross {
     /* The width and height of the SVG
     was previously set to 1em.
     This allows us to use `font-size`
@@ -284,44 +315,13 @@ table tr:last-child {
     of our icons: */
     color: white;
 }
-.icon-checkmark {
+/* icons: navbar */
+.icon-home,.icon-workouts,.icon-movements,.icon-equipment {
     font-size: 20px;
-    color: white;
+    color: gray;
 }
-.icon-cross {
-    font-size: 20px;
-    color: white;
-}
-.icon-pencil {
-    font-size: 20px;
-    color: white;
-}
-.icon-menu {
-    font-size: 20px;
-    color: white;
-}
-.icon-search {
+/* icons: toolbar */
+.icon-search,.icon-cog {
     font-size: 16px;
-    color: gray;
-}
-.icon-cog {
-    font-size: 16px;
-    color: gray;
-}
-
-.icon-home {
-    font-size: 20px;
-    color: gray;
-}
-.icon-workouts {
-    font-size: 20px;
-    color: gray;
-}
-.icon-movements {
-    font-size: 20px;
-    color: gray;
-}
-.icon-equipment {
-    font-size: 20px;
     color: gray;
 }

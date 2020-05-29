@@ -16,9 +16,18 @@ import * as arrayHelper from "../array.js";
 
 export default {
     name: 'MovementsView',
+    data: function () {
+        return {
+            share: store
+        }
+    },
     computed: {
         movementsSortByName: function() {
-            return store.state.movements.sort(arrayHelper.compareByString);
+            if(this.share.state.app.sortAsc) {
+                return store.state.movements.sort(arrayHelper.compareByString);
+            } else {
+                return store.state.movements.sort(arrayHelper.compareByString).reverse();
+            }
         }
     },
     components: {

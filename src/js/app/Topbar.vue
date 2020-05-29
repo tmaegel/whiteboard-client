@@ -1,13 +1,13 @@
 <template>
     <div id="topbar">
-        <Searchbar v-bind:title="title"></Searchbar>
+        <Toolbar v-bind:title="title"></Toolbar>
         <Navbar></Navbar>
     </div>
 </template>
 
 <script>
 import store from '../store.js';
-import Searchbar from './Searchbar.vue';
+import Toolbar from './Toolbar.vue';
 import Navbar from './Navbar.vue';
 
 export default {
@@ -18,7 +18,7 @@ export default {
         }
     },
     components: {
-        Searchbar,
+        Toolbar,
         Navbar
     }
 }

@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-#btn-menu {
+#btn-login {
     bottom:20px;
     right: 20px;
 }

@@ -12,6 +12,8 @@ export default store = {
             searchbar: false, // if true show searchbar
             filterMenu: false, // if true show filter menu
             sortAsc: true, // sort ascending/descending
+            sortTypeIndex: 0, // sort by ... (look in FilterMenu.vue > sortType)
+            showTypeIndex: 0, // show entries (look in FilterMenu.vue > showType)
             contextMenu: false, // if true show context menu
             workoutDialog: false, // if true show workout dialog
             scoreDialog: false, // if true show score dialog
@@ -215,6 +217,20 @@ export default store = {
         logger.debug("store.js :: setScores() :: triggered with " + value);
         this.state.scores = JSON.parse(value);
     },*/
+    setScores(data) {
+        logger.debug("store.js :: setScores() :: triggered with " + JSON.stringify(data));
+        for(let workoutIndex in this.state.workouts) {
+            let result = data.filter(function(score) {
+                return score.workoutId == this.state.workouts[workoutIndex].id;
+            }, this);
+            if(result.length > 0) {
+                for(let scoreIndex in result) {
+                    result[scoreIndex].selected = false;
+                }
+                this.state.workouts[workoutIndex].score = result;
+            }
+        }
+    },
     setScoresByIndex(data, workoutIndex) {
         logger.debug("store.js :: setScoresByIndex() :: triggered with " + JSON.stringify(data) + "(" + workoutIndex + ")");
         // Initialize selected property

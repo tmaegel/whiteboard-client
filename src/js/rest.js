@@ -166,6 +166,7 @@ export function restGetWorkouts() {
         success: function(data) {
             logger.debug(JSON.stringify(data));
             store.setWorkouts(data);
+            restGetScores();  // get all workout score objects; necessary to filter (last done, show only/no-completed workouts)
             store.hideLoader();
         },
         error: function(data) {
@@ -329,7 +330,7 @@ export function restGetScores() {
         },
         success: function(data) {
             logger.debug(JSON.stringify(data));
-            logger.log("rest.js :: restGetScores() :: GET /score :: SUCCESS: TODO");
+            store.setScores(data);
         },
         error: function(data) {
             logger.error("rest.js :: restGetScores() :: GET /score :: ERROR: Something went wrong.");

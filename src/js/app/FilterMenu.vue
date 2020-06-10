@@ -28,9 +28,7 @@ export default {
     name: 'FilterMenu',
     data: function () {
         return {
-            sortedByIndex: 0,
-            sortedBy: ["alphabetical", "last done"], // sorted by ...
-            showTypeIndex: 0,
+            sortType: ["alphabetical", "last updated"], // sorted by ...
             showType: ["all workouts", "completed workouts", "non-completed workouts"], // show types
             share: store
         }
@@ -44,15 +42,15 @@ export default {
             }
         },
         getSortedBy: function() {
-            if(this.sortedBy[this.sortedByIndex]) {
-                return this.sortedBy[this.sortedByIndex];
+            if(this.sortType[this.share.state.app.sortTypeIndex]) {
+                return this.sortType[this.share.state.app.sortTypeIndex];
             } else {
                 return "unkown"
             }
         },
         getShowType: function() {
-            if(this.showType[this.showTypeIndex]) {
-                return this.showType[this.showTypeIndex];
+            if(this.showType[this.share.state.app.showTypeIndex]) {
+                return this.showType[this.share.state.app.showTypeIndex];
             } else {
                 return "unkown"
             }
@@ -64,18 +62,18 @@ export default {
             event.stopPropagation();
         },
         toggleSortedBy: function(event) {
-            if(this.sortedByIndex >= this.sortedBy.length-1) {
-                this.sortedByIndex = 0;
+            if(this.share.state.app.sortTypeIndex >= this.sortType.length-1) {
+                this.share.state.app.sortTypeIndex = 0;
             } else {
-                this.sortedByIndex++;
+                this.share.state.app.sortTypeIndex++;
             }
             event.stopPropagation();
         },
         toggleShowType: function(event) {
-            if(this.showTypeIndex >= this.showType.length-1) {
-                this.showTypeIndex = 0;
+            if(this.share.state.app.showTypeIndex >= this.showType.length-1) {
+                this.share.state.app.showTypeIndex = 0;
             } else {
-                this.showTypeIndex++;
+                this.share.state.app.showTypeIndex++;
             }
             event.stopPropagation();
         }

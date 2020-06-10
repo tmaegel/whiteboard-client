@@ -6,7 +6,7 @@
         <div v-if="workout.active" class="card-content">
             <div class="card-body">
                 <p v-html="getWorkoutDescription(workout.description)"></p>
-                <p><small>{{ getFormatTimestamp(workout.datetime) }}</small></p>
+                <p><small>{{ getFormatTimestamp(workout.datetime) }} updated</small></p>
             </div>
             <canvas></canvas>
             <ScoreList
@@ -38,7 +38,11 @@ export default {
             return text.toString().replace(new RegExp('\r?\n','g'), "<br />");
         },
         getFormatTimestamp: function(datetime) {
-            return timeHelper.getFormatTimestamp(datetime);
+            if(datetime === 0) {
+                return "never";
+            } else {
+                return timeHelper.getFormatTimestamp(datetime);
+            }
         },
     },
     components: {

@@ -34,7 +34,7 @@ export default {
                 case "workouts":
                     this.title = "Workouts";
                     this.share.showLoader();
-                    request.restGetWorkouts();  // get all workout objects; get scores when clicking on the workout
+                    request.restGetWorkouts(); // get all workout objects; get scores when clicking on the workout
                     break;
                 case "movements":
                     this.title = "Movements";

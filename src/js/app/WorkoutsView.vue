@@ -2,7 +2,7 @@
     <div>
         <ul>
             <li is="workout-component"
-                v-for="(workoutItem, workoutIndex) in workoutsSortByName"
+                v-for="(workoutItem, workoutIndex) in filterWorkouts"
                 v-bind:key="workoutItem.id"
                 v-bind:workout="workoutItem"></li>
         </ul>
@@ -22,13 +22,46 @@ export default {
         }
     },
     computed: {
-        workoutsSortByName: function() { // returns all visible workout cards in sort order
+        filterWorkouts: function() { // returns all visible workout cards in sort order / filter
+            switch(this.share.state.app.showTypeIndex) {
+                case 0: // type: "all workouts"
+                    return this.sortWorkouts();
+                    break;
+                case 1: // type: "completed workouts"
+                    return this.sortWorkouts().filter(function(workout) {
+                        return workout.score.length > 0;
+                    });
+                    break;
+                case 2: // type: "non-completed workouts"
+                    return this.sortWorkouts().filter(function(workout) {
+                        return workout.score.length === 0;
+                    });
+                    break;
+                default:
+                    return this.sortWorkouts();
+            }
+        }
+    },
+    methods: {
+        sortWorkouts: function() {
+            let result;
+            switch(this.share.state.app.sortTypeIndex) {
+                case 0: // type: "alphabetical
+                    result = store.state.workouts.sort(arrayHelper.compareByString);
+                    break;
+                case 1: // type: "last updated"
+                    result = store.state.workouts.sort(arrayHelper.compareByTimestamp);
+                    break;
+                default:
+                    result = store.state.workouts.sort(arrayHelper.compareByString);
+            }
+            // ascending/descending
             if(this.share.state.app.sortAsc) {
-                return store.state.workouts.sort(arrayHelper.compareByString).filter(function(workout) {
+                return result.filter(function(workout) {
                     return workout.seen != false;
                 });
             } else {
-                return store.state.workouts.sort(arrayHelper.compareByString).reverse().filter(function(workout) {
+                return result.reverse().filter(function(workout) {
                     return workout.seen != false;
                 });
             }

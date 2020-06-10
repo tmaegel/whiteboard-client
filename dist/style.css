@@ -270,7 +270,7 @@ table tr:last-child {
     background-color: #eee;
     box-shadow: 0px 0px 6px 4px rgba(0,0,0,0.12);
     z-index: 1;
-    border-radius: 5%;
+    border-radius: 1.5%;
 }
 .dropdown-menu span {
     cursor: pointer;
@@ -284,12 +284,12 @@ table tr:last-child {
     background-color: #ddd;
 }
 .dropdown-menu span:first-child:hover {
-    border-top-right-radius: 5%;
-    border-top-left-radius: 5%;
+    border-top-right-radius: 1.5%;
+    border-top-left-radius: 1.5%;
 }
 .dropdown-menu span:last-child:hover {
-    border-bottom-right-radius: 5%;
-    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 1.5%;
+    border-bottom-left-radius: 1.5%;
 }
 
 /**

@@ -65,7 +65,6 @@ export function restUserValidate() {
         success: function(data) {
             store.login();
             app.handleLogin();
-
             logger.debug(JSON.stringify(data));
         },
         error: function(data) {
@@ -74,6 +73,69 @@ export function restUserValidate() {
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 logger.error("rest.js :: restUserLogin() :: POST /authentication/login :: ERROR: Unknown error occurred.");
+            } else {
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+            }
+        }
+    });
+}
+
+/**
+ * Ajax reuests
+ * tag
+ */
+
+
+/**
+ * Ajax GET request /tag
+ */
+export function restGetTags() {
+    $.ajax({
+        type: "GET",
+        url: config.REST_SERVER + ":" + config.REST_PORT + config.REST_PATH + "/tag",
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader("Authorization", store.state.user.token);
+        },
+        success: function(data) {
+            logger.debug(JSON.stringify(data));
+            store.setTags(data);
+            restGetTagById(1);
+            restGetTagById(2);
+            store.hideLoader();
+        },
+        error: function(data) {
+            logger.error("rest.js :: restGetTags() :: GET /tag :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
+
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                logger.error("rest.js :: restGetTags() :: GET /tag :: ERROR: Unknown error occurred.");
+            } else {
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+            }
+        }
+    });
+}
+
+/**
+ * Ajax GET request /tag/:tagId
+ */
+export function restGetTagById(id) {
+    $.ajax({
+        type: "GET",
+        url: config.REST_SERVER + ":" + config.REST_PORT + config.REST_PATH + "/tag/" + id,
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader("Authorization", store.state.user.token);
+        },
+        success: function(data) {
+            logger.debug(JSON.stringify(data));
+            store.setTagById(data, id);
+        },
+        error: function(data) {
+            logger.error("rest.js :: restGetTagById() :: GET /tag/:tagId :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
+
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                logger.error("rest.js :: restGetTagById() :: GET /tag/:tagId :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }
@@ -166,6 +228,7 @@ export function restGetWorkouts() {
         success: function(data) {
             logger.debug(JSON.stringify(data));
             store.setWorkouts(data);
+            restGetTags();  // get all tag objects
             restGetScores();  // get all workout score objects; necessary to filter (last done, show only/no-completed workouts)
             store.hideLoader();
         },
@@ -194,12 +257,7 @@ export function restGetWorkoutScores(id) {
         },
         success: function(data) {
             logger.debug(JSON.stringify(data));
-            let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, id);
-            if(workoutIndex != null) {
-                store.setScoresByIndex(data, workoutIndex);
-            } else {
-                logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/ :: ERROR: Unable to update/add workout scores to array.");
-            }
+            store.setScoresByWorkoutId(data, id);
         },
         error: function(data) {
             logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Something went wrong.");
@@ -226,12 +284,7 @@ export function restGetWorkoutById(id) {
         },
         success: function(data) {
             logger.debug(JSON.stringify(data));
-            let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, id);
-            if(workoutIndex != null) {
-                store.setWorkoutByIndex(data, workoutIndex);
-            } else {
-                logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
-            }
+            store.setWorkoutById(data, id);
         },
         error: function(data) {
             logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Something went wrong.");
@@ -259,9 +312,9 @@ export function restAddWorkout(workout) {
             xhr.setRequestHeader("Authorization", store.state.user.token);
         },
         success: function(data) {
-            logger.debug(JSON.stringify(data));
-            store.setWorkout(data);
             logger.log("rest.js :: restAddWorkout() :: POST /workout :: SUCCESS: Workout was created.");
+            logger.debug(JSON.stringify(data));
+            store.addWorkout(data);
             notification.addNotification("ok", "Success: Workout was created.");
         },
         error: function(data) {
@@ -290,15 +343,10 @@ export function restUpdateWorkout(workout) {
             xhr.setRequestHeader("Authorization", store.state.user.token);
         },
         success: function(data) {
+            logger.log("rest.js :: restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
             logger.debug(JSON.stringify(data));
-            let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, workout.id);
-            if(workoutIndex != null) {
-                store.setWorkoutByIndex(data, workoutIndex);
-                logger.log("rest.js :: restUpdateWorkout() :: POST /workout/:workoutId :: SUCCESS: Workout was updated.");
-                notification.addNotification("ok", "Success: Workout was updated.");
-            } else {
-                logger.error("rest.js :: restGetWorkoutById() :: GET /workout/:workoutId :: ERROR: Unable to update/add workout to array.");
-            }
+            store.setWorkoutById(data, workout.id);
+            notification.addNotification("ok", "Success: Workout was updated.");
         },
         error: function(data) {
             logger.error("rest.js :: restUpdateWorkout() :: POST /workout/:workoutId :: ERROR: Something went wrong.");
@@ -357,7 +405,6 @@ export function restGetScoreById(id) {
         },
         success: function(data) {
             logger.debug(JSON.stringify(data));
-            logger.log("rest.js :: restGetScoreById() :: GET /score/:scoreId :: SUCCESS: TODO");
         },
         error: function(data) {
             logger.error("rest.js :: restGetScoreById() :: GET /score/:scoreId :: ERROR: Something went wrong.");
@@ -385,15 +432,10 @@ export function restAddWorkoutScore(score) {
             xhr.setRequestHeader("Authorization", store.state.user.token);
         },
         success: function(data) {
+            logger.log("rest.js :: restAddWorkoutScore() :: POST /score :: SUCCESS: Workout score was created.");
             logger.debug(JSON.stringify(data));
-            let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, score.workoutId);
-            if(workoutIndex != null) {
-                store.setScore(data, workoutIndex);
-                logger.log("rest.js :: restAddWorkoutScore() :: POST /score :: SUCCESS: Workout score was created.");
-                notification.addNotification("ok", "Success: Workout score was created.");
-            } else {
-                logger.error("rest.js :: restAddWorkoutScore() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
-            }
+            store.addScore(data, score.workoutId);
+            notification.addNotification("ok", "Success: Workout score was created.");
         },
         error: function(data) {
             logger.error("rest.js :: restAddWorkoutScore() :: POST /score :: ERROR: Something went wrong.");
@@ -421,20 +463,11 @@ export function restUpdateWorkoutScore(score) {
             xhr.setRequestHeader("Authorization", store.state.user.token);
         },
         success: function(data) {
+            logger.log("rest.js :: restUpdateWorkoutScore() :: POST /score/:scoreId :: SUCCESS: Workout score was updated.");
             logger.debug(JSON.stringify(data));
-            let workoutIndex = arrayHelper.getArrayIndexById(store.state.workouts, score.workoutId);
-            if(workoutIndex != null) {
-                let scoreIndex = arrayHelper.getArrayIndexById(store.state.workouts[workoutIndex].score, score.id);
-                if(scoreIndex != null) {
-                    store.setScoreByIndex(data, workoutIndex, scoreIndex);
-                    logger.log("rest.js :: restUpdateWorkoutScore() :: POST /score/:scoreId :: SUCCESS: Workout score was updated.");
-                    notification.addNotification("ok", "Success: Workout score was updated.");
-                } else {
-                    logger.error("rest.js :: restUpdateWorkoutScore() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
-                }
-            } else {
-                logger.error("rest.js :: restUpdateWorkoutScore() :: GET /workout/score/ :: ERROR: Unable to update/add workout score to array.");
-            }
+            logger.debug(JSON.stringify(score));
+            store.setScoreById(data, score.workoutId, score.id);
+            notification.addNotification("ok", "Success: Workout score was updated.");
         },
         error: function(data) {
             logger.error("rest.js :: restUpdateWorkoutScore() :: POST /score/:scoreId :: ERROR: Something went wrong.");

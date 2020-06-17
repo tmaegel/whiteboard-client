@@ -3,11 +3,11 @@ version: '3'
 services:
     backend:
         build:
-            context: ./server
+            context: ../server
         image: whiteboard-backend:prod
         container_name: whiteboard-backend-prod
         volumes:
-            - ./server/db:/usr/src/app/db
+            - ../server/db:/usr/src/app/db
         environment:
             - NODE_ENV=production
             - WHITEBOARD_CONFIG=config/config.json
@@ -19,7 +19,7 @@ services:
 
     frontend:
         build:
-            context: ./client
+            context: ../client
         image: whiteboard-frontend:prod
         container_name: whiteboard-frontend-prod
         ports:

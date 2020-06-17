@@ -3,12 +3,12 @@ version: '3'
 services:
     backend:
         build:
-            context: ./server
+            context: ../server
         image: whiteboard-backend:dev
         container_name: whiteboard-backend-dev
         command: node server.js --init config/data.dev.json
         volumes:
-            - ./server/db:/usr/src/app/db
+            - ../server/db:/usr/src/app/db
         environment:
             - NODE_ENV=dev
             - WHITEBOARD_CONFIG=config/config.json
@@ -20,7 +20,7 @@ services:
 
     frontend:
         build:
-            context: ./client
+            context: ../client
         image: whiteboard-frontend:dev
         container_name: whiteboard-frontend-dev
         ports:

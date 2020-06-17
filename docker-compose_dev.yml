@@ -1,1 +1,30 @@
-../server/docker-compose_dev.yml
+version: '3'
+
+services:
+    backend:
+        build:
+            context: ./server
+        image: whiteboard-backend:dev
+        container_name: whiteboard-backend-dev
+        command: node server.js --init config/data.dev.json
+        volumes:
+            - ./server/db:/usr/src/app/db
+        environment:
+            - NODE_ENV=dev
+            - WHITEBOARD_CONFIG=config/config.json
+            - WHITEBOARD_DB=db/database.sqlite
+            - WHITEBOARD_PORT=3000
+        ports:
+            - "127.0.0.1:3000:3000"
+        restart: always
+
+    frontend:
+        build:
+            context: ./client
+        image: whiteboard-frontend:dev
+        container_name: whiteboard-frontend-dev
+        ports:
+            - "127.0.0.1:8080:8080"
+        depends_on:
+            - backend
+        restart: always

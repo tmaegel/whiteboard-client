@@ -1,1 +1,29 @@
-../server/docker-compose_prod.yml
+version: '3'
+
+services:
+    backend:
+        build:
+            context: ./server
+        image: whiteboard-backend:prod
+        container_name: whiteboard-backend-prod
+        volumes:
+            - ./server/db:/usr/src/app/db
+        environment:
+            - NODE_ENV=production
+            - WHITEBOARD_CONFIG=config/config.json
+            - WHITEBOARD_DB=db/database.sqlite
+            - WHITEBOARD_PORT=3000
+        ports:
+            - "127.0.0.1:3000:3000"
+        restart: always
+
+    frontend:
+        build:
+            context: ./client
+        image: whiteboard-frontend:prod
+        container_name: whiteboard-frontend-prod
+        ports:
+            - "127.0.0.1:8080:8080"
+        depends_on:
+            - backend
+        restart: always

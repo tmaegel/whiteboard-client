@@ -99,8 +99,6 @@ export function restGetTags() {
         success: function(data) {
             logger.debug(JSON.stringify(data));
             store.setTags(data);
-            restGetTagById(1);
-            restGetTagById(2);
             store.hideLoader();
         },
         error: function(data) {
@@ -265,6 +263,33 @@ export function restGetWorkoutScores(id) {
 
             if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
                 logger.error("rest.js :: restGetWorkoutScores() :: GET /workout/score/:workoutId :: ERROR: Unknown error occurred.");
+            } else {
+                notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
+            }
+        }
+    });
+}
+
+/**
+ * Ajax GET request /workout/tag/:workoutId
+ */
+export function restGetWorkoutTags(id) {
+    $.ajax({
+        type: "GET",
+        url: config.REST_SERVER + ":" + config.REST_PORT + config.REST_PATH + "/workout/tag/" + id,
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader("Authorization", store.state.user.token);
+        },
+        success: function(data) {
+            logger.debug(JSON.stringify(data));
+            store.setTagsByWorkoutId(data, id);
+        },
+        error: function(data) {
+            logger.error("rest.js :: restGetWorkoutTags() :: GET /workout/tag/:workoutId :: ERROR: Something went wrong.");
+            logger.debug(JSON.stringify(data));
+
+            if(data == null || data == undefined || data.responseJSON == null || data.responseJSON == undefined)  {
+                logger.error("rest.js :: restGetWorkoutTags() :: GET /workout/tag/:workoutId :: ERROR: Unknown error occurred.");
             } else {
                 notification.addNotification("error", data.responseJSON.type + ": " + data.responseJSON.message);
             }

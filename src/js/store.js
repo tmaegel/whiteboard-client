@@ -113,6 +113,15 @@ export default store = {
             logger.error("store.js :: setTagById() :: ERROR: Unable to update/add tag to array.");
         }
     },
+    setTagsByWorkoutId(data, workoutId) {
+        logger.debug("store.js :: setTagsByWorkoutId() :: triggered with " + JSON.stringify(data) + "(" + workoutId + ")");
+        let workoutIndex = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
+        if(workoutIndex != null) {
+            Vue.set(this.state.workouts[workoutIndex], 'tags', data);
+        } else {
+            logger.error("store.js :: setTagsByWorkoutId() :: ERROR: Unable to update/add workout scores to array.");
+        }
+    },
     /******************************
      * Equipment specific
      *******************************/
@@ -136,7 +145,8 @@ export default store = {
         for(let workoutIndex in data) {
             data[workoutIndex].seen = true;
             data[workoutIndex].active = false;
-            data[workoutIndex].score = [];
+            data[workoutIndex].scores = [];
+            data[workoutIndex].tags = [];
         }
         this.state.workouts = data;
     },
@@ -144,7 +154,8 @@ export default store = {
         logger.debug("store.js :: addWorkout() :: triggered with " + JSON.stringify(data));
         data.seen = true;
         data.active = false;
-        data.score = [];
+        data.scores = [];
+        data.tags = [];
         this.state.workouts.push(data);
     },
     setWorkoutById(data, workoutId) {
@@ -154,7 +165,8 @@ export default store = {
             // Initialize active property
             data.seen = true;
             data.active = false;
-            data.score = [];
+            data.scores = [];
+            data.tags = [];
             Vue.set(this.state.workouts, workoutIndex, data);
         } else {
             logger.error("store.js :: setWorkoutById() :: ERROR: Unable to update/add workout to array.");
@@ -245,7 +257,7 @@ export default store = {
                 for(let scoreIndex in result) {
                     result[scoreIndex].selected = false;
                 }
-                this.state.workouts[workoutIndex].score = result;
+                this.state.workouts[workoutIndex].scores = result;
             }
         }
     },
@@ -257,7 +269,7 @@ export default store = {
             for(let scoreIndex in data) {
                 data[scoreIndex].selected = false;
             }
-            Vue.set(this.state.workouts[workoutIndex], 'score', data);
+            Vue.set(this.state.workouts[workoutIndex], 'scores', data);
         } else {
             logger.error("store.js :: setScoresByWorkoutId() :: ERROR: Unable to update/add workout scores to array.");
         }
@@ -267,7 +279,7 @@ export default store = {
         let workoutIndex = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
         if(workoutIndex != null) {
             data.selected = false;
-            this.state.workouts[workoutIndex].score.push(data);
+            this.state.workouts[workoutIndex].scores.push(data);
         } else {
             logger.error("store.js :: setScoreByWorkoutId() :: ERROR: Unable to update/add workout score to array.");
         }
@@ -276,10 +288,10 @@ export default store = {
         logger.debug("store.js :: setScoreById() :: triggered with " + JSON.stringify(data) + "(" + workoutId + "," + scoreId + ")");
         let workoutIndex = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
         if(workoutIndex != null) {
-            let scoreIndex = arrayHelper.getArrayIndexById(this.state.workouts[workoutIndex].score, scoreId);
+            let scoreIndex = arrayHelper.getArrayIndexById(this.state.workouts[workoutIndex].scores, scoreId);
             if(scoreIndex != null) {
                 data.selected = false;
-                Vue.set(this.state.workouts[workoutIndex].score, scoreIndex, data);
+                Vue.set(this.state.workouts[workoutIndex].scores, scoreIndex, data);
             } else {
                 logger.error("store.js :: setScoreById() ::ERROR: Unable to update/add workout score to array.");
             }
@@ -291,7 +303,7 @@ export default store = {
         logger.debug("store.js :: selectScore() :: triggered with " + workoutId + "," + scoreId);
         this.state.workouts.map((workout) => {
             if(workout.id === workoutId) {
-                workout.score.map((score) => {
+                workout.scores.map((score) => {
                     score.id === scoreId ? score.selected = true : score.selected = false;
                 });
             }
@@ -301,7 +313,7 @@ export default store = {
         logger.debug("store.js :: unselectScore() :: triggered with " + workoutId + "," + scoreId);
         this.state.workouts.map((workout) => {
             if(workout.id === workoutId) {
-                workout.score.map((score) => {
+                workout.scores.map((score) => {
                     score.selected = false;
                 });
             }
@@ -317,8 +329,8 @@ export default store = {
         logger.debug("store.js :: getSelectedScoreId() :: triggered with " + workoutId);
         if(workoutId >= 0) {
             let index = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
-            if(this.state.workouts[index].score != null || this.state.workouts[index].score != undefined) {
-                for(let score of this.state.workouts[index].score) {
+            if(this.state.workouts[index].scores != null || this.state.workouts[index].scores != undefined) {
+                for(let score of this.state.workouts[index].scores) {
                     if(score.selected) {
                         return score.id;
                     }
@@ -337,32 +349,13 @@ export default store = {
         logger.debug("store.js :: getSelectedScore() :: triggered with " + workoutId);
         if(workoutId >= 0) {
             let index = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
-            if(this.state.workouts[index].score != null || this.state.workouts[index].score != undefined) {
+            if(this.state.workouts[index].scores != null || this.state.workouts[index].scores != undefined) {
                 let id = this.getSelectedScoreId(workoutId);
                 if(id != -1) {
-                    return arrayHelper.getArrayObjectById(this.state.workouts[index].score, id);
+                    return arrayHelper.getArrayObjectById(this.state.workouts[index].scores, id);
                 }
             }
         }
         return null;
-    },
-    /**
-     * Returns the array index of selected score object.
-     * If no score is selected returns -1
-     * @param {integer} workoutId of workout object
-     * @returns {integer} id
-     */
-    getSelectedScoreIndex(workoutId) {
-        logger.debug("store.js :: getSelectedScoreIndex() :: triggered with " + workoutId);
-        if(workoutId >= 0) {
-            let index = arrayHelper.getArrayIndexById(this.state.workouts, workoutId);
-            if(this.state.workouts[index].score != null || this.state.workouts[index].score != undefined) {
-                let id = this.getSelectedScoreId(workoutId);
-                if(id != -1) {
-                    return arrayHelper.getArrayIndexById(this.state.scores, id);
-                }
-            }
-        }
-        return -1;
     }
 };

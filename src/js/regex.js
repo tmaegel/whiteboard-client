@@ -8,13 +8,13 @@
  * Checks if value is empty or contains spaces only
  */
 export function empty(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let regExp = /^[\n\t ]*$/g;
+  const regExp = /^[\n\t ]*$/g;
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
 /**
@@ -22,13 +22,13 @@ export function empty(value) {
  * [a-zA-Z_0-9ÄÜÖäüöß .,:&'-()/]
  */
 export function simpleRegex(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let regExp = /^[\wÄÜÖäüöß .,:&'"\-()/]*$/gm;
+  const regExp = /^[\wÄÜÖäüöß .,:&'"\-()/]*$/gm;
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
 /**
@@ -36,13 +36,13 @@ export function simpleRegex(value) {
  * [a-zA-Z_0-9ÄÜÖäüöß .,:;"#!?&@_-()%/*+]
  */
 export function extendedRegex(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let regExp = /^[\w\sÄÜÖäüöß.,:;"'!?&@_\-()%/*+]*$/g;
+  const regExp = /^[\w\sÄÜÖäüöß.,:;"'!?&@_\-()%/*+]*$/g;
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
 /**
@@ -50,13 +50,13 @@ export function extendedRegex(value) {
  * e.g. 1234
  */
 export function numRegex(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let regExp = /^\d+$/gm;
+  const regExp = /^\d+$/gm;
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
 /**
@@ -64,13 +64,13 @@ export function numRegex(value) {
  * e.g. 123.45
  */
 export function floatRegex(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let regExp = /^[0-9]+[.]?[0-9]+$/gm;
+  const regExp = /^[0-9]+[.]?[0-9]+$/gm;
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
 /**
@@ -78,13 +78,13 @@ export function floatRegex(value) {
  * e.g. 17.5.2019 19:21
  */
 export function datetimeRegex(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let regExp = /^\d{1,2}.\d{1,2}.\d{4} \d{1,2}([:]\d{1,2}){1,2}$/gm;
+  const regExp = /^\d{1,2}.\d{1,2}.\d{4} \d{1,2}([:]\d{1,2}){1,2}$/gm;
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
 /**
@@ -92,13 +92,13 @@ export function datetimeRegex(value) {
  * e.g 19:21:23
  */
 export function timestampRegex(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let regExp = /^\d{1,2}(:\d{1,2}){1,2}$/gm;
+  const regExp = /^\d{1,2}(:\d{1,2}){1,2}$/gm;
 
-    return regExp.test(value);
+  return regExp.test(value);
 }
 
 /**
@@ -106,25 +106,25 @@ export function timestampRegex(value) {
  * Strip multiple spaces, new lines, replace tabs, ...
  */
 export function stripString(value) {
-    if(value === undefined) {
-        return false;
-    }
+  if (value === undefined) {
+    return false;
+  }
 
-    let string = value;
-    let regExpLeadingTailingSpaces = /^\s+|\s+$/g;
-    string = string.replace(regExpLeadingTailingSpaces, "");
+  let string = value;
+  const regExpLeadingTailingSpaces = /^\s+|\s+$/g;
+  string = string.replace(regExpLeadingTailingSpaces, '');
 
-    // Dont allow multiple spaces
-    let regExpMultipleSpaces = / {2,}/g;
-    string = string.replace(regExpMultipleSpaces, " ");
+  // Dont allow multiple spaces
+  const regExpMultipleSpaces = / {2,}/g;
+  string = string.replace(regExpMultipleSpaces, ' ');
 
-    // Allow only single or two new lines
-    let regExpNewLines = /[\r\n]{2,}/g;
-    string = string.replace(regExpNewLines, "\n\n");
+  // Allow only single or two new lines
+  const regExpNewLines = /[\r\n]{2,}/g;
+  string = string.replace(regExpNewLines, '\n\n');
 
-    // Replace all tabs
-    let regExpTabluar = /[\x0B\f\t]*/g;
-    string = string.replace(regExpTabluar, "");
+  // Replace all tabs
+  const regExpTabluar = /[\x0B\f\t]*/g;
+  string = string.replace(regExpTabluar, '');
 
-    return string;
+  return string;
 }

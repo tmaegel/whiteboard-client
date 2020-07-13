@@ -1,6 +1,6 @@
 'use strict';
 
-//import * as request from "./rest.js";
+// import * as request from "./rest.js";
 
 /**
  * EQUIPMENT

@@ -1,4 +1,5 @@
 {
+  "main": "src/js/index.js",
   "name": "whiteboard-client",
   "version": "1.0.0",
   "description": "whiteboard web client",
@@ -22,11 +23,11 @@
     "chai": "^4.2.0",
     "css-loader": "^3.5.3",
     "deep-eql": "^4.0.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.4.0",
+    "eslint-config-google": "^0.14.0",
     "eslint-plugin-vue": "^6.2.2",
     "expect.js": "^0.3.1",
-    "gulp-eslint": "^6.0.0",
-    "mocha": "^6.2.3",
+    "mocha": "^7.1.2",
     "style-loader": "^1.2.1",
     "vue-loader": "^15.9.1",
     "vue-template-compiler": "^2.6.11",
@@ -34,12 +35,13 @@
     "webpack-cli": "^3.3.11"
   },
   "scripts": {
+    "lint": "eslint src/js",
     "test": "mocha --require babel-core/register",
     "build:prod": "npx webpack --config webpack.prod.js && docker build --pull -t whiteboard-client:prod .",
-    "start:prod": "docker rm whiteboard-client-prod && docker run --name whiteboard-client-prod -p 127.0.0.1:8080:8080 -d whiteboard-client:prod",
-    "stop:prod": "docker stop whiteboard-client-prod",
+    "start:prod": "docker rm whiteboard-client-prod ; docker run --name whiteboard-client-prod -p 127.0.0.1:8080:8080 -d whiteboard-client:prod",
+    "stop:prod": "docker stop whiteboard-client:prod",
     "build:dev": "npx webpack --config webpack.dev.js",
-    "start:dev": "docker rm whiteboard-client-dev && docker run --name whiteboard-client-dev -p 127.0.0.1:8080:80 -v ${PWD}/dist/:/usr/share/nginx/html:ro -v ${PWD}/build/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx:mainline-alpine",
+    "start:dev": "docker rm whiteboard-client-dev ; docker run --name whiteboard-client-dev -p 127.0.0.1:8080:80 -v ${PWD}/dist/:/usr/share/nginx/html:ro -v ${PWD}/build/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx:mainline-alpine",
     "stop:dev": "docker stop whiteboard-client-dev"
   }
 }

@@ -37,11 +37,13 @@
   "scripts": {
     "lint": "eslint src/js",
     "test": "mocha --require babel-core/register",
-    "build:prod": "npx webpack --config webpack.prod.js && docker build --pull -t whiteboard-client:prod .",
-    "start:prod": "docker rm whiteboard-client-prod ; docker run --name whiteboard-client-prod -p 127.0.0.1:8080:8080 -d whiteboard-client:prod",
-    "stop:prod": "docker stop whiteboard-client:prod",
     "build:dev": "npx webpack --config webpack.dev.js",
-    "start:dev": "docker rm whiteboard-client-dev ; docker run --name whiteboard-client-dev -p 127.0.0.1:8080:80 -v ${PWD}/dist/:/usr/share/nginx/html:ro -v ${PWD}/build/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx:mainline-alpine",
-    "stop:dev": "docker stop whiteboard-client-dev"
+    "build:prod": "npx webpack --config webpack.prod.js && docker build --pull -t whiteboard-frontend:prod .",
+    "full:dev": "docker-compose -f docker-compose_dev.yml down ; docker-compose -f docker-compose_dev.yml up -d",
+    "full:prod": "docker-compose -f docker-compose_prod.yml down ; docker-compose -f docker-compose_prod.yml up -d",
+    "start:dev": "docker stop whiteboard-frontend:dev ; docker rm whiteboard-frontend:dev ; docker run --name whiteboard-frontend:dev -p 127.0.0.1:8080:80 -v ${PWD}/dist/:/usr/share/nginx/html:ro -v ${PWD}/build/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx:mainline-alpine",
+    "start:prod": "docker rm whiteboard-frontend:prod ; docker run --name whiteboard-frontend:prod -p 127.0.0.1:8080:8080 -d whiteboard-frontend:prod",
+    "stop:dev": "docker stop whiteboard-frontend:dev",
+    "stop:prod": "docker stop whiteboard-frontend:prod"
   }
 }

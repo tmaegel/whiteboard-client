@@ -2,7 +2,7 @@ module.exports = {
   'env': {
     'browser': true,
     'es2020': true,
-    "jquery": true
+    'jquery': true,
   },
   'extends': [
     'eslint:recommended',
@@ -17,6 +17,6 @@ module.exports = {
     'vue',
   ],
   'rules': {
-    "max-len": ["error", { "code": 120 }]
+    'max-len': ['error', {'code': 120}],
   },
 };

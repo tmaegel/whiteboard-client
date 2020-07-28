@@ -1,7 +1,5 @@
 'use strict';
 
-// import { Chart } from "./Chart.js";
-
 import store from './store.js';
 import notification from './notification.js';
 
@@ -10,15 +8,10 @@ import * as request from './rest.js';
 import * as timeHelper from './time.js';
 import * as regexHelper from './regex.js';
 
-let chart;
-
-export function resizeWorkoutScoreChart() {
-  if (chart != null || chart != undefined) {
-    chart.update();
-    chart.draw();
-  }
-}
-
+/**
+ * save (add or update) the score via REST
+ * @param {Object} score object to save
+ */
 export function saveWorkoutScore(score) {
   logger.debug('scoreHelper.js :: saveWorkoutScore() :: DEBUG: Saving workout score');
 

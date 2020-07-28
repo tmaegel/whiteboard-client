@@ -7,7 +7,10 @@ import * as logger from './logger.js';
  */
 
 /**
- * Sort by id
+ * Helper function to compare(sort) objects by id
+ * @param {Object} object1
+ * @param {Object} object2
+ * @return {boolean}
  */
 export function compareById(object1, object2) {
   if (object1 !== undefined && object2 !== undefined) {
@@ -26,8 +29,11 @@ export function compareById(object1, object2) {
 }
 
 /**
- * Sort by datetime/timestamp
- */
+  * Helper function to compare(sort) objects by datetime/timestamp
+  * @param {Object} object1
+  * @param {Object} object2
+  * @return {boolean}
+  */
 export function compareByTimestamp(object1, object2) {
   if (object1 !== undefined && object2 !== undefined) {
     if (object1.hasOwnProperty('datetime') && object2.hasOwnProperty('datetime')) {
@@ -45,8 +51,11 @@ export function compareByTimestamp(object1, object2) {
 }
 
 /**
- * Sort by string
- */
+   * Helper function to compare(sort) objects by string
+   * @param {Object} object1
+   * @param {Object} object2
+   * @return {boolean}
+   */
 export function compareByString(object1, object2) {
   if (object1 !== undefined && object2 !== undefined) {
     if (object1.hasOwnProperty('name') && object2.hasOwnProperty('name')) {
@@ -64,48 +73,10 @@ export function compareByString(object1, object2) {
 }
 
 /**
- * Concat score array of every workout
- */
-export function concatWorkoutScores(array) {
-  let arr = [];
-  if (array !== undefined) {
-    for (const i in array) {
-      if (i == 0) {
-        arr = array[i].score;
-      } else {
-        arr.concat(array[i].score);
-      }
-    }
-  } else {
-    return -1;
-  }
-
-  return arr;
-}
-
-/**
- * Search in array for object by id and update (when exists) or add (when not exists) it
- * @return 0 if object added
- * @return 1 if object updated
- * @return -1 if wrong type specified
- */
-export function refreshArrayObject(array, object) {
-  if (array != undefined || object !== undefined) {
-    for (const i in array) {
-      if (object.id == array[i].id) {
-        array[i] = object;
-        return 1;
-      }
-    }
-    array.push(object);
-    return 0;
-  } else {
-    return -1;
-  }
-}
-
-/**
  * Search in array for object by id and return it
+ * @param {Array} array
+ * @param {integer} id
+ * @return {Object} object with id
  */
 export function getArrayObjectById(array, id) {
   if (array != undefined || id !== undefined) {
@@ -118,7 +89,10 @@ export function getArrayObjectById(array, id) {
 }
 
 /**
- * Gets the index of object by the id
+ * Search in array for object by id and return the index
+ * @param {Array} array
+ * @param {integer} id
+ * @return {Object} index of the object with id
  */
 export function getArrayIndexById(array, id) {
   if (array != undefined || id !== undefined) {
@@ -132,6 +106,9 @@ export function getArrayIndexById(array, id) {
 
 /**
  * Returns all objects that contains the string
+ * @param {Array} array
+ * @param {string} search
+ * @return {Array} list of all matched objects
  */
 export function getArrayObjectsByName(array, search) {
   const arr = [];

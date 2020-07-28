@@ -5,7 +5,9 @@
  */
 
 /**
- * Checks if value is empty or contains spaces only
+ * Checks if value is empty or contains spaces only.
+ * @param {string} value to check
+ * @return {boolean} result of the regex check.
  */
 export function empty(value) {
   if (value === undefined) {
@@ -20,6 +22,8 @@ export function empty(value) {
 /**
  * Simple regex check
  * [a-zA-Z_0-9ÄÜÖäüöß .,:&'-()/]
+ * @param {string} value to check
+ * @return {boolean} result of the regex check.
  */
 export function simpleRegex(value) {
   if (value === undefined) {
@@ -34,6 +38,8 @@ export function simpleRegex(value) {
 /**
  * Extended regex check
  * [a-zA-Z_0-9ÄÜÖäüöß .,:;"#!?&@_-()%/*+]
+ * @param {string} value to check
+ * @return {boolean} result of the regex check.
  */
 export function extendedRegex(value) {
   if (value === undefined) {
@@ -46,8 +52,10 @@ export function extendedRegex(value) {
 }
 
 /**
- * Number regex check
+ * Checks if value contains numbers only.
  * e.g. 1234
+ * @param {string} value to check
+ * @return {boolean} result of the regex check.
  */
 export function numRegex(value) {
   if (value === undefined) {
@@ -60,8 +68,10 @@ export function numRegex(value) {
 }
 
 /**
- * Floating number regex check
+ * Checks if value contains numbers or floating numbers only.
  * e.g. 123.45
+ * @param {string} value to check
+ * @return {boolean} result of the regex check.
  */
 export function floatRegex(value) {
   if (value === undefined) {
@@ -74,8 +84,10 @@ export function floatRegex(value) {
 }
 
 /**
- * Datetime regex check (dd.mm.YYY HH:MM)
+ * Checks if value contains a datetime string with following format: dd.mm.YYY HH:MM
  * e.g. 17.5.2019 19:21
+ * @param {string} value to check
+ * @return {boolean} result of the regex check.
  */
 export function datetimeRegex(value) {
   if (value === undefined) {
@@ -88,8 +100,10 @@ export function datetimeRegex(value) {
 }
 
 /**
- * Timestamp regex check
+ * Checks if value contains a timestamp string with following format: HH:MM:SS
  * e.g 19:21:23
+ * @param {string} value to check
+ * @return {boolean} result of the regex check.
  */
 export function timestampRegex(value) {
   if (value === undefined) {
@@ -104,6 +118,8 @@ export function timestampRegex(value) {
 /**
  * Remove leading and tailing spaces/new lines/tabs
  * Strip multiple spaces, new lines, replace tabs, ...
+ * @param {string} value to strip
+ * @return {boolean} stripped value.
  */
 export function stripString(value) {
   if (value === undefined) {

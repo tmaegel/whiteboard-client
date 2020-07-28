@@ -10,6 +10,9 @@ import * as request from './rest.js';
 
 window.addEventListener('load', init);
 
+/**
+ * Entry point
+ */
 function init() {
   // other stuff
   logger.log('main :: init() :: INFO: Initializing');
@@ -33,12 +36,11 @@ function init() {
     store.hideContextMenu();
     store.hideFilterMenu();
   });
-
-  // Listener to refresh the graph
-  // window.addEventListener("resize", scoreHelper.resizeWorkoutScoreChart);
 }
 
-// event function to handle the login mechanism
+/**
+ * event function to handle the login mechanism
+ */
 export function handleLogin() {
   if (store.state.user.logout == false && store.state.user.token != undefined && store.state.user.token != null) {
     logger.debug('index.js :: handleLogin() :: INFO :: Login successful.');
@@ -49,9 +51,12 @@ export function handleLogin() {
   }
 }
 
-// event function to handle the login mechanism by pressing the enter key
-export function handleLoginByKey(e) {
-  const keycode = (e.keyCode ? e.keyCode : e.which);
+/**
+ * event function to handle the login mechanism by pressing the enter key
+ * @param {Event} event by pressing the enter key
+ */
+export function handleLoginByKey(event) {
+  const keycode = (event.keyCode ? event.keyCode : event.which);
   if (keycode == '13') {
     request.restUserLogin();
   }

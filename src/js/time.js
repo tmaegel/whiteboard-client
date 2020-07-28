@@ -5,11 +5,13 @@ import * as regexHelper from './regex.js';
 
 const daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // days of week (short)
 const daysLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; // days of week (long)
-const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; // days of week
+const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; // months
 
 /**
  * Get timestamp in seconds since 01.01.1970
  * Now or optional an specific timestamp
+ * @param {integer} timestamp different format possible. It's optional.
+ * @return {integer} timestamp in unix time stamp format.
  */
 export function getTimestamp(timestamp) {
   timestamp = timestamp || 0; // Optional parameter
@@ -20,7 +22,7 @@ export function getTimestamp(timestamp) {
   } else {
     now = new Date(Date.parse(timestamp));
     if (isNaN(now)) {
-      logger.debug('time.js :: getTimestamp() :: WARN: Couldn\'t parse timestamp to UNIX timestamp. Try it in a different way.');
+      logger.debug('time.js :: getTimestamp() :: WARN: Couldn\'t parse timestamp to UNIX timestamp.');
       if (regexHelper.datetimeRegex(timestamp)) {
         logger.debug('time.js :: getTimestamp() :: INFO: Detect timestamp (YY.mm.dd HH:MM:SS)');
         const tmp = timestamp.split(' ');
@@ -47,6 +49,8 @@ export function getTimestamp(timestamp) {
 /**
  * Get timestamp with RFC2822 / IETF Syntax
  * e.g. 'Mon, 25 Dec 1995 13:30:00 GMT'
+ * @param {integer} timestamp in unix time stamp format. It's optional.
+ * @return {timestamp} timestamp with RFC2822 / IETF Syntax.
  */
 export function getIETFTimestamp(timestamp) {
   timestamp = timestamp || 0; // Optional parameter
@@ -80,8 +84,9 @@ export function getIETFTimestamp(timestamp) {
 }
 
 /**
- * Get timestamp in specific format
- * Now or optional an specific timestamp
+ * Get timestamp in specific format (long, with weekday)
+ * @param {integer} timestamp in unix time stamp format. It's optional.
+ * @return {timestamp} timestamp with with specific format (e.g. Sunday, 01.12.1990 12:00)
  */
 export function getFormatTimestamp(timestamp) {
   timestamp = timestamp || 0; // Optional parameter
@@ -115,7 +120,8 @@ export function getFormatTimestamp(timestamp) {
 
 /**
  * Get timestamp in specific format (short, without weekday)
- * Now or optional an specific timestamp
+ * @param {integer} timestamp in unix time stamp format. It's optional.
+ * @return {timestamp} timestamp with with specific format (e.g. 01.12.1990 12:00)
  */
 export function getShortFormatTimestamp(timestamp) {
   timestamp = timestamp || 0; // Optional parameter
@@ -148,7 +154,8 @@ export function getShortFormatTimestamp(timestamp) {
 
 /**
  * Convert timestamp to seconds
- * Valid timestamp format is "HH:MM:SS"
+ * @param {string} timestamp in specific format. Valid timestamp format is 'HH:MM:SS'
+ * @return {integer} timestamp in unix time stamp format.
  */
 export function timestampToSeconds(timestamp) {
   if (regexHelper.numRegex(timestamp)) {

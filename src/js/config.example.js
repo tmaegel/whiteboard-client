@@ -1,10 +1,9 @@
 'use strict';
 
 // Config
-export var
-  DEBUG = false,
-  REST_SERVER = "https://localhost",
-  REST_PORT = "3000",
-  REST_PATH = "",
-  DOMAIN = "localhost",
-  CHART_ID = "chart";
+export const DEBUG = false;
+export const REST_SERVER = 'https://localhost';
+export const REST_PORT = '3000';
+export const REST_PATH = '';
+export const DOMAIN = 'localhost';
+export const CHART_ID = 'chart';

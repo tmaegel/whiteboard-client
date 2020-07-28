@@ -115,6 +115,7 @@ export function restGetTags() {
 
 /**
  * Ajax GET request /tag/:tagId
+ * @param {integer} id of the tag
  */
 export function restGetTagById(id) {
   $.ajax({
@@ -244,6 +245,7 @@ export function restGetWorkouts() {
 
 /**
  * Ajax GET request /workout/score/:workoutId
+ * @param {integer} id of the workout object
  */
 export function restGetWorkoutScores(id) {
   $.ajax({
@@ -271,6 +273,7 @@ export function restGetWorkoutScores(id) {
 
 /**
  * Ajax GET request /workout/tag/:workoutId
+ * @param {integer} id of the workout object
  */
 export function restGetWorkoutTags(id) {
   $.ajax({
@@ -298,6 +301,7 @@ export function restGetWorkoutTags(id) {
 
 /**
  * Ajax GET request /workout/:workoutId
+* @param {integer} id of the workout object
  */
 export function restGetWorkoutById(id) {
   $.ajax({
@@ -326,6 +330,7 @@ export function restGetWorkoutById(id) {
 /**
  * Ajax POST request /workout
  * Add new workout
+ * @param {Object} workout object to add
  */
 export function restAddWorkout(workout) {
   $.ajax({
@@ -357,6 +362,7 @@ export function restAddWorkout(workout) {
 /**
  * Ajax POST request /workout/id
  * Updating workout
+ * @param {Object} workout object to update
  */
 export function restUpdateWorkout(workout) {
   $.ajax({
@@ -419,6 +425,7 @@ export function restGetScores() {
 
 /**
  * Ajax GET request /score/:scoreId
+ * @param {integer} id of the score object
  */
 export function restGetScoreById(id) {
   $.ajax({
@@ -446,6 +453,7 @@ export function restGetScoreById(id) {
 /**
  * Ajax POST request /score
  * Save new workout score
+ * @param {Object} score object to add
  */
 export function restAddWorkoutScore(score) {
   $.ajax({
@@ -477,6 +485,7 @@ export function restAddWorkoutScore(score) {
 /**
  * Ajax POST request /score/id
  * Updating workout score
+ * @param {Object} score object to update
  */
 export function restUpdateWorkoutScore(score) {
   $.ajax({

@@ -8,6 +8,10 @@ import * as request from './rest.js';
 import * as timeHelper from './time.js';
 import * as regexHelper from './regex.js';
 
+/**
+ * save (add or update) the workout via REST
+ * @param {Object} workout object to save
+ */
 export function saveWorkout(workout) {
   logger.debug('workoutHelper.js :: saveWorkout() :: DEBUG: Saving workout...');
 

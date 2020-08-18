@@ -1,1 +1,4 @@
-config.example.js
+node_modules/
+test/
+Dockerfile
+README.md

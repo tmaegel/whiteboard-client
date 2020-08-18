@@ -39,4 +39,16 @@ export default {
 </script>
 
 <style lang="css" scoped>
+table td, table th {
+  padding: 12px;
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle
+}
+table tr {
+  border: 1px solid #eee;
+}
+/*table tr:last-child {
+  border: 0;
+}*/
 </style>

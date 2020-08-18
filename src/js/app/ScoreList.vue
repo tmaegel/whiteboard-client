@@ -21,7 +21,7 @@ export default {
     props: ['workout'],
     computed: {
         scoresSortByDatetime: function() { // returns all workout scores in sort by datetime
-            return this.workout.score.sort(arrayHelper.compareByTimestamp);
+            return this.workout.scores.sort(arrayHelper.compareByTimestamp);
         }
     },
     components: {
@@ -31,4 +31,10 @@ export default {
 </script>
 
 <style lang="css" scoped>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  display: table;
+}
 </style>

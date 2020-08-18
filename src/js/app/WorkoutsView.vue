@@ -29,12 +29,12 @@ export default {
                     break;
                 case 1: // type: "completed workouts"
                     return this.sortWorkouts().filter(function(workout) {
-                        return workout.score.length > 0;
+                        return workout.scores.length > 0;
                     });
                     break;
                 case 2: // type: "non-completed workouts"
                     return this.sortWorkouts().filter(function(workout) {
-                        return workout.score.length === 0;
+                        return workout.scores.length === 0;
                     });
                     break;
                 default:

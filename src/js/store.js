@@ -304,7 +304,7 @@ export default store = {
     this.state.workouts.map((workout) => {
       if (workout.id === workoutId) {
         workout.scores.map((score) => {
-                    score.id === scoreId ? score.selected = true : score.selected = false;
+          score.id === scoreId ? score.selected = true : score.selected = false;
         });
       }
     });

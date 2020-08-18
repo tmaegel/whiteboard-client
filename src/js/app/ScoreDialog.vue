@@ -108,7 +108,7 @@ export default {
             } else {
                 this.validDatetime = false;
             }
-            if(regexHelper.simpleRegex(this.note)) {
+            if(regexHelper.extendedRegex(this.note)) {
                 this.validNote = true;
             } else {
                 this.validNote = false;

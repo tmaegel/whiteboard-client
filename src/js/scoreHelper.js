@@ -35,7 +35,7 @@ export function saveWorkoutScore(score) {
   }
 
   score.note = regexHelper.stripString(score.note);
-  if (regexHelper.simpleRegex(score.note)) {
+  if (regexHelper.extendedRegex(score.note)) {
     logger.debug('scoreHelper.js :: saveWorkoutScore() :: DEBUG: scoreNote is ' + score.note);
     logger.debug('scoreHelper.js :: saveWorkoutScore() :: DEBUG: simpleRegex() success');
   } else {

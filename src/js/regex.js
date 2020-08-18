@@ -21,7 +21,7 @@ export function empty(value) {
 
 /**
  * Simple regex check
- * [a-zA-Z_0-9ÄÜÖäüöß .,:&'-()/]
+ * [a-zA-Z_0-9ÄÜÖäüöß .,:&'"-()/]
  * @param {string} value to check
  * @return {boolean} result of the regex check.
  */
@@ -37,7 +37,7 @@ export function simpleRegex(value) {
 
 /**
  * Extended regex check
- * [a-zA-Z_0-9ÄÜÖäüöß .,:;"#!?&@_-()%/*+]
+ * [a-zA-Z_0-9ÄÜÖäüöß .,:;"'#!?&@_-()%/*+]
  * @param {string} value to check
  * @return {boolean} result of the regex check.
  */
@@ -46,7 +46,7 @@ export function extendedRegex(value) {
     return false;
   }
 
-  const regExp = /^[\w\sÄÜÖäüöß.,:;"'!?&@_\-()%/*+]*$/g;
+  const regExp = /^[\w\sÄÜÖäüöß.,:;"'#!?&@_\-()%/*+]*$/g;
 
   return regExp.test(value);
 }

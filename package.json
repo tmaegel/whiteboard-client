@@ -11,8 +11,10 @@
   },
   "license": "ISC",
   "dependencies": {
+    "chart.js": "^2.9.3",
     "crypto-js": "^4.0.0",
-    "vue": ">=2.6.11"
+    "vue": ">=2.6.11",
+    "vue-chartjs": "^3.5.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.30.0",
@@ -41,9 +43,9 @@
     "build:prod": "npx webpack --config webpack.prod.js && docker build --pull -t whiteboard-frontend:prod .",
     "full:dev": "docker-compose -f docker-compose_dev.yml down ; docker-compose -f docker-compose_dev.yml up -d",
     "full:prod": "docker-compose -f docker-compose_prod.yml down ; docker-compose -f docker-compose_prod.yml up -d",
-    "start:dev": "docker stop whiteboard-frontend:dev ; docker rm whiteboard-frontend:dev ; docker run --name whiteboard-frontend:dev -p 127.0.0.1:8080:80 -v ${PWD}/dist/:/usr/share/nginx/html:ro -v ${PWD}/build/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx:mainline-alpine",
-    "start:prod": "docker rm whiteboard-frontend:prod ; docker run --name whiteboard-frontend:prod -p 127.0.0.1:8080:8080 -d whiteboard-frontend:prod",
-    "stop:dev": "docker stop whiteboard-frontend:dev",
-    "stop:prod": "docker stop whiteboard-frontend:prod"
+    "start:dev": "docker rm whiteboard-frontend-dev ; docker run --name whiteboard-frontend-dev -p 127.0.0.1:8080:80 -v ${PWD}/dist/:/usr/share/nginx/html:ro -v ${PWD}/build/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx:mainline-alpine",
+    "start:prod": "docker rm whiteboard-frontend-prod ; docker run --name whiteboard-frontend-prod -p 127.0.0.1:8080:8080 -d whiteboard-frontend:prod",
+    "stop:dev": "docker stop whiteboard-frontend-dev",
+    "stop:prod": "docker stop whiteboard-frontend-prod"
   }
 }

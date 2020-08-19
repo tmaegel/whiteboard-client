@@ -7,7 +7,7 @@
   <h3 align="center">whiteboard (Client)</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    Graphical web front-end (client) to manage your crossfit workouts results.
     <br />
     <a href="https://github.com/tmaegel/whiteboard-client"><strong>Explore the docs</strong></a>
     <br />
@@ -38,13 +38,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![whiteboard-client][product-screenshot]](https://github.com/tmaegel/whiteboard-client)
 
 
 ### Built With
 
 * [Vue.js](https://vuejs.org/)
-* [chart.js](https://www.chartjs.org/)
+* [Chart.js](https://www.chartjs.org/)
 * [vue-chartjs](https://vue-chartjs.org/)
 * [crypto-js](https://github.com/brix/crypto-js)
 
@@ -119,3 +119,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Toni Mägel - tmaegel@googlemail.com
 
 Project Link: [https://github.com/tmaegel/whiteboard-client](https://github.com/tmaegel/whiteboard-client)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[product-screenshot]: screenshots-whiteboard-client.png

@@ -1,9 +1,9 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'production',
-  // mode: 'development',
   entry: './src/js/index.js',
   output: {
     filename: 'main.min.js',
@@ -14,8 +14,8 @@ module.exports = {
   },
   performance: {
     hints: 'error',
-    maxEntrypointSize: 768000,
-    maxAssetSize: 768000,
+    maxEntrypointSize: 1024000,
+    maxAssetSize: 1024000,
   },
   module: {
     rules: [
@@ -35,5 +35,12 @@ module.exports = {
   plugins: [
     // make sure to include the plugin!
     new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      filename: 'index.html',
+      minify: {
+        collapseWhitespace: true,
+      },
+    }),
   ],
 };

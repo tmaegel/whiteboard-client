@@ -1,4 +1,8 @@
 node_modules/
 test/
+img/
+src/
 Dockerfile
 README.md
+*.tar.gz
+*.tgz

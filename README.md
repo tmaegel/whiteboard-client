@@ -1,11 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/tmaegel/whiteboard-client">
-  </a>
-
   <h3 align="center">whiteboard (Client)</h3>
-
   <p align="center">
     Graphical web front-end (client) to manage your crossfit workouts results.
     <br />
@@ -19,7 +15,6 @@
     <a href="https://github.com/tmaegel/whiteboard-client/issues">Request Feature</a>
   </p>
 </p>
-
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -39,7 +34,6 @@
 ## About The Project
 
 [![whiteboard-client][product-screenshot]](https://github.com/tmaegel/whiteboard-client)
-
 
 ### Built With
 
@@ -78,20 +72,15 @@ cd whiteboard-client/
 npm run full-start:prod
 ```
 
-
 <!-- USAGE EXAMPLES -->
 ## Usage
 
 @todo: Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-
-
 <!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/tmaegel/whiteboard-client/issues) for a list of proposed features (and known issues).
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -104,14 +93,10 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
 
 <!-- CONTACT -->
 ## Contact

@@ -29,20 +29,20 @@ export default {
             this.share.hideSearchbar();
             switch(this.share.getCurrentView()) {
                 case "home":
-                    this.title = "Home"
+                    this.share.state.app.title = "Home";
                     break;
                 case "workouts":
-                    this.title = "Workouts";
+                    this.share.state.app.title = "Workouts";
                     this.share.showLoader();
                     request.restGetWorkouts(); // get all workout objects; get scores when clicking on the workout
                     break;
                 case "movements":
-                    this.title = "Movements";
+                    this.share.state.app.title = "Movements";
                     this.share.showLoader();
                     request.restGetMovements(); // get all movements objects
                     break;
                 case "equipment":
-                    this.title = "Equipment";
+                    this.share.state.app.title = "Equipment";
                     this.share.showLoader();
                     request.restGetEquipment(); // get all equipment objects
                     break;
@@ -76,7 +76,7 @@ export default {
 #navbar .active {
     border-bottom: 5px solid gray;
 }
-#navbar li:hover {
+#navbar li:not(.active):hover {
     border-bottom: 5px solid #ddd;
 }
 </style>

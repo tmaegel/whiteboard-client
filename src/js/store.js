@@ -9,6 +9,7 @@ let store;
 export default store = {
   state: {
     app: {
+      title: 'Home',
       searchbar: false, // if true show searchbar
       filterMenu: false, // if true show filter menu
       sortAsc: true, // sort ascending/descending

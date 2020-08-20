@@ -1,6 +1,6 @@
 <template>
     <div id="topbar">
-        <Toolbar v-bind:title="title"></Toolbar>
+        <Toolbar v-bind:title="share.state.app.title"></Toolbar>
         <Navbar></Navbar>
     </div>
 </template>
@@ -14,7 +14,7 @@ export default {
     name: 'Topbar',
     data: function () {
         return {
-            title: "Home"
+            share: store
         }
     },
     components: {

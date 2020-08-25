@@ -21,7 +21,7 @@ export default {
             }
             this.timer = setTimeout(function() {
                 for(let workoutIndex in this.share.state.workouts) {
-                    if (this.share.state.workouts[workoutIndex].name.toLowerCase().includes(this.value)) { // case insensitive
+                    if (this.share.state.workouts[workoutIndex].name.toLowerCase().includes(this.value.toLowerCase())) { // case insensitive
                         this.share.showWorkout(workoutIndex);
                     } else {
                         this.share.hideWorkout(workoutIndex);
@@ -36,7 +36,7 @@ export default {
 
 <style lang="css" scoped>
 input {
-    width: 75%; /* Full-width */
+    width: 60%; /* Full-width */
     font-size: 20px;
     border: 0 !important;
     background-color: #eee; /* Dark-grey background */

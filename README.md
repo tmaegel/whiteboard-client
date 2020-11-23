@@ -33,6 +33,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+This project is currently not under active development.
+See https://github.com/tmaegel/ssr_whiteboard
+
 [![whiteboard-client][product-screenshot]](https://github.com/tmaegel/whiteboard-client)
 
 ### Built With

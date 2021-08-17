@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">whiteboard (Client)</h3>
+  <h3 align="center">DEPRECATED: whiteboard (Client)</h3>
   <p align="center">
     Graphical web front-end (client) to manage your crossfit workouts results.
     <br />

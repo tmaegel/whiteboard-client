@@ -1,0 +1,79 @@
+/* COLOR */
+$color_gray_1: #22282c;
+$color_gray_2: #2e343b;
+$color_gray_3: #31373c;
+
+// $gray: #35383e;
+// $gray: #393d41;
+
+$color_white_0: #ffffff;
+$color_white_1: #fdfbf9;
+
+/* PADDING & MARGIN */
+$pixel_small: 8px;
+$pixel_medium: 16px;
+$pixel_large: 24px;
+$pixel_huge: 32px;
+
+/* FONTSIZE */
+$font_size_tiny: 1.4rem;
+$font_size_small: 1.6rem;
+$font_size_medium: 1.8rem;
+$font_size_large: 2.0rem;
+$font_size_huge: 2.2rem;
+
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2.6rem; }
+h3 { font-size: 2.5rem; }
+h4 { font-size: 2.2rem; }
+h5 { font-size: 2.0rem; }
+h6 { font-size: 1.8rem; }
+
+.font-tiny { font-size: $font_size_tiny; }
+.font-small { font-size: $font_size_small; }
+.font-medium { font-size: $font_size_medium; }
+.font-large { font-size: $font_size_large; }
+.font-huge { font-size: $font_size_huge; }
+.text-center { text-align: center; }
+
+.padding-default { padding: $pixel_medium $pixel_large; }
+
+.padding-0 { padding: 0; }
+.padding-x-0 { padding-left: 0; padding-right: 0; }
+.padding-y-0 { padding-top: 0; padding-bottom: 0; }
+
+.padding-sm { padding: $pixel_small; }
+.padding-x-sm { padding-left: $pixel_small; padding-right: $pixel_small; }
+.padding-y-sm { padding-top: $pixel_small; padding-bottom: $pixel_small; }
+
+.padding-md { padding: $pixel_medium; }
+.padding-x-md { padding-left: $pixel_medium; padding-right: $pixel_medium; }
+.padding-y-md { padding-top: $pixel_medium; padding-bottom: $pixel_medium; }
+
+.padding-lg { padding: $pixel_large; }
+.padding-x-lg { padding-left: $pixel_large; padding-right: $pixel_large; }
+.padding-y-lg { padding-top: $pixel_large; padding-bottom: $pixel_large; }
+
+.padding-hg { padding: $pixel_huge; }
+.padding-x-hg { padding-left: $pixel_huge; padding-right: $pixel_huge; }
+.padding-y-hg { padding-top: $pixel_huge; padding-bottom: $pixel_huge; }
+
+.bg-dark { background-color: $color_gray_1; }
+.bg-dark-pale { background-color: $color_gray_2; }
+.fg-light { color: $color_white_1; }
+.fg-light-pale { color: $color_gray_3; }
+
+.margin-0 { margin: 0; }
+.margin-x-0 { margin-left: 0; margin-right: 0; }
+.margin-y-0 { margin-top: 0; margin-bottom: 0; }
+
+.margin-8 { margin: $pixel_small; }
+.margin-16 { margin: $pixel_medium; }
+.margin-24 { margin: $pixel_large; }
+.margin-32 { margin: $pixel_huge; }
+
+.border { border: 1px solid $color_gray_3; }
+.border-top { border-top: 1px solid $color_gray_3; }
+.border-bottom { border-bottom: 1px solid $color_gray_3; }
+.border-left { border-left: 1px solid $color_gray_3; }
+.border-right { border-right: 1px solid $color_gray_3; }

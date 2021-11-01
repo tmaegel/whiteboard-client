@@ -1,8 +1,10 @@
 import { reactive } from 'vue'
+import { User } from '@/models'
 
 const store = {
   state: reactive({
-    currentRoute: window.location.pathname,
+    user: new User(),
+    workouts: [],
   }),
 }
 

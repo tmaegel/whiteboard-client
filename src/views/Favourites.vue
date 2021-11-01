@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Title title="Other"/>
+    <Title title="Favourites"/>
     <div id="content">
-      <p>Other</p>
+      <p>Favourites</p>
     </div>
   </div>
 </template>

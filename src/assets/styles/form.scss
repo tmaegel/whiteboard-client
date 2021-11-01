@@ -1,0 +1,12 @@
+input {
+  color: $fg_white_1 !important;
+  background-color: $gray_1 !important;
+  border: 1px solid $gray_1 !important;
+}
+input::placeholder {
+  color: $fg_white_1 !important;
+}
+input:focus {
+  color: $fg_white_2 !important;
+  border: 1px solid $gray_2 !important;
+}

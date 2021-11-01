@@ -17,6 +17,6 @@ export default {
 @import "@/assets/styles/variables.scss";
 
 #page-title {
-  color: $color_white_1;
+  color: $fg_white_2;
 }
 </style>

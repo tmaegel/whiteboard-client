@@ -1,7 +1,7 @@
 <template>
-  <div class="bar bar-fix-bottom bg-dark-pale">
+  <div class="bar bar-fix-bottom">
       <ul class="nav">
-        <li v-for="route in routes" :key="route.name" class="nav-item" :class="{ active: isRoute(route.path) }">
+        <li v-for="route in visible_routes" :key="route.name" class="nav-item" :class="{ active: is_route(route.path) }">
           <router-link :to="route.path">
             <i :class="route.icon"></i>
           </router-link>
@@ -22,13 +22,18 @@ export default {
     }
   },
   computed: {
-    currentRoute() {
+    visible_routes() {
+      return this.routes.filter(function(route) {
+          return route.visible == true;
+      });
+    },
+    current_route() {
       return this.$route.path;
     },
   },
   methods: {
-    isRoute(endpoint) {
-      if(endpoint == this.currentRoute) {
+    is_route(endpoint) {
+      if(endpoint == this.current_route) {
         return true;
       } else {
         return false;
@@ -45,6 +50,7 @@ export default {
 .bar {
   width:100%;
   box-sizing: border-box;
+  background-color: $bg_gray_2;
 }
 .bar-fix-bottom {
   position:fixed;
@@ -63,9 +69,9 @@ export default {
   font-size: $font_size_huge;
 }
 .nav-item {
-  border-top: 3px solid $color_gray_2;
+  border-top: 3px solid $bg_gray_2;
 }
 .nav-item.active {
-  border-top: 3px solid $color_white_1;
+  border-top: 3px solid $fg_white_2;
 }
 </style>

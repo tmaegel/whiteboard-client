@@ -4,7 +4,7 @@
   "description": "Web frontend for the whiteboard rest api to manage your crossfit workouts results.",
   "main": "main.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --host 127.0.0.1",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +12,7 @@
   "author": "Toni Mägel",
   "license": "ISC",
   "dependencies": {
+    "@kyvg/vue3-notification": "^2.3.4",
     "core-js": "^3.6.5",
     "vue": "^3.2.20",
     "vue-router": "^4.0.12"

@@ -19,14 +19,14 @@ export default {
 ul.card-list {
   margin: 0;
   padding: 0;
-  border-top: 1px solid $color_gray_2;
+  border-top: 1px solid $gray_0;
 }
 .card-list li {
   margin: 0;
   padding: $pixel_medium $pixel_large;
   list-style-type: none;
-  border-bottom: 1px solid $color_gray_2;
+  border-bottom: 1px solid $gray_0;
   cursor: pointer;
-  color: $color_white_1;
+  color: $fg_white_2;
 }
 </style>

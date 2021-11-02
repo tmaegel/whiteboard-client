@@ -13,9 +13,10 @@
 <script>
 import config from '@/config'
 import store from '@/store'
+import { router } from '@/router'
 import { RestClient } from '@/rest'
 import { User } from '@/models'
-import { success, error } from '@/notification'
+import { error } from '@/notification'
 
 export default {
   data() {
@@ -34,9 +35,9 @@ export default {
                      'POST', config.api.login['valid'])
         client.request({ username: this.username, password: this.password },
           (data) => {
-            success('Successfully logged in.')
             store.state.user = new User(data.user_id, data.name)
             store.state.user.set_token(data.token);
+            router.push({ name: 'Home' })
           },
           (json_err) => { error(json_err.message) }
         );
@@ -54,17 +55,13 @@ export default {
 @import "@/assets/styles/form.scss";
 
 #content-center {
-  width: 100vw;
-  height: 100vh;
-  /* centering inner content */
-  display: flex;
-  /* centering along main axis - x axis (horizontal) */
-  justify-content: center;
-  /* centering along cross axis - y axis (vertical) */
-  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 form {
- margin: $pixel_small;
+  margin: $pixel_small;
   max-width: 400px;
 }
 </style>

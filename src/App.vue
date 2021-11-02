@@ -105,19 +105,19 @@ table th:last-child, table td:last-child {
   /* style for content */
   .notification-content {}
   &.info {
-    background: #44a4fc;
+    background: $blue_light;
     border: 0;
   }
   &.success {
-    background: #68cd86;
+    background: $green_light;
     border: 0;
   }
   &.warn {
-    background: #ffb648;
+    background: $yellow_light;
     border: 0;
   }
   &.error {
-    background: #e54d42;
+    background: $red_light;
     border: 0;
   }
 }

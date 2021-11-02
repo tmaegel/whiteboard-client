@@ -4,7 +4,6 @@ import { User } from '@/models'
 const store = {
   state: reactive({
     user: new User(),
-    workouts: [],
   }),
 }
 

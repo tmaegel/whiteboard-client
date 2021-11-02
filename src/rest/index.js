@@ -1,6 +1,7 @@
 import config from '@/config'
 import store from '@/store'
 import { login_required } from '@/decorators'
+import { error } from '@/notification'
 
 class RestClient {
 
@@ -118,6 +119,32 @@ class RestClient {
 
 }
 
+class RestAuth extends RestClient {
+
+  constructor() {
+    super();
+  }
+
+  login(username, password, success) {
+    let route = config.api.login
+    this.setup(config.api.root + route['route'],
+               'POST', route['valid'])
+    this.request(
+      {
+        username: username,
+        password: password
+      },
+      (data) => {
+        success(data)
+      },
+      (json_err) => {
+        error(json_err.message)
+      }
+    );
+  }
+
+}
+
 class RestWorkout extends RestClient {
 
   constructor() {
@@ -125,16 +152,17 @@ class RestWorkout extends RestClient {
   }
 
   @login_required
-  list() {
-    this.setup(config.api.root + config.api.workout_list['route'],
-               'GET', config.api.workout_list['valid'])
+  list(success) {
+    let route = config.api.workout_list
+    this.setup(config.api.root + route['route'],
+               'GET', route['valid'])
     this.add_auth_header(store.state.user.token);
     this.request(null,
-      function(data) {
-        console.info('OK: ' + JSON.stringify(data));
+      (data) => {
+        success(data)
       },
-      function(json_err) {
-        console.error('ERROR: ' + json_err.message);
+      (json_err) => {
+        error(json_err.message)
       }
     );
   }
@@ -146,4 +174,4 @@ class RestWorkout extends RestClient {
 
 }
 
-export { RestClient, RestWorkout }
+export { RestClient, RestAuth, RestWorkout }

@@ -1,7 +1,7 @@
 <template>
   <ul class="card-list">
     <li v-for="(entry, index) in entries" :key="index">
-      #{{ index }} - {{ entry }}
+      {{ entry.name }}
     </li>
   </ul>
 </template>

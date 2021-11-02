@@ -1,29 +1,32 @@
 <template>
   <div>
     <Title title="Workouts"/>
-    <CardList :entries="['w1', 'w2', 'w3']" />
+    <CardList :entries="workouts" />
   </div>
 </template>
 
 <script>
+import store from '@/store'
 import Title from '@/components/Title.vue'
 import CardList from '@/components/CardList.vue'
-import store from '@/store'
 import { RestWorkout } from '@/rest'
 
 export default {
   data() {
     return {
       shared: store,
+      workouts: [],
     }
   },
-  mounted() {
-    this.get_workout_list();
+  created() {
+    this.get_workout_list()
   },
   methods: {
     get_workout_list() {
-      let rest_workout = new RestWorkout();
-      rest_workout.list();
+      let workout_rest = new RestWorkout()
+      workout_rest.list((data) => {
+        this.workouts = data;
+      })
     }
   },
   components: {

@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <notifications position="top center" classes="notification" width="100%" max="3" />
+    <notifications position="top center" classes="notification" width="100%" />
     <Topbar v-show="shared.state.user.authenticated" />
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">

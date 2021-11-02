@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import config from '@/config'
+/* import config from '@/config' */
 import store from '@/store'
 import { router } from '@/router'
-import { RestClient } from '@/rest'
+import { RestAuth } from '@/rest'
 import { User } from '@/models'
 import { error } from '@/notification'
 
@@ -26,21 +26,16 @@ export default {
       password: '',
     }
   },
-   methods: {
+  methods: {
     login() {
       if(this.username && this.password) {
         console.debug('Logging in user.');
-        let client = new RestClient();
-        client.setup(config.api.root + config.api.login['route'],
-                     'POST', config.api.login['valid'])
-        client.request({ username: this.username, password: this.password },
-          (data) => {
-            store.state.user = new User(data.user_id, data.name)
-            store.state.user.set_token(data.token);
-            router.push({ name: 'Home' })
-          },
-          (json_err) => { error(json_err.message) }
-        );
+        let auth_rest = new RestAuth()
+        auth_rest.login(this.username, this.password, (data) => {
+          store.state.user = new User(data.user_id, data.name)
+          store.state.user.set_token(data.token);
+          router.push({ name: 'Home' })
+        })
       } else {
         error('Missing username and password.')
       }

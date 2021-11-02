@@ -21,12 +21,12 @@ function success(text) {
 
 function warn(text) {
   console.warn('WARNING: ' +  text);
-  notification('warn', 'WARNING', text, 7500);
+  notification('warn', 'WARNING', text, 5000);
 }
 
 function error(text) {
   console.error('ERROR: ' +  text);
-  notification('error', 'ERROR', text, 10000);
+  notification('error', 'ERROR', text, 7500);
 }
 
 export { info, success, warn, error }
